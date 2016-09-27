@@ -17,7 +17,7 @@ For now unfurl bot is available in source form only, so fire up your favourite g
 unfurl bot is configured via a single [EDN](https://github.com/edn-format/edn) file that's specified on the command
 line.  This configuration file contains the coordinates of the various endpoints, certificates, knickknacks and gewgaws
 that Symphony needs in order for a bot to connect to a pod.  It also allows one to specify a blacklist of URL prefixes
-that the bot should not expand.  It's structure as is follows:
+that the bot should never, under any circumstances, unfurl.  Its structure as is follows:
 
 ```edn
 {
