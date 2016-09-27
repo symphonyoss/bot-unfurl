@@ -48,6 +48,7 @@
                (if description (str "<i>"        description "</i><br/>"))
                (if preview-url (str "<a href=\"" preview-url "\"/><br/>"))
                ))))))
+          ;####TODO: Strip query string params off of preview-urls - Symphony API rejects messages like that (but UI doesn't, frustratingly...)
           ;####TODO: put server URL somewhere?
           ;####TODO: Detect URLs in description and link them
           ;####TODO: Detect hashtags in description and link them
