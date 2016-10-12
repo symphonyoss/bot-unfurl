@@ -27,6 +27,7 @@
                       [mount                            "0.1.10"]
                       [org.clojure/tools.cli            "0.3.5"]
                       [org.clojure/tools.logging        "0.3.1"]
+                      [com.linkedin/url-detector        "0.1.16"]
 ;                      [ch.qos.logback/logback-classic   "1.1.7"]   ; Swagger hardcodes a dependency on log4j. #fail
                       [org.clojars.pmonks/spinner       "0.3.0"]
                       [org.clojars.pmonks/unfurl        "0.1.0-SNAPSHOT" :exclusions [org.clojure/clojure]]
