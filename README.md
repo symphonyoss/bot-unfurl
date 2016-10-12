@@ -32,6 +32,7 @@ that the bot should never, under any circumstances, unfurl.  Its structure as is
     :user-email       "<bot user's email address>"
   }
   :url-blacklist ["<url prefix>" "<another url prefix>" "http://www.microsoft.com/"]
+;  :http-proxy ["<proxy-host>" proxy-port]   ; Optional - only needed if you use an HTTP proxy
 }
 
 ```
