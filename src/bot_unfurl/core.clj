@@ -51,14 +51,11 @@
 
 (defn- link-urls
   [description]
-  (let [urls (detect-urls description)]
-    (if (pos? (count urls))
-      (loop [description description
-             urls        urls]
-        (if (empty? urls)
-          description
-          (recur (replace-url description (first urls)) (rest urls))))
-      description)))
+  (loop [description description
+         urls        (detect-urls description)]
+    (if (empty? urls)
+      description
+      (recur (replace-url description (first urls)) (rest urls)))))
 
 (defn- process-description
   "Processes the description field, hyperlinking any found URLs and tagging any hash or cashtags."
@@ -99,10 +96,12 @@
 (defn- unfurl-urls-and-post-msg!
   [msg-id timestamp stream-id user-id msg-format msg-type msg]
   (try
-    (log/info "Received message" msg-id "from user" user-id "in stream" stream-id ":" msg)
+    (if (log/enabled? :debug)
+      (log/info "Received message" msg-id "from user" user-id "in stream" stream-id ":" msg)
+      (log/info "Received message" msg-id))
     (when msg
       (let [urls         (re-seq link-regex msg)
-            _            (log/debug "Found" (count urls) "url(s):" (s/join "," (map second urls)))
+            _            (log/debug "Found" (count urls) "url(s):" (s/join ", " (map second urls)))
             message-body (s/join "<br/>" (pmap #(unfurl-url-and-build-msg stream-id (second %)) urls))
             message      (if (pos? (.length message-body)) (str "<messageML>" message-body "</messageML>"))]
         (when message
