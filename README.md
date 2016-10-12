@@ -16,8 +16,14 @@ For now unfurl bot is available in source form only, so fire up your favourite g
 
 unfurl bot is configured via a single [EDN](https://github.com/edn-format/edn) file that's specified on the command
 line.  This configuration file contains the coordinates of the various endpoints, certificates, knickknacks and gewgaws
-that Symphony needs in order for a bot to connect to a pod.  It also allows one to specify a blacklist of URL prefixes
-that the bot should never, under any circumstances, unfurl.  Its structure as is follows:
+that Symphony needs in order for a bot to connect to a pod.
+
+It also allows one to optionally:
+
+* specify a blacklist of URL prefixes that the bot should never, under any circumstances, unfurl
+* provide the coordinates of an HTTP proxy
+
+Its structure as is follows:
 
 ```edn
 {
@@ -31,8 +37,8 @@ that the bot should never, under any circumstances, unfurl.  Its structure as is
     :user-cert        ["<path to bot user's certificate>" "<password of bot user's certificate>"]
     :user-email       "<bot user's email address>"
   }
-  :url-blacklist ["<url prefix>" "<another url prefix>" "http://www.microsoft.com/"]
-;  :http-proxy ["<proxy-host>" proxy-port]   ; Optional - only needed if you use an HTTP proxy
+  :url-blacklist ["<url prefix>" "<another url prefix>" "http://www.microsoft.com/" ...]
+  :http-proxy ["<proxy-host>" proxy-port]   ; Optional - only needed if you use an HTTP proxy
 }
 
 ```
