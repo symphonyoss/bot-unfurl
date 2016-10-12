@@ -63,34 +63,38 @@
 (defn- process-description
   "Processes the description field, hyperlinking any found URLs and tagging any hash or cashtags."
   [description]
-  (s/replace
+  (when description
     (s/replace
-      (link-urls description)
-      #"\#([^\s]+)"
-      "<hash tag=\"$2\"/>")
-    #"\$([^\s]+)"
-    "<cash tag=\"$2\"/>"))
+      (s/replace
+        (link-urls description)
+        #"\#([^\s]+)"
+        "<hash tag=\"$2\"/>")
+      #"\$([^\s]+)"
+      "<cash tag=\"$2\"/>")))
 
 (defn- process-preview-url
   [preview-url]
-  ;####TODO: IMPLEMENT THIS
-  ;####TODO: Strip query string params off of preview-urls - Symphony API rejects messages like that (an unfixed bug...)
-  preview-url)
+  (when preview-url
+    (first (s/split preview-url #"\?"))))   ; Strip query strings, since Symphony API barfs when an image URI contains a query string
 
 (defn- unfurl-url-and-build-msg
   [^String stream-id ^String url]
-  (when stream-id
-    (when url
-      (when-not (blacklisted? url)
-        (let [unfurled    (uf/unfurl url :proxy-host (first http-proxy) :proxy-port (second http-proxy))
-              title       (:title       unfurled)
-              description (process-description (:description unfurled))
-              preview-url (process-preview-url (:preview-url unfurled))]
-          (str (if title       (str "<b>"        title "</b><br/>"))
-               (if description (str "<i>"        description "</i><br/>"))
-               (if preview-url (str "<a href=\"" preview-url "\"/><br/>"))
-               ))))))
-          ;####TODO: put server URL somewhere?
+  (try
+    (when stream-id
+      (when url
+        (if (blacklisted? url)
+          (log/warn "url" url "is blacklisted - ignoring.")
+          (let [unfurled    (uf/unfurl url :proxy-host (first http-proxy) :proxy-port (second http-proxy))
+                url         (get unfurled :url url)
+                title       (:title       unfurled)
+                description (process-description (:description unfurled))
+                preview-url (process-preview-url (:preview-url unfurled))]
+            (str (if title       (str "<b>"        title "</b> - "))
+                 (str "<a href=\"" url "\"/><br/>")
+                 (if description (str "<i>"        description "</i><br/>"))
+                 (if preview-url (str "<a href=\"" preview-url "\"/><br/>")))))))
+    (catch Exception e
+      (log/error e "Unexpected exception while unfurling url" url))))
 
 (defn- unfurl-urls-and-post-msg!
   [msg-id timestamp stream-id user-id msg-format msg-type msg]
@@ -98,8 +102,8 @@
     (log/info "Received message" msg-id "from user" user-id "in stream" stream-id ":" msg)
     (when msg
       (let [urls         (re-seq link-regex msg)
-            _            (log/debug "Found" (count urls) "url(s):" (map second urls))
-            message-body (s/join "<br/>" (map #(unfurl-url-and-build-msg stream-id (second %)) urls))
+            _            (log/debug "Found" (count urls) "url(s):" (s/join "," (map second urls)))
+            message-body (s/join "<br/>" (pmap #(unfurl-url-and-build-msg stream-id (second %)) urls))
             message      (if (pos? (.length message-body)) (str "<messageML>" message-body "</messageML>"))]
         (when message
           (log/debug (str "Sending message to stream " stream-id ": " message))
