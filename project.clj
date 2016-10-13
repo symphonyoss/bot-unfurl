@@ -20,22 +20,23 @@
   :license          {:name "Apache License, Version 2.0"
                      :url  "http://www.apache.org/licenses/LICENSE-2.0"}
   :min-lein-version "2.5.0"
-  :repositories     [["sonatype-snapshots" {:url "https://oss.sonatype.org/content/groups/public" :snapshots true}]]
+  :repositories     [["sonatype-snapshots" {:url "https://oss.sonatype.org/content/groups/public" :snapshots true}]
+                     ["jitpack"            {:url "https://jitpack.io"}]]
   :dependencies     [
-                      [org.clojure/clojure              "1.8.0"]
-                      [cprop                            "0.1.9"]
-                      [mount                            "0.1.10"]
-                      [org.clojure/tools.cli            "0.3.5"]
-                      [org.clojure/tools.logging        "0.3.1"]
-                      [com.linkedin/url-detector        "0.1.16"]
-;                      [ch.qos.logback/logback-classic   "1.1.7"]   ; Swagger hardcodes a dependency on log4j. #fail
-                      [org.clojars.pmonks/spinner       "0.3.0"]
-                      [org.clojars.pmonks/unfurl        "0.1.0-SNAPSHOT" :exclusions [org.clojure/clojure]]
-                      [foundation.symphony/clj-symphony "0.1.0-SNAPSHOT" :exclusions [org.clojure/clojure]]
+                      [org.clojure/clojure                 "1.8.0"]
+                      [cprop                               "0.1.9"]
+                      [mount                               "0.1.10"]
+                      [org.clojure/tools.cli               "0.3.5"]
+                      [org.clojure/tools.logging           "0.3.1"]
+                      [com.github.linkedin/URL-Detector    "2a0fede05e"]   ; Via jitpack for now, until https://github.com/linkedin/URL-Detector/issues/2 is fixed
+;                      [ch.qos.logback/logback-classic      "1.1.7"]   ; Swagger hardcodes a dependency on log4j. #fail
+                      [org.clojars.pmonks/spinner          "0.3.0"]
+                      [org.clojars.pmonks/unfurl           "0.1.0"      :exclusions [org.clojure/clojure]]
+                      [com.github.symphonyoss/clj-symphony "efcdca8dea" :exclusions [org.clojure/clojure]]
+;                      [foundation.symphony/clj-symphony "0.1.0-SNAPSHOT" :exclusions [org.clojure/clojure]]
                     ]
   :profiles         {:dev {:dependencies [[midje      "1.8.3"]]
                            :plugins      [[lein-midje "3.2.1"]]}   ; Don't remove this or travis-ci will assplode!
                      :uberjar {:aot :all}}
-  :lein-release     {:deploy-via :clojars}
   :main             bot-unfurl.main
   )

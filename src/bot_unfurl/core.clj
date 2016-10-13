@@ -69,10 +69,10 @@
       #"\$([^\s]+)"
       "<cash tag=\"$2\"/>")))
 
-(defn- process-preview-url
-  [preview-url]
-  (when preview-url
-    (first (s/split preview-url #"\?"))))   ; Strip query strings, since Symphony API barfs when an image URI contains a query string
+(defn- message-ml-escape
+  [^String s]
+  (when s
+    (org.apache.commons.lang3.StringEscapeUtils/escapeXml s)))    ; Note: should use escapeXml11 once commons-lang v3.3+ is in use
 
 (defn- unfurl-url-and-build-msg
   [^String stream-id ^String url]
@@ -82,10 +82,10 @@
         (if (blacklisted? url)
           (log/warn "url" url "is blacklisted - ignoring.")
           (let [unfurled    (uf/unfurl url :proxy-host (first http-proxy) :proxy-port (second http-proxy))
-                url         (get unfurled :url url)
-                title       (:title       unfurled)
-                description (process-description (:description unfurled))
-                preview-url (process-preview-url (:preview-url unfurled))]
+                url         (message-ml-escape (get unfurled :url url))
+                title       (message-ml-escape (:title       unfurled))
+                description (process-description (message-ml-escape (:description unfurled)))
+                preview-url (message-ml-escape (:preview-url unfurled))]
             (str (if title       (str "<b>"        title "</b> - "))
                  (str "<a href=\"" url "\"/><br/>")
                  (if description (str "<i>"        description "</i><br/>"))
