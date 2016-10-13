@@ -19,4 +19,6 @@
             [mount.core :as mnt :refer [defstate]]))
 
 (defstate config
-          :start (cp/load-config :file (:config-file (mnt/args))))
+          :start (if-let [config-file (:config-file (mnt/args))]
+                   (cp/load-config :file config-file)
+                   (cp/load-config)))

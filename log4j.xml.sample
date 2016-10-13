@@ -10,7 +10,7 @@
   </appender>
 
   <appender name="file" class="org.apache.log4j.FileAppender">
-    <param name="File" value="unfurl-bot.log" />
+    <param name="File" value="/var/log/bot-unfurl.log" />
     <param name="Append" value="true" />
     <layout class="org.apache.log4j.PatternLayout">
       <param name="ConversionPattern" value="%-4r [%t] %-5p %c %x - %m%n"/>
@@ -22,11 +22,11 @@
   </logger>
 
   <logger name="org.symphonyoss">
-    <level value="info"/>
+    <level value="warn"/>
   </logger>
 
   <root>
-    <priority value="debug" />
+    <priority value="info" />
     <appender-ref ref="file" />
   </root>
 

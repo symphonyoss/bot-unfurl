@@ -45,16 +45,41 @@ Its structure as is follows:
 
 The `:symphony-coords` described above are passed directly to the
 [clj-symphony library's `connect` function](https://github.com/symphonyoss/clj-symphony#usage),
-and have the same semantics as what's described there.
+and have the same semantics as what's described there.  Typically `:pod-id` can only be used if
+you're on a fully-hosted Symphony "business tier" subscription - for enterprise deployments the
+agent (at least) will typically reside on-premises, with a completely different hostname than the
+other system components.
 
 ## Usage
 
-This bot will eventually be a standalone executable (e.g. a docker image), but
-for now `lein run` it:
+For now, you can run unfurl bot either standalone or as a Docker image.
+
+### Standalone
 
 ```
 $ lein run -- -c <path to EDN configuration file>
 ```
+
+### Docker
+
+To build the container:
+
+```
+$ docker build -t bot-unfurl .
+```
+
+To run the container:
+
+```
+$ docker run -v /path/to/config/directory:/etc/opt/bot-unfurl:ro bot-unfurl
+```
+
+Where `/path/to/config/directory` should be replaced with the fully qualified path of the configuration directory
+_on the Docker host_.  This configuration directory must contain:
+
+ 1. the service account certificate and truststore that the bot should use
+ 2. a `config.edn` file (in the format described above), that points to the certificates using `/etc/opt/bot-unfurl` as the base path (that's where the configuration folder is mounted within the container)
+ 3. a log4j v1.x configuration file (either `log4j.xml` or `log4j.properties`) - technically this is optional but the bot will generate a lot of logging output without it.  It is recommended that the log4j files be written to `/var/log/bot-unfurl.log` within the container.
 
 ## Developer Information
 

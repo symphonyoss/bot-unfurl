@@ -1,0 +1,18 @@
+{
+  :symphony-coords {
+    :pod-id      "acme"
+; OR
+;    :session-auth-url "https://acme-api.symphony.com/sessionauth"
+;    :key-auth-url     "https://acme-api.symphony.com/keyauth"
+;    :agent-api-url    "https://acme-api.symphony.com/agent"
+;    :pod-api-url      "https://acme-api.symphony.com/pod"
+
+    :trust-store ["/etc/opt/bot-unfurl/certs/server.truststore" "mypassword"]
+    :user-cert   ["/etc/opt/bot-unfurl/certs/bot-unfurl.p12"    "mypassword"]
+    :user-email  "bot-unfurl@acme.com"
+  }
+
+  :url-blacklist ["https://drive.google.com/" "https://docs.google.com/"]
+
+;  :http-proxy ["proxy.acme.com" 80]
+}

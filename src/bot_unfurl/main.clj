@@ -30,10 +30,9 @@
           :stop  (spin/stop! spinner))
 
 (def ^:private cli-opts
-  [["-c" "--config-file FILE" "Path to configuration file (mandatory)"
-    :parse-fn #(io/file %)
-    :validate [#(.exists ^java.io.File %) "Must exist"
-               #(.isFile ^java.io.File %) "Must be a file"]]
+  [["-c" "--config-file FILE" "Path to configuration file (defaults to 'config.edn' in the classpath)"
+    :validate [#(.exists (io/file %)) "Must exist"
+               #(.isFile (io/file %)) "Must be a file"]]
    ["-h" "--help"]])
 
 (defn usage
@@ -65,7 +64,7 @@
     ; Handle help and error conditions
     (cond
       (:help options)               (exit 0 (usage summary))
-      (nil? (:config-file options)) (exit 1 (usage summary))
+;      (nil? (:config-file options)) (exit 1 (usage summary))
       errors                        (exit 1 (error-message errors)))
 
     ; Start the bot

@@ -14,9 +14,9 @@
 ; limitations under the License.
 ;
 
-(defproject foundation.symphony/bot-unfurl "0.1.0-SNAPSHOT"
+(defproject org.symphonyoss.symphony/bot-unfurl "0.1.0-SNAPSHOT"
   :description      "A bot that looks for URIs in messages and 'unfurls' them into a new message."
-  :url              "https://github.com/pmonks/clj-symphony"
+  :url              "https://github.com/pmonks/bot-unfurl"
   :license          {:name "Apache License, Version 2.0"
                      :url  "http://www.apache.org/licenses/LICENSE-2.0"}
   :min-lein-version "2.5.0"
@@ -28,12 +28,11 @@
                       [mount                               "0.1.10"]
                       [org.clojure/tools.cli               "0.3.5"]
                       [org.clojure/tools.logging           "0.3.1"]
+                      [joda-time/joda-time                 "2.2"]
                       [com.github.linkedin/URL-Detector    "2a0fede05e"]   ; Via jitpack for now, until https://github.com/linkedin/URL-Detector/issues/2 is fixed
-;                      [ch.qos.logback/logback-classic      "1.1.7"]   ; Swagger hardcodes a dependency on log4j. #fail
                       [org.clojars.pmonks/spinner          "0.3.0"]
                       [org.clojars.pmonks/unfurl           "0.1.0"      :exclusions [org.clojure/clojure]]
-                      [com.github.symphonyoss/clj-symphony "efcdca8dea" :exclusions [org.clojure/clojure]]
-;                      [foundation.symphony/clj-symphony "0.1.0-SNAPSHOT" :exclusions [org.clojure/clojure]]
+                      [com.github.symphonyoss/clj-symphony "efcdca8dea" :exclusions [org.clojure/clojure]]    ; Via jitpack for now
                     ]
   :profiles         {:dev {:dependencies [[midje      "1.8.3"]]
                            :plugins      [[lein-midje "3.2.1"]]}   ; Don't remove this or travis-ci will assplode!
