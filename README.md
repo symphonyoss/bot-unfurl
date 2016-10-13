@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/pmonks/bot-unfurl.svg?branch=master)](https://travis-ci.org/pmonks/bot-unfurl)
 [![Open Issues](https://img.shields.io/github/issues/pmonks/bot-unfurl.svg)](https://github.com/pmonks/bot-unfurl/issues)
 [![License](https://img.shields.io/github/license/pmonks/bot-unfurl.svg)](https://github.com/pmonks/bot-unfurl/blob/master/LICENSE)
 [![Dependencies Status](http://jarkeeper.com/pmonks/bot-unfurl/status.svg)](http://jarkeeper.com/pmonks/bot-unfurl)
