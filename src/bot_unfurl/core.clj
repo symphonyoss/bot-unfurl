@@ -91,14 +91,14 @@
               description (process-description (message-ml-escape (:description unfurled)))
               preview-url (message-ml-escape (:preview-url unfurled))]
           (str (if title       (str "<b>"        title "</b> - "))
-               (str "<a href=\"" url "\"/><br/>")
+               "<a href=\"" url "\"/><br/>"
                (if description (str "<i>"        description "</i><br/>"))
                (if preview-url (str "<a href=\"" preview-url "\"/><br/>")))))
       (catch Exception e
         (log/error e "Unexpected exception while unfurling url" url)))))
 
 (defn- unfurl-urls-and-post-msg!
-  "Unfurls all URLs in the given message, and if any are detected, unfurls them and posts a single summary message back to the same stream."
+  "Finds all messageML links in the given message and if any are detected, unfurls their URLs and posts a single summary message back to the same stream."
   [msg-id timestamp stream-id user-id msg-format msg-type msg]
   (try
     (log/debug "Received message" msg-id "from user" user-id "in stream" stream-id ":" msg)
