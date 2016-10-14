@@ -72,7 +72,10 @@ $ docker build -t bot-unfurl .
 To run the container:
 
 ```
+$ # Interactively:
 $ docker run -v /path/to/config/directory:/etc/opt/bot-unfurl:ro bot-unfurl
+$ # In the background:
+$ docker run -d -v /path/to/config/directory:/etc/opt/bot-unfurl:ro bot-unfurl
 ```
 
 Where `/path/to/config/directory` should be replaced with the fully qualified path of the configuration directory
