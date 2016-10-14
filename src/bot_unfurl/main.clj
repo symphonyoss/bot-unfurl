@@ -20,14 +20,9 @@
             [clojure.tools.cli     :as cli]
             [clojure.tools.logging :as log]
             [mount.core            :as mnt :refer [defstate]]
-            [spinner.core          :as spin]
             [bot-unfurl.config     :as cfg]
             [bot-unfurl.core       :as uf])
   (:gen-class))
-
-(defstate spinner
-          :start (spin/create-and-start!)
-          :stop  (spin/stop! spinner))
 
 (def ^:private cli-opts
   [["-c" "--config-file FILE" "Path to configuration file (defaults to 'config.edn' in the classpath)"
@@ -61,15 +56,12 @@
   "Runs the unfurl bot."
   [& args]
   (let [{:keys [options arguments errors summary]} (cli/parse-opts args cli-opts)]
-    ; Handle help and error conditions
     (cond
-      (:help options)               (exit 0 (usage summary))
-;      (nil? (:config-file options)) (exit 1 (usage summary))
-      errors                        (exit 1 (error-message errors)))
+      (:help options) (exit 0 (usage summary))
+      errors          (exit 1 (error-message errors)))
 
     ; Start the bot
     (log/debug "Starting unfurl-bot...")
     (mnt/with-args options)
     (mnt/start)
-    (log/info "unfurl-bot started")
-    (spin/print "unfurl-bot is running - Ctrl+C to quit ")))
+    (log/info "unfurl-bot started")))

@@ -22,7 +22,7 @@
             [clj-symphony.api      :as sy]
             [bot-unfurl.config     :as cfg]))
 
-(def ^:private link-regex #"<a\s+href\s*=\s*\"([^\"]*)\"\s*/>")
+(def ^:private messageml-link-regex #"<a\s+href\s*=\s*\"([^\"]*)\"\s*/>")
 
 (defstate session
           :start (sy/connect (:symphony-coords cfg/config)))
@@ -38,24 +38,27 @@
   [^String url]
   (some identity (map #(.startsWith url ^String %) url-blacklist)))
 
-(defn- replace-url
+(defn- detect-urls
+  "Detects all URLs in the given string."
+  ([s]     (detect-urls s com.linkedin.urls.detection.UrlDetectorOptions/Default))
+  ([s opt] (when (and s opt)
+             (.detect (com.linkedin.urls.detection.UrlDetector. s opt)))))
+
+(defn- hyperlink-url
+  "Hyperlinks the given URL in the given description, using a MessageML format <a> tag."
   [description ^com.linkedin.urls.Url url]
   (let [original-text (.getOriginalUrl url)
         corrected-url (str url)]
     (s/replace description original-text (str "<a href=\"" corrected-url "\"/>"))))
 
-(defn- detect-urls
-  ([s]     (detect-urls s com.linkedin.urls.detection.UrlDetectorOptions/Default))
-  ([s opt] (when (and s opt)
-             (.detect (com.linkedin.urls.detection.UrlDetector. s opt)))))
-
-(defn- link-urls
+(defn- hyperlink-urls
+  "Hyperlinks all URLs in the given description, using MessageML format <a> tags."
   [description]
   (loop [description description
          urls        (detect-urls description)]
     (if (empty? urls)
       description
-      (recur (replace-url description (first urls)) (rest urls)))))
+      (recur (hyperlink-url description (first urls)) (rest urls)))))
 
 (defn- process-description
   "Processes the description field, hyperlinking any found URLs and tagging any hash or cashtags."
@@ -63,49 +66,50 @@
   (when description
     (s/replace
       (s/replace
-        (link-urls description)
+        (hyperlink-urls description)
         #"\#([^\s]+)"
         "<hash tag=\"$2\"/>")
       #"\$([^\s]+)"
       "<cash tag=\"$2\"/>")))
 
 (defn- message-ml-escape
+  "Escapes the given string for MessageML."
   [^String s]
   (when s
-    (org.apache.commons.lang3.StringEscapeUtils/escapeXml s)))    ; Note: should use escapeXml11 once commons-lang v3.3+ is in use
+    (org.apache.commons.lang3.StringEscapeUtils/escapeXml11 s)))
 
 (defn- unfurl-url-and-build-msg
-  [^String stream-id ^String url]
-  (try
-    (when stream-id
-      (when url
-        (if (blacklisted? url)
-          (log/warn "url" url "is blacklisted - ignoring.")
-          (let [unfurled    (uf/unfurl url :proxy-host (first http-proxy) :proxy-port (second http-proxy))
-                url         (message-ml-escape (get unfurled :url url))
-                title       (message-ml-escape (:title       unfurled))
-                description (process-description (message-ml-escape (:description unfurled)))
-                preview-url (message-ml-escape (:preview-url unfurled))]
-            (str (if title       (str "<b>"        title "</b> - "))
-                 (str "<a href=\"" url "\"/><br/>")
-                 (if description (str "<i>"        description "</i><br/>"))
-                 (if preview-url (str "<a href=\"" preview-url "\"/><br/>")))))))
-    (catch Exception e
-      (log/error e "Unexpected exception while unfurling url" url))))
+  "Unfurls a single URL and builds a MessageML message fragment for it."
+  [^String url]
+  (when url
+    (try
+      (if (blacklisted? url)
+        (log/warn "url" url "is blacklisted - ignoring.")
+        (let [unfurled    (uf/unfurl url :proxy-host (first http-proxy) :proxy-port (second http-proxy))
+              url         (message-ml-escape (get unfurled :url url))
+              title       (message-ml-escape (:title       unfurled))
+              description (process-description (message-ml-escape (:description unfurled)))
+              preview-url (message-ml-escape (:preview-url unfurled))]
+          (str (if title       (str "<b>"        title "</b> - "))
+               (str "<a href=\"" url "\"/><br/>")
+               (if description (str "<i>"        description "</i><br/>"))
+               (if preview-url (str "<a href=\"" preview-url "\"/><br/>")))))
+      (catch Exception e
+        (log/error e "Unexpected exception while unfurling url" url)))))
 
 (defn- unfurl-urls-and-post-msg!
+  "Unfurls all URLs in the given message, and if any are detected, unfurls them and posts a single summary message back to the same stream."
   [msg-id timestamp stream-id user-id msg-format msg-type msg]
   (try
-    (if (log/enabled? :debug)
-      (log/info "Received message" msg-id "from user" user-id "in stream" stream-id ":" msg)
-      (log/info "Received message" msg-id))
+    (log/debug "Received message" msg-id "from user" user-id "in stream" stream-id ":" msg)
     (when msg
-      (let [urls         (re-seq link-regex msg)
-            _            (log/debug "Found" (count urls) "url(s):" (s/join ", " (map second urls)))
-            message-body (s/join "<br/>" (pmap #(unfurl-url-and-build-msg stream-id (second %)) urls))
+      (let [urls         (map second (re-seq messageml-link-regex msg))
+            _            (log/debug "Found" (count urls) "url(s):" (s/join ", " urls))
+            message-body (s/join "<br/>" (pmap unfurl-url-and-build-msg urls))
             message      (if (pos? (.length message-body)) (str "<messageML>" message-body "</messageML>"))]
         (when message
-          (log/debug (str "Sending message to stream " stream-id ": " message))
+          (log/info  "Found" (count urls) "url(s) in message" msg-id "- posting unfurl message to stream" stream-id)
+          (log/debug "Unfurl message:" message)
           (sy/send-message! session stream-id message))))
     (catch Exception e
       (log/error e "Unexpected exception while processing message" msg-id))))

@@ -24,15 +24,20 @@
                      ["jitpack"            {:url "https://jitpack.io"}]]
   :dependencies     [
                       [org.clojure/clojure                 "1.8.0"]
+                      [org.apache.commons/commons-lang3    "3.4"]
                       [cprop                               "0.1.9"]
                       [mount                               "0.1.10"]
                       [org.clojure/tools.cli               "0.3.5"]
                       [org.clojure/tools.logging           "0.3.1"]
-                      [joda-time/joda-time                 "2.2"]
-                      [com.github.linkedin/URL-Detector    "2a0fede05e"]   ; Via jitpack for now, until https://github.com/linkedin/URL-Detector/issues/2 is fixed
-                      [org.clojars.pmonks/spinner          "0.3.0"]
+                      [com.github.linkedin/URL-Detector    "2a0fede05e" :exclusions [org.apache.commons/commons-lang3]]  ; Via jitpack for now, until https://github.com/linkedin/URL-Detector/issues/2 is fixed
                       [org.clojars.pmonks/unfurl           "0.1.0"      :exclusions [org.clojure/clojure]]
-                      [com.github.symphonyoss/clj-symphony "efcdca8dea" :exclusions [org.clojure/clojure]]    ; Via jitpack for now
+                      [com.github.symphonyoss/clj-symphony "efcdca8dea" :exclusions [org.clojure/clojure]]  ; Via jitpack for now
+
+                      ; The following dependencies are inherited but have conflicting versions, so we "pin" the versions here
+                      [com.fasterxml.jackson.core/jackson-databind              "2.8.3"]
+                      [com.fasterxml.jackson.core/jackson-annotations           "2.8.3"]
+                      [com.fasterxml.jackson.dataformat/jackson-dataformat-yaml "2.8.3"]
+                      [joda-time/joda-time                                      "2.9.4"]
                     ]
   :profiles         {:dev {:dependencies [[midje      "1.8.3"]]
                            :plugins      [[lein-midje "3.2.1"]]}   ; Don't remove this or travis-ci will assplode!
