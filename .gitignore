@@ -14,3 +14,4 @@ pom.xml.asc
 .shell_history
 *.log
 config.edn
+certs/
