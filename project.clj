@@ -30,7 +30,7 @@
                       [org.clojure/tools.cli               "0.3.5"]
                       [org.clojure/tools.logging           "0.3.1"]
                       [com.github.linkedin/URL-Detector    "2a0fede05e" :exclusions [org.apache.commons/commons-lang3]]  ; Via jitpack for now, until https://github.com/linkedin/URL-Detector/issues/2 is fixed
-                      [org.clojars.pmonks/unfurl           "0.1.0"      :exclusions [org.clojure/clojure]]
+                      [org.clojars.pmonks/unfurl           "0.2.0"      :exclusions [org.clojure/clojure]]
                       [com.github.symphonyoss/clj-symphony "4ba9e6cf9f" :exclusions [org.clojure/clojure]]  ; Via jitpack for now
 
                       ; The following dependencies are inherited but have conflicting versions, so we "pin" the versions here
