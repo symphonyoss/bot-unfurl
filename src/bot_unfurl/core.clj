@@ -22,7 +22,7 @@
             [clj-symphony.api      :as sy]
             [bot-unfurl.config     :as cfg]))
 
-(def ^:private messageml-link-regex #"<a\s+href\s*=\s*\"([^\"]*)\"\s*/>")
+(def ^:private messageml-link-regex #"<a\s+href\s*=\s*\"([^\"]+)\"\s*/>")
 
 (defstate session
           :start (sy/connect (:symphony-coords cfg/config)))
@@ -68,9 +68,9 @@
       (s/replace
         (hyperlink-urls description)
         #"\#([^\s]+)"
-        "<hash tag=\"$2\"/>")
+        "<hash tag=\"$1\"/>")
       #"\$([^\s]+)"
-      "<cash tag=\"$2\"/>")))
+      "<cash tag=\"$1\"/>")))
 
 (defn- message-ml-escape
   "Escapes the given string for MessageML."
