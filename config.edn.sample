@@ -7,8 +7,8 @@
 ;    :agent-api-url    "https://acme-api.symphony.com/agent"
 ;    :pod-api-url      "https://acme-api.symphony.com/pod"
 
-    :trust-store ["/etc/opt/bot-unfurl/certs/server.truststore" "mypassword"]
-    :user-cert   ["/etc/opt/bot-unfurl/certs/bot-unfurl.p12"    "mypassword"]
+    :trust-store ["/etc/opt/bot-unfurl/certs/server.truststore" "changeit"]
+    :user-cert   ["/etc/opt/bot-unfurl/certs/bot-unfurl.p12"    "changeit"]
     :user-email  "bot-unfurl@acme.com"
   }
 
