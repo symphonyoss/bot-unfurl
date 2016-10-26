@@ -85,12 +85,13 @@ _on the Docker host_.  This configuration directory must contain:
  2. a `config.edn` file (in the format described above), that points to the certificates using `/etc/opt/bot-unfurl` as the base path (that's where the configuration folder is mounted within the container)
  3. a log4j v1.x configuration file (either `log4j.xml` or `log4j.properties`) - technically this is optional but the bot will generate a lot of logging output without it.  It is recommended that the log4j files be written to the console (STDOUT), so that docker's `logs` command can be utilised.
 
-Instead of `docker run`, you can use Docker Compose, by running:
+You can also use Docker Compose, by running:
 
 ```
-which docker-compose
-docker-compose up -d
+$ docker-compose up -d
 ```
+
+This assumes that the current directory contains the certificate, truststore, `config.edn` file, and log4j configuration file, as described above.
 
 ## Developer Information
 
