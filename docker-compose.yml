@@ -1,0 +1,12 @@
+# Prerequisites:
+# ./certs folder exists
+# config.edn exists
+# For more info, check README.md
+
+version: '2'
+services:
+ bot-unfurl:
+   restart: always
+   build: .
+   volumes:
+    - .:/etc/opt/bot-unfurl:ro
