@@ -15,3 +15,5 @@ pom.xml.asc
 *.log
 config.edn
 certs/
+log4j.xml
+log4j.properties
