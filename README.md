@@ -51,6 +51,10 @@ you're on a fully-hosted Symphony "business tier" subscription - for enterprise 
 agent (at least) will typically reside on-premises, with a completely different hostname than the
 other system components.
 
+Note: the HTTP proxy is only used for requests to the URLs that are being unfurled.  Use of an
+HTTP proxy to make calls to Symphony are [not yet supported by clj-symphony](https://github.com/symphonyoss/clj-symphony/issues/1).
+
+
 ## Usage
 
 For now, you can run unfurl bot either standalone or as a Docker image.
