@@ -1,7 +1,7 @@
 # Prerequisites:
-# ./certs folder exists
-# config.edn exists
-# For more info, check README.md
+# ./certs folder exists and contains bot user cert and truststore
+# ./config.edn file exists
+# For more details, check README.md
 
 version: '2'
 services:
