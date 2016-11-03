@@ -37,7 +37,7 @@
                       [com.fasterxml.jackson.core/jackson-databind              "2.8.4"]
                       [com.fasterxml.jackson.core/jackson-annotations           "2.8.4"]
                       [com.fasterxml.jackson.dataformat/jackson-dataformat-yaml "2.8.4"]
-                      [joda-time/joda-time                                      "2.9.4"]
+                      [joda-time/joda-time                                      "2.9.5"]
                     ]
   :profiles         {:dev {:dependencies [[midje      "1.8.3"]]
                            :plugins      [[lein-midje "3.2.1"]]}   ; Don't remove this or travis-ci will assplode!
