@@ -40,7 +40,7 @@
                       [joda-time/joda-time                                      "2.9.4"]
                     ]
   :profiles         {:dev {:dependencies [[midje      "1.8.3"]]
-                           :plugins      [[lein-midje "3.2.1"]]}   ; Don't remove this or travis-ci will assplode!
+                           :plugins      [[lein-midje "3.2.1"][lein-licenses "0.2.1"]]}   ; Don't remove this or travis-ci will assplode!
                      :uberjar {:aot :all}}
   :main             bot-unfurl.main
   )
