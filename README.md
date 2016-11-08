@@ -2,6 +2,7 @@
 [![Open Issues](https://img.shields.io/github/issues/pmonks/bot-unfurl.svg)](https://github.com/pmonks/bot-unfurl/issues)
 [![License](https://img.shields.io/github/license/pmonks/bot-unfurl.svg)](https://github.com/pmonks/bot-unfurl/blob/master/LICENSE)
 [![Dependencies Status](http://jarkeeper.com/pmonks/bot-unfurl/status.svg)](http://jarkeeper.com/pmonks/bot-unfurl)
+[![Symphony Software Foundation - Incubating](https://cdn.rawgit.com/symphonyoss/contrib-toolbox/master/images/ssf-badge-incubating.svg)](https://symphonyoss.atlassian.net/wiki/display/FM/Project+lifecycle)
 
 # unfurl bot
 
