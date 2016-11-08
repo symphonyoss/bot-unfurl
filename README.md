@@ -100,9 +100,9 @@ This assumes that the current directory contains the certificate, truststore, `c
 
 ## Developer Information
 
-[GitHub project](https://github.com/pmonks/bot-unfurl)
+[GitHub project](https://github.com/symphonyoss/bot-unfurl)
 
-[Bug Tracker](https://github.com/pmonks/bot-unfurl/issues)
+[Bug Tracker](https://github.com/symphonyoss/bot-unfurl/issues)
 
 ## License
 
