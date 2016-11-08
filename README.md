@@ -1,7 +1,7 @@
-[![Build Status](https://travis-ci.org/pmonks/bot-unfurl.svg?branch=master)](https://travis-ci.org/pmonks/bot-unfurl)
-[![Open Issues](https://img.shields.io/github/issues/pmonks/bot-unfurl.svg)](https://github.com/pmonks/bot-unfurl/issues)
-[![License](https://img.shields.io/github/license/pmonks/bot-unfurl.svg)](https://github.com/pmonks/bot-unfurl/blob/master/LICENSE)
-[![Dependencies Status](http://jarkeeper.com/pmonks/bot-unfurl/status.svg)](http://jarkeeper.com/pmonks/bot-unfurl)
+[![Build Status](https://travis-ci.org/symphonyoss/bot-unfurl.svg?branch=master)](https://travis-ci.org/symphonyoss/bot-unfurl)
+[![Open Issues](https://img.shields.io/github/issues/symphonyoss/bot-unfurl.svg)](https://github.com/symphonyoss/bot-unfurl/issues)
+[![License](https://img.shields.io/github/license/symphonyoss/bot-unfurl.svg)](https://github.com/symphonyoss/bot-unfurl/blob/master/LICENSE)
+[![Dependencies Status](http://jarkeeper.com/symphonyoss/bot-unfurl/status.svg)](http://jarkeeper.com/symphonyoss/bot-unfurl)
 [![Symphony Software Foundation - Incubating](https://cdn.rawgit.com/symphonyoss/contrib-toolbox/master/images/ssf-badge-incubating.svg)](https://symphonyoss.atlassian.net/wiki/display/FM/Project+lifecycle)
 
 # unfurl bot
