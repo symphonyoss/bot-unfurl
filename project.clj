@@ -39,8 +39,9 @@
                       [com.fasterxml.jackson.dataformat/jackson-dataformat-yaml "2.8.4"]
                       [joda-time/joda-time                                      "2.9.5"]
                     ]
-  :profiles         {:dev {:dependencies [[midje      "1.8.3"]]
-                           :plugins      [[lein-midje "3.2.1"][lein-licenses "0.2.1"]]}   ; Don't remove this or travis-ci will assplode!
+  :profiles         {:dev {:dependencies [[midje         "1.8.3"]]
+                           :plugins      [[lein-midje    "3.2.1"]      ; Don't remove these or travis-ci will assplode!
+                                          [lein-licenses "0.2.1"]]}
                      :uberjar {:aot :all}}
   :main             bot-unfurl.main
   )
