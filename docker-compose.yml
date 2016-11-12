@@ -9,4 +9,4 @@ services:
    restart: always
    build: .
    volumes:
-    - .:/etc/opt/bot-unfurl:ro
+    - ./etc:/etc/opt/bot-unfurl:ro

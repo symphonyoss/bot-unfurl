@@ -49,7 +49,7 @@
   [description ^com.linkedin.urls.Url url]
   (let [original-text (.getOriginalUrl url)
         corrected-url (str url)]
-    (s/replace description original-text (str "<a href=\"" corrected-url "\"/>"))))
+    (s/replace description original-text (str " <a href=\"" corrected-url "\"/>"))))
 
 (defn- hyperlink-urls
   "Hyperlinks all URLs in the given description, using MessageML format <a> tags."
@@ -68,9 +68,9 @@
       (s/replace
         (hyperlink-urls description)
         #"\#([^\s]+)"
-        "<hash tag=\"$1\"/>")
+        " <hash tag=\"$1\"/>")
       #"\$([^\s]+)"
-      "<cash tag=\"$1\"/>")))
+      " <cash tag=\"$1\"/>")))
 
 (defn- message-ml-escape
   "Escapes the given string for MessageML."

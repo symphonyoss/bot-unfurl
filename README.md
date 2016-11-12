@@ -39,7 +39,7 @@ Its structure as is follows:
     :user-cert        ["<path to bot user's certificate>" "<password of bot user's certificate>"]
     :user-email       "<bot user's email address>"
   }
-  :url-blacklist ["<url prefix>" "<another url prefix>" "http://www.microsoft.com/" ...]
+  :url-blacklist ["<url prefix>" "<another url prefix>" "http://www.microsoft.com/" ...]   ; Optional
   :http-proxy ["<proxy-host>" proxy-port]   ; Optional - only needed if you use an HTTP proxy
 }
 
@@ -55,6 +55,7 @@ other system components.
 Note: the HTTP proxy is only used for requests to the URLs that are being unfurled.  Use of an
 HTTP proxy to make calls to Symphony are [not yet supported by clj-symphony](https://github.com/symphonyoss/clj-symphony/issues/1).
 
+[A sample `config.edn` file is provided in the `etc` directory.](https://github.com/symphonyoss/bot-unfurl/blob/master/etc/config.edn.sample)
 
 ## Usage
 
@@ -87,8 +88,10 @@ Where `/path/to/config/directory` should be replaced with the fully qualified pa
 _on the Docker host_.  This configuration directory must contain:
 
  1. the service account certificate and truststore that the bot should use
- 2. a `config.edn` file (in the format described above), that points to the certificates using `/etc/opt/bot-unfurl` as the base path (that's where the configuration folder is mounted within the container)
+ 2. a `config.edn` file (in the format described above), that points to the certificates using `/etc/opt/bot-unfurl` as the base path (that's where the configuration folder is mounted _within_ the container)
  3. a log4j v1.x configuration file (either `log4j.xml` or `log4j.properties`) - technically this is optional but the bot will generate a lot of logging output without it.  It is recommended that the log4j files be written to the console (STDOUT), so that docker's `logs` command can be utilised.
+
+[A sample `log4j.xml` file is provided in the `etc` directory.](https://github.com/symphonyoss/bot-unfurl/blob/master/etc/log4j.xml.sample)
 
 You can also use Docker Compose, by running:
 
@@ -96,7 +99,7 @@ You can also use Docker Compose, by running:
 $ docker-compose up -d
 ```
 
-This assumes that the current directory contains the certificate, truststore, `config.edn` file, and log4j configuration file, as described above.
+This assumes that the `etc` directory contains the certificate, truststore, `config.edn` file, and log4j configuration file, as described above.
 
 ## Developer Information
 
