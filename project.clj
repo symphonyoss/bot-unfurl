@@ -36,7 +36,7 @@
                       ; The following dependencies are inherited but have conflicting versions, so we "pin" the versions here
                       [com.fasterxml.jackson.core/jackson-databind              "2.8.5"]
                       [com.fasterxml.jackson.core/jackson-annotations           "2.8.5"]
-                      [com.fasterxml.jackson.dataformat/jackson-dataformat-yaml "2.8.4"]
+                      [com.fasterxml.jackson.dataformat/jackson-dataformat-yaml "2.8.5"]
                       [joda-time/joda-time                                      "2.9.6"]
                     ]
   :profiles         {:dev {:dependencies [[midje         "1.8.3"]]
