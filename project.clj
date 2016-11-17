@@ -29,7 +29,7 @@
                       [mount                               "0.1.10"]
                       [org.clojure/tools.cli               "0.3.5"]
                       [org.clojure/tools.logging           "0.3.1"]
-                      [com.github.linkedin/URL-Detector    "2a0fede05e" :exclusions [org.apache.commons/commons-lang3]]  ; Via jitpack for now, until https://github.com/linkedin/URL-Detector/issues/2 is fixed
+                      [com.linkedin.urls/url-detector      "0.1.17"     :exclusions [org.apache.commons/commons-lang3]]
                       [org.clojars.pmonks/unfurl           "0.2.0"      :exclusions [org.clojure/clojure]]
                       [com.github.symphonyoss/clj-symphony "e2b970a975" :exclusions [org.clojure/clojure]]  ; Via jitpack for now
 
