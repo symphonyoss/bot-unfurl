@@ -29,7 +29,7 @@
                       [mount                               "0.1.10"]
                       [org.clojure/tools.cli               "0.3.5"]
                       [org.clojure/tools.logging           "0.3.1"]
-                      [com.linkedin.urls/url-detector      "0.1.17"     :exclusions [org.apache.commons/commons-lang3]]
+                      [com.linkedin.urls/url-detector      "0.1.17"     :exclusions [org.apache.commons/commons-lang3 org.beanshell/bsh]]
                       [org.clojars.pmonks/unfurl           "0.2.0"      :exclusions [org.clojure/clojure]]
                       [com.github.symphonyoss/clj-symphony "e2b970a975" :exclusions [org.clojure/clojure]]  ; Via jitpack for now
 
