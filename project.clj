@@ -22,6 +22,7 @@
   :min-lein-version "2.5.0"
   :repositories     [["sonatype-snapshots" {:url "https://oss.sonatype.org/content/groups/public" :snapshots true}]
                      ["jitpack"            {:url "https://jitpack.io"}]]
+  :plugins          [[lein-licenses "0.2.1"]]
   :dependencies     [
                       [org.clojure/clojure                 "1.8.0"]
                       [org.apache.commons/commons-lang3    "3.5"]
