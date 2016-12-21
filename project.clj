@@ -27,7 +27,7 @@
                       [org.clojure/clojure                 "1.8.0"]
                       [org.apache.commons/commons-lang3    "3.5"]
                       [cprop                               "0.1.9"]
-                      [mount                               "0.1.10"]
+                      [mount                               "0.1.11"]
                       [org.clojure/tools.cli               "0.3.5"]
                       [org.clojure/tools.logging           "0.3.1"]
                       [com.linkedin.urls/url-detector      "0.1.17"     :exclusions [org.apache.commons/commons-lang3 org.beanshell/bsh]]
@@ -38,7 +38,7 @@
                       [com.fasterxml.jackson.core/jackson-databind              "2.8.5"]
                       [com.fasterxml.jackson.core/jackson-annotations           "2.8.5"]
                       [com.fasterxml.jackson.dataformat/jackson-dataformat-yaml "2.8.5"]
-                      [joda-time/joda-time                                      "2.9.6"]
+                      [joda-time/joda-time                                      "2.9.7"]
                     ]
   :profiles         {:dev {:dependencies [[midje         "1.8.3"]]
                            :plugins      [[lein-midje    "3.2.1"]      ; Don't remove these or travis-ci will assplode!
