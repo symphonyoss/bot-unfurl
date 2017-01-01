@@ -33,7 +33,8 @@
                       [com.linkedin.urls/url-detector      "0.1.17"     :exclusions [org.apache.commons/commons-lang3 org.beanshell/bsh]]
                       [org.clojars.pmonks/unfurl           "0.2.0"      :exclusions [org.clojure/clojure]]
                       [com.github.symphonyoss/clj-symphony "e2b970a975" :exclusions [org.clojure/clojure]]  ; Via jitpack for now
-
+                    ]
+  :managed-dependencies [
                       ; The following dependencies are inherited but have conflicting versions, so we "pin" the versions here
                       [com.fasterxml.jackson.core/jackson-databind              "2.8.5"]
                       [com.fasterxml.jackson.core/jackson-annotations           "2.8.5"]
