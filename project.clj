@@ -24,15 +24,15 @@
                      ["jitpack"            {:url "https://jitpack.io"}]]
   :plugins          [[lein-licenses "0.2.1"]]
   :dependencies     [
-                      [org.clojure/clojure                 "1.8.0"]
-                      [org.apache.commons/commons-lang3    "3.5"]
-                      [cprop                               "0.1.9"]
-                      [mount                               "0.1.11"]
-                      [org.clojure/tools.cli               "0.3.5"]
-                      [org.clojure/tools.logging           "0.3.1"]
-                      [com.linkedin.urls/url-detector      "0.1.17"     :exclusions [org.apache.commons/commons-lang3 org.beanshell/bsh]]
-                      [org.clojars.pmonks/unfurl           "0.2.0"      :exclusions [org.clojure/clojure]]
-                      [com.github.symphonyoss/clj-symphony "e2b970a975" :exclusions [org.clojure/clojure]]  ; Via jitpack for now
+                      [org.clojure/clojure              "1.8.0"]
+                      [org.apache.commons/commons-lang3 "3.5"]
+                      [cprop                            "0.1.9"]
+                      [mount                            "0.1.11"]
+                      [org.clojure/tools.cli            "0.3.5"]
+                      [org.clojure/tools.logging        "0.3.1"]
+                      [com.linkedin.urls/url-detector   "0.1.17"         :exclusions [org.apache.commons/commons-lang3 org.beanshell/bsh]]
+                      [org.clojars.pmonks/unfurl        "0.2.0"          :exclusions [org.clojure/clojure]]
+                      [org.symphonyoss/clj-symphony     "0.1.0-SNAPSHOT" :exclusions [org.clojure/clojure]]
                     ]
   :managed-dependencies [
                       ; The following dependencies are inherited but have conflicting versions, so we "pin" the versions here
