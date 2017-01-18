@@ -26,7 +26,7 @@
   :dependencies     [
                       [org.clojure/clojure              "1.8.0"]
                       [org.apache.commons/commons-lang3 "3.5"]
-                      [cprop                            "0.1.9"]
+                      [cprop                            "0.1.10"]
                       [mount                            "0.1.11"]
                       [org.clojure/tools.cli            "0.3.5"]
                       [org.clojure/tools.logging        "0.3.1"]
