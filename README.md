@@ -1,7 +1,8 @@
-[![Build Status](https://travis-ci.org/pmonks/bot-unfurl.svg?branch=master)](https://travis-ci.org/pmonks/bot-unfurl)
-[![Open Issues](https://img.shields.io/github/issues/pmonks/bot-unfurl.svg)](https://github.com/pmonks/bot-unfurl/issues)
-[![License](https://img.shields.io/github/license/pmonks/bot-unfurl.svg)](https://github.com/pmonks/bot-unfurl/blob/master/LICENSE)
-[![Dependencies Status](http://jarkeeper.com/pmonks/bot-unfurl/status.svg)](http://jarkeeper.com/pmonks/bot-unfurl)
+[![Build Status](https://travis-ci.org/symphonyoss/bot-unfurl.svg?branch=master)](https://travis-ci.org/symphonyoss/bot-unfurl)
+[![Open Issues](https://img.shields.io/github/issues/symphonyoss/bot-unfurl.svg)](https://github.com/symphonyoss/bot-unfurl/issues)
+[![License](https://img.shields.io/github/license/symphonyoss/bot-unfurl.svg)](https://github.com/symphonyoss/bot-unfurl/blob/master/LICENSE)
+[![Dependencies Status](http://jarkeeper.com/symphonyoss/bot-unfurl/status.svg)](http://jarkeeper.com/symphonyoss/bot-unfurl)
+[![Symphony Software Foundation - Incubating](https://cdn.rawgit.com/symphonyoss/contrib-toolbox/master/images/ssf-badge-incubating.svg)](https://symphonyoss.atlassian.net/wiki/display/FM/Project+lifecycle)
 
 # unfurl bot
 
@@ -38,7 +39,7 @@ Its structure as is follows:
     :user-cert        ["<path to bot user's certificate>" "<password of bot user's certificate>"]
     :user-email       "<bot user's email address>"
   }
-  :url-blacklist ["<url prefix>" "<another url prefix>" "http://www.microsoft.com/" ...]
+  :url-blacklist ["<url prefix>" "<another url prefix>" "http://www.microsoft.com/" ...]   ; Optional
   :http-proxy ["<proxy-host>" proxy-port]   ; Optional - only needed if you use an HTTP proxy
 }
 
@@ -50,6 +51,11 @@ and have the same semantics as what's described there.  Typically `:pod-id` can 
 you're on a fully-hosted Symphony "business tier" subscription - for enterprise deployments the
 agent (at least) will typically reside on-premises, with a completely different hostname than the
 other system components.
+
+Note: the HTTP proxy is only used for requests to the URLs that are being unfurled.  Use of an
+HTTP proxy to make calls to Symphony are [not yet supported by clj-symphony](https://github.com/symphonyoss/clj-symphony/issues/1).
+
+[A sample `config.edn` file is provided in the `etc` directory.](https://github.com/symphonyoss/bot-unfurl/blob/master/etc/config.edn.sample)
 
 ## Usage
 
@@ -82,24 +88,80 @@ Where `/path/to/config/directory` should be replaced with the fully qualified pa
 _on the Docker host_.  This configuration directory must contain:
 
  1. the service account certificate and truststore that the bot should use
- 2. a `config.edn` file (in the format described above), that points to the certificates using `/etc/opt/bot-unfurl` as the base path (that's where the configuration folder is mounted within the container)
+ 2. a `config.edn` file (in the format described above), that points to the certificates using `/etc/opt/bot-unfurl` as the base path (that's where the configuration folder is mounted _within_ the container)
  3. a log4j v1.x configuration file (either `log4j.xml` or `log4j.properties`) - technically this is optional but the bot will generate a lot of logging output without it.  It is recommended that the log4j files be written to the console (STDOUT), so that docker's `logs` command can be utilised.
 
-Instead of `docker run`, you can use Docker Compose, by running:
+[A sample `log4j.xml` file is provided in the `etc` directory.](https://github.com/symphonyoss/bot-unfurl/blob/master/etc/log4j.xml.sample)
+
+You can also use Docker Compose, by running:
 
 ```
-which docker-compose
-docker-compose up -d
+$ docker-compose up -d
 ```
+
+This assumes that the `etc` directory contains the certificate, truststore, `config.edn` file, and log4j configuration file, as described above.
 
 ## Developer Information
 
-[GitHub project](https://github.com/pmonks/bot-unfurl)
+[GitHub project](https://github.com/symphonyoss/bot-unfurl)
 
-[Bug Tracker](https://github.com/pmonks/bot-unfurl/issues)
+[Bug Tracker](https://github.com/symphonyoss/bot-unfurl/issues)
 
 ## License
 
 Copyright © 2016 Symphony Software Foundation
 
 Distributed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
+
+### 3rd Party Licenses
+
+To see the full list of licenses of all third party libraries used by this project, please run:
+
+```shell
+$ lein licenses :csv | cut -d , -f3 | sort | uniq
+```
+
+To see the dependencies and licenses in detail, run:
+
+```shell
+$ lein licenses
+```
+
+This project depends on the following libraries, which are licensed under Common Development and Distribution License 1.0, 1.1 or 2.0.  For details, please see each individuals library's page.
+
+* [javax.annotation/javax.annotation-api](https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api)
+* [javax.ws.rs/javax.ws.rs-api](https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api)
+* [org.glassfish.hk2.external/aopalliance-repackaged](https://mvnrepository.com/artifact/org.glassfish.hk2.external/aopalliance-repackaged)
+* [org.glassfish.hk2.external/javax.inject](https://mvnrepository.com/artifact/org.glassfish.hk2.external/javax.inject)
+* [org.glassfish.hk2/hk2-api](https://mvnrepository.com/artifact/org.glassfish.hk2/hk2-api)
+* [org.glassfish.hk2/hk2-locator](https://mvnrepository.com/artifact/org.glassfish.hk2/hk2-locator)
+* [org.glassfish.hk2/hk2-utils](https://mvnrepository.com/artifact/org.glassfish.hk2/hk2-utils)
+* [org.glassfish.hk2/osgi-resource-locator](https://mvnrepository.com/artifact/org.glassfish.hk2/osgi-resource-locator)
+* [org.glassfish.jersey.bundles.repackaged/jersey-guava](https://mvnrepository.com/artifact/org.glassfish.jersey.bundles.repackaged/jersey-guava)
+* [org.glassfish.jersey.core/jersey-client](https://mvnrepository.com/artifact/org.glassfish.jersey.core/jersey-client)
+* [org.glassfish.jersey.core/jersey-common](https://mvnrepository.com/artifact/org.glassfish.jersey.core/jersey-common)
+* [org.glassfish.jersey.ext/jersey-entity-filtering](https://mvnrepository.com/artifact/org.glassfish.jersey.ext/jersey-entity-filtering)
+* [org.glassfish.jersey.media/jersey-media-json-jackson](https://mvnrepository.com/artifact/org.glassfish.jersey.media/jersey-media-json-jackson)
+* [org.glassfish.jersey.media/jersey-media-multipart](https://mvnrepository.com/artifact/org.glassfish.jersey.media/jersey-media-multipart)
+* [org.jvnet.mimepull/mimepull](https://mvnrepository.com/artifact/org.jvnet.mimepull/mimepull)
+
+
+This project depends on the following libraries, which are licensed under Eclipse Public License 1.0.  For details, please see each individuals library's page.
+
+* [clojure-complete](https://github.com/ninjudd/clojure-complete)
+* [colorize](https://github.com/ibdknox/colorize)
+* [environ](https://github.com/weavejester/environ)
+* [flare](https://github.com/andersfurseth/flare)
+* [junit](http://junit.org/junit4/)
+* [ordered](https://github.com/amalloy/ordered)
+* [org.clojure/clojure](https://github.com/clojure/clojure)
+* [org.clojure/core.unify](https://github.com/clojure/core.unify)
+* [org.clojure/math.combinatorics](https://github.com/clojure/math.combinatorics)
+* [org.clojure/tools.macro](https://github.com/clojure/tools.macro)
+* [org.clojure/tools.namespace](https://github.com/clojure/tools.namespace)
+* [org.clojure/tools.nrepl](https://github.com/clojure/tools.nrepl)
+* [org.tcrawley/dynapath](https://github.com/tobias/dynapath)
+* [slingshot](https://github.com/scgilardi/slingshot)
+* [swiss-arrows](https://github.com/rplevy/swiss-arrows)
+
+

@@ -22,25 +22,28 @@
   :min-lein-version "2.5.0"
   :repositories     [["sonatype-snapshots" {:url "https://oss.sonatype.org/content/groups/public" :snapshots true}]
                      ["jitpack"            {:url "https://jitpack.io"}]]
+  :plugins          [[lein-licenses "0.2.1"]]
   :dependencies     [
-                      [org.clojure/clojure                 "1.8.0"]
-                      [org.apache.commons/commons-lang3    "3.4"]
-                      [cprop                               "0.1.9"]
-                      [mount                               "0.1.10"]
-                      [org.clojure/tools.cli               "0.3.5"]
-                      [org.clojure/tools.logging           "0.3.1"]
-                      [com.github.linkedin/URL-Detector    "2a0fede05e" :exclusions [org.apache.commons/commons-lang3]]  ; Via jitpack for now, until https://github.com/linkedin/URL-Detector/issues/2 is fixed
-                      [org.clojars.pmonks/unfurl           "0.1.0"      :exclusions [org.clojure/clojure]]
-                      [com.github.symphonyoss/clj-symphony "efcdca8dea" :exclusions [org.clojure/clojure]]  ; Via jitpack for now
-
-                      ; The following dependencies are inherited but have conflicting versions, so we "pin" the versions here
-                      [com.fasterxml.jackson.core/jackson-databind              "2.8.4"]
-                      [com.fasterxml.jackson.core/jackson-annotations           "2.8.4"]
-                      [com.fasterxml.jackson.dataformat/jackson-dataformat-yaml "2.8.4"]
-                      [joda-time/joda-time                                      "2.9.4"]
+                      [org.clojure/clojure              "1.8.0"]
+                      [org.apache.commons/commons-lang3 "3.5"]
+                      [cprop                            "0.1.10"]
+                      [mount                            "0.1.11"]
+                      [org.clojure/tools.cli            "0.3.5"]
+                      [org.clojure/tools.logging        "0.3.1"]
+                      [com.linkedin.urls/url-detector   "0.1.17"         :exclusions [org.apache.commons/commons-lang3 org.beanshell/bsh]]
+                      [org.clojars.pmonks/unfurl        "0.2.0"          :exclusions [org.clojure/clojure]]
+                      [org.symphonyoss/clj-symphony     "0.1.0-SNAPSHOT" :exclusions [org.clojure/clojure]]
                     ]
-  :profiles         {:dev {:dependencies [[midje      "1.8.3"]]
-                           :plugins      [[lein-midje "3.2.1"][lein-licenses "0.2.1"]]}   ; Don't remove this or travis-ci will assplode!
+  :managed-dependencies [
+                      ; The following dependencies are inherited but have conflicting versions, so we "pin" the versions here
+                      [com.fasterxml.jackson.core/jackson-databind              "2.8.5"]
+                      [com.fasterxml.jackson.core/jackson-annotations           "2.8.5"]
+                      [com.fasterxml.jackson.dataformat/jackson-dataformat-yaml "2.8.5"]
+                      [joda-time/joda-time                                      "2.9.7"]
+                    ]
+  :profiles         {:dev {:dependencies [[midje         "1.8.3"]]
+                           :plugins      [[lein-midje    "3.2.1"]      ; Don't remove these or travis-ci will assplode!
+                                          [lein-licenses "0.2.1"]]}
                      :uberjar {:aot :all}}
   :main             bot-unfurl.main
   )
