@@ -17,4 +17,5 @@ pom.xml.asc
 /etc/certs/
 /etc/log4j.xml
 /etc/log4j.properties
-certs
+certs/
+uberjar/
