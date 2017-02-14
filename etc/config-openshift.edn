@@ -1,7 +1,7 @@
 {
-  ; :symphony-coords {
+  :symphony-coords {
   ;   :pod-id      "acme"
-OR
+  ; OR
     :session-auth-url (System/getenv "SESSIONAUTH_URL")
     :key-auth-url     (System/getenv "KEYAUTH_URL")
     :agent-api-url    (System/getenv "AGENT_URL")
