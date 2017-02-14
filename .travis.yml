@@ -6,7 +6,8 @@ jdk:
 sudo: false
 
 env:
- - OC_BINARY_FOLDER=./target/uberjar
- - OC_BUILD_CONFIG_NAME=botunfurl
+  global:
+    - OC_BINARY_FOLDER=./target/uberjar
+    - OC_BUILD_CONFIG_NAME=botunfurl
 
 after_success: ./build-uberjar.sh ; curl -s https://raw.githubusercontent.com/symphonyoss/contrib-toolbox/master/scripts/oc-deploy.sh | bash
