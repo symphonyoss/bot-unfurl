@@ -25,7 +25,9 @@
 (def ^:private messageml-link-regex #"<a\s+href\s*=\s*\"([^\"]+)\"\s*/>")
 
 (defstate session
-          :start (sy/connect (:symphony-coords cfg/config)))
+          :start (do
+                   (println (:symphony-coords cfg/config))
+                   (sy/connect (:symphony-coords cfg/config))))
 
 (defstate url-blacklist
           :start (:url-blacklist cfg/config))

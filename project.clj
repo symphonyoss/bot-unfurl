@@ -26,7 +26,7 @@
   :dependencies     [
                       [org.clojure/clojure              "1.8.0"]
                       [org.apache.commons/commons-lang3 "3.5"]
-                      [cprop                            "0.1.10"]
+                      [aero                             "1.0.3"]
                       [mount                            "0.1.11"]
                       [org.clojure/tools.cli            "0.3.5"]
                       [org.clojure/tools.logging        "0.3.1"]
@@ -36,6 +36,7 @@
                     ]
   :managed-dependencies [
                       ; The following dependencies are inherited but have conflicting versions, so we "pin" the versions here
+                      [com.fasterxml.jackson.core/jackson-core                  "2.8.5"]
                       [com.fasterxml.jackson.core/jackson-databind              "2.8.5"]
                       [com.fasterxml.jackson.core/jackson-annotations           "2.8.5"]
                       [com.fasterxml.jackson.dataformat/jackson-dataformat-yaml "2.8.5"]
