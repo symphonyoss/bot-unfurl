@@ -19,3 +19,4 @@ pom.xml.asc
 /etc/log4j.properties
 certs/
 uberjar/
+env.sh

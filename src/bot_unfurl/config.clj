@@ -16,9 +16,10 @@
 
 (ns bot-unfurl.config
   (:require [cprop.core :as cp]
-            [mount.core :as mnt :refer [defstate]]))
+            [mount.core :as mnt :refer [defstate]]
+            [aero.core :refer (read-config)]))
 
 (defstate config
           :start (if-let [config-file (:config-file (mnt/args))]
-                   (cp/load-config :file config-file)
+                   (read-config config-file)
                    (cp/load-config)))

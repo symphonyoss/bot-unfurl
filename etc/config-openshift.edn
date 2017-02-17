@@ -1,18 +1,15 @@
 {
   :symphony-coords {
-  ;   :pod-id      "acme"
-  ; OR
-    :session-auth-url (System/getenv "SESSIONAUTH_URL")
-    :key-auth-url     (System/getenv "KEYAUTH_URL")
-    :agent-api-url    (System/getenv "AGENT_URL")
-    :pod-api-url      (System/getenv "POD_URL")
+    :session-auth-url #env SESSIONAUTH_URL
+    :key-auth-url     #env KEYAUTH_URL
+    :agent-api-url    #env AGENT_URL
+    :pod-api-url      #env POD_URL
 
-    :trust-store [(System/getenv "TRUSTSTORE_FILE") (System/getenv "TRUSTSTORE_PASSWORD")]
-    :user-cert   [(System/getenv "BOT_USER_CERT_FILE")    (System/getenv "BOT_USER_CERT_PASSWORD")]
-    :user-email  (System/getenv "BOT_USER_EMAIL")
+    :trust-store [#env TRUSTSTORE_FILE #env TRUSTSTORE_PASSWORD]
+    :user-cert   [#env BOT_USER_CERT_FILE #env BOT_USER_CERT_PASSWORD]
+
+    :user-email  #env BOT_USER_EMAIL
   }
 
   :url-blacklist ["https://drive.google.com/" "https://docs.google.com/"]
-
-;  :http-proxy ["proxy.acme.com" 80]
 }
