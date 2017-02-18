@@ -37,6 +37,7 @@
                     ]
   :managed-dependencies [
                       ; The following dependencies are inherited but have conflicting versions, so we "pin" the versions here
+                      [com.fasterxml.jackson.core/jackson-core                  "2.8.5"]
                       [com.fasterxml.jackson.core/jackson-databind              "2.8.5"]
                       [com.fasterxml.jackson.core/jackson-annotations           "2.8.5"]
                       [com.fasterxml.jackson.dataformat/jackson-dataformat-yaml "2.8.5"]
