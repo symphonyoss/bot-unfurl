@@ -27,7 +27,6 @@
                       [org.clojure/clojure              "1.8.0"]
                       [org.apache.commons/commons-lang3 "3.5"]
                       [aero                             "1.0.3"]
-                      [cprop                            "0.1.10"]
                       [mount                            "0.1.11"]
                       [org.clojure/tools.cli            "0.3.5"]
                       [org.clojure/tools.logging        "0.3.1"]

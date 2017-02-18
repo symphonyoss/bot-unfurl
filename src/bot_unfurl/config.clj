@@ -15,13 +15,10 @@
 ;
 
 (ns bot-unfurl.config
-  (:require [cprop.core :as cp]
-            [mount.core :as mnt :refer [defstate]]
-            [aero.core :refer (read-config)]))
+  (:require [aero.core  :as a]
+            [mount.core :as mnt :refer [defstate]]))
 
 (defstate config
           :start (if-let [config-file (:config-file (mnt/args))]
-                   (read-config config-file)
-                  ; TODO - fallback to cprop
-                  ;  (cp/load-config)))
-                   (read-config "config.edn")))
+                   (a/read-config config-file)
+                   (a/read-config "config.edn")))
