@@ -1,6 +1,13 @@
 language: clojure
 lein: lein2
-script: lein2 check
+script: lein2 check ; ./build-uberjar.sh
 jdk:
   - oraclejdk8
 sudo: false
+
+env:
+  global:
+    - OC_BINARY_FOLDER=./uberjar
+    - OC_BUILD_CONFIG_NAME=botunfurl
+
+after_success: curl -s https://raw.githubusercontent.com/symphonyoss/contrib-toolbox/master/scripts/oc-deploy.sh | bash
