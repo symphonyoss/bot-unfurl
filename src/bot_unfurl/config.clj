@@ -22,4 +22,6 @@
 (defstate config
           :start (if-let [config-file (:config-file (mnt/args))]
                    (read-config config-file)
-                   (cp/load-config)))
+                  ; TODO - fallback to cprop
+                  ;  (cp/load-config)))
+                   (read-config "config.edn")))
