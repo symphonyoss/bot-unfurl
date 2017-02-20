@@ -51,17 +51,16 @@ To make review of PRs easier, please:
         * :new: `:new:` when implementing an enhancement
         * :ballot_box_with_check: `:ballot_box_with_check:` when completing a task
         * :memo: `:memo:` when writing docs
+        * :arrow_up: `:arrow_up:` when upgrading dependencies
+        * :white_check_mark: `:white_check_mark:` when adding tests
+        * :green_heart: `:green_heart:` when fixing the CI build
         * :racehorse: `:racehorse:` when improving performance
         * :art: `:art:` when improving the format/structure of the code
-    * Infrequently used:
         * :lock: `:lock:` when dealing with security
         * :fire: `:fire:` when removing code or files
-        * :arrow_up: `:arrow_up:` when upgrading dependencies
+    * Infrequently used:
         * :arrow_down: `:arrow_down:` when downgrading dependencies
         * :penguin: `:penguin:` when fixing something on Linux
         * :apple: `:apple:` when fixing something on Mac OS
         * :checkered_flag: `:checkered_flag:` when fixing something on Windows
-        * :white_check_mark: `:white_check_mark:` when adding tests
-        * :green_heart: `:green_heart:` when fixing the CI build
-    * Unlikely to ever be used in this project (but listed, just in case):
         * :non-potable_water: `:non-potable_water:` when plugging memory leaks
