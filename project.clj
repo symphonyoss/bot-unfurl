@@ -45,6 +45,7 @@
   :profiles         {:dev {:dependencies [[midje         "1.8.3"]]
                            :plugins      [[lein-midje    "3.2.1"]      ; Don't remove these or travis-ci will assplode!
                                           [lein-licenses "0.2.1"]]}
-                     :uberjar {:aot :all}}
+                     :uberjar {:aot          :all
+                               :uberjar-name "bot-unfurl-standalone.jar"}}
   :main             bot-unfurl.main
   )

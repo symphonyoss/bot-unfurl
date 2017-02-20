@@ -1,3 +1,4 @@
+; Default configuration file - can be overridden via -c command line option
 {
   :symphony-coords {
     :session-auth-url #env SESSIONAUTH_URL
