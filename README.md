@@ -44,10 +44,6 @@ Its structure as is follows:
 }
 ```
 
-This file is loaded using the [aero](https://github.com/juxt/aero) library, which offers quite a bit
-of flexibility around how values are specified in the file (they can be read from environment variables,
-for example).  See the [aero documentation](https://github.com/juxt/aero/blob/master/README.md) for details.
-
 The `:symphony-coords` described above are passed directly to the
 [clj-symphony library's `connect` function](https://github.com/symphonyoss/clj-symphony#usage),
 and have the same semantics as what's described there.  Typically `:pod-id` can only be used if
@@ -59,6 +55,10 @@ Note: the HTTP proxy is only used for requests to the URLs that are being unfurl
 HTTP proxy to make calls to Symphony are [not yet supported by clj-symphony](https://github.com/symphonyoss/clj-symphony/issues/1).
 
 [A sample `config.edn` file is provided in the `etc` directory.](https://github.com/symphonyoss/bot-unfurl/blob/master/etc/config.edn.sample)
+
+Finally, this file is loaded using the [aero](https://github.com/juxt/aero) library, which offers quite a bit
+of flexibility around how values are specified in the file (they can be read from environment variables,
+for example).  See the [aero documentation](https://github.com/juxt/aero/blob/master/README.md) for details.
 
 ## Usage
 
