@@ -42,8 +42,11 @@ Its structure as is follows:
   :url-blacklist ["<url prefix>" "<another url prefix>" "http://www.microsoft.com/" ...]   ; Optional
   :http-proxy ["<proxy-host>" proxy-port]   ; Optional - only needed if you use an HTTP proxy
 }
-
 ```
+
+This file is loaded using the [aero](https://github.com/juxt/aero) library, which offers quite a bit
+of flexibility around how values are specified in the file (they can be read from environment variables,
+for example).  See the [aero documentation](https://github.com/juxt/aero/blob/master/README.md) for details.
 
 The `:symphony-coords` described above are passed directly to the
 [clj-symphony library's `connect` function](https://github.com/symphonyoss/clj-symphony#usage),
