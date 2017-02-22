@@ -132,7 +132,7 @@ To see the dependencies and licenses in detail, run:
 $ lein licenses
 ```
 
-This project depends on the following libraries, which are licensed under Common Development and Distribution License 1.0, 1.1 or 2.0.  For details, please see each individuals library's page.
+This project depends on the following libraries, which are licensed under Common Development and Distribution License 1.0, 1.1 or 2.0.  For details, please see each individual library's page.
 
 * [javax.annotation/javax.annotation-api](https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api)
 * [javax.ws.rs/javax.ws.rs-api](https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api)
@@ -151,7 +151,7 @@ This project depends on the following libraries, which are licensed under Common
 * [org.jvnet.mimepull/mimepull](https://mvnrepository.com/artifact/org.jvnet.mimepull/mimepull)
 
 
-This project depends on the following libraries, which are licensed under Eclipse Public License 1.0.  For details, please see each individuals library's page.
+This project depends on the following libraries, which are licensed under Eclipse Public License 1.0.  For details, please see each individual library's page.
 
 * [clojure-complete](https://github.com/ninjudd/clojure-complete)
 * [colorize](https://github.com/ibdknox/colorize)
