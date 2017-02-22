@@ -1,4 +1,6 @@
 ;
+; SPDX-License-Identifier: Apache-2.0
+;
 ; Copyright © 2016, 2017 Symphony Software Foundation
 ;
 ; Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,7 +32,7 @@
                       [mount                            "0.1.11"]
                       [org.clojure/tools.cli            "0.3.5"]
                       [org.clojure/tools.logging        "0.3.1"]
-                      [com.linkedin.urls/url-detector   "0.1.17"         :exclusions [org.apache.commons/commons-lang3 org.beanshell/bsh]]
+                      [com.linkedin.urls/url-detector   "0.1.17"         :exclusions [org.apache.commons/commons-lang3 org.beanshell/bsh junit org.yaml/snakeyaml]]
                       [org.clojars.pmonks/unfurl        "0.2.0"          :exclusions [org.clojure/clojure]]
                       [org.symphonyoss/clj-symphony     "0.1.0-SNAPSHOT" :exclusions [org.clojure/clojure]]
                     ]
@@ -41,6 +43,7 @@
                       [com.fasterxml.jackson.core/jackson-annotations           "2.8.5"]
                       [com.fasterxml.jackson.dataformat/jackson-dataformat-yaml "2.8.5"]
                       [joda-time/joda-time                                      "2.9.7"]
+                      [org.hamcrest/hamcrest-core                               "1.3"]
                     ]
   :profiles         {:dev {:dependencies [[midje         "1.8.3"]]
                            :plugins      [[lein-midje    "3.2.1"]      ; Don't remove these or travis-ci will assplode!

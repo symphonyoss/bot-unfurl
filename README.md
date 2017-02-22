@@ -116,6 +116,8 @@ Copyright © 2016, 2017 Symphony Software Foundation
 
 Distributed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
 
+SPDX-License-Identifier: Apache-2.0
+
 ### 3rd Party Licenses
 
 To see the full list of licenses of all third party libraries used by this project, please run:
