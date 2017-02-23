@@ -10,6 +10,13 @@ A small [Symphony](http://www.symphony.com/) bot that attempts to
 [unfurl](https://medium.com/slack-developer-blog/everything-you-ever-wanted-to-know-about-unfurling-but-were-afraid-to-ask-or-how-to-make-your-e64b4bb9254)
 URLs posted to any chat or room the bot is invited to.
 
+"Unfurling" involves reading a variety of metadata from the given URL (title, server-preferred URL, description,
+preview image, etc.), formatting those elements into a human-readable message, and posting it back to the same chat.
+
+Here it is in action:
+
+![Bot Unfurl Example](bot-unfurl-example.png)
+
 ## Installation
 
 For now unfurl bot is available in source form only, so fire up your favourite git client and get cloning!
