@@ -48,7 +48,7 @@ Its structure as is follows:
     :user-email       "<bot user's email address>"
   }
   :url-blacklist ["<url prefix>" "<another url prefix>" "http://www.microsoft.com/" ...]   ; Optional
-  :http-proxy ["<proxy-host>" proxy-port]   ; Optional - only needed if you use an HTTP proxy
+  :http-proxy ["<proxy-host>" <proxy-port>]   ; Optional - only needed if you use an HTTP proxy
 }
 ```
 
