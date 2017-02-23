@@ -14,8 +14,9 @@ URLs posted to any chat or room the bot is invited to.
 preview image, etc.), formatting those elements into a human-readable message, and posting it back to the same chat.
 
 Here it is in action:
-
-![Bot Unfurl Example](bot-unfurl-example.png)
+<p align="center">
+  ![Bot Unfurl Example](bot-unfurl-example.png)
+</p>
 
 ## Installation
 
