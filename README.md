@@ -15,7 +15,7 @@ preview image, etc.), formatting those elements into a human-readable message, a
 
 Here it is in action:
 <p align="center">
-  <img alt="Unfurl bot example screenshot" src="https://raw.githubusercontent.com/symphonyoss/bot-unfurl/master/bot-unfurl-example.png"/>
+  <img width="500px" alt="Unfurl bot example screenshot" src="https://raw.githubusercontent.com/symphonyoss/bot-unfurl/master/bot-unfurl-example.png"/>
 </p>
 
 ## Installation
