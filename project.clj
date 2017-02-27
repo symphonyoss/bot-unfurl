@@ -19,8 +19,9 @@
 (defproject org.symphonyoss.symphony/bot-unfurl "0.1.0-SNAPSHOT"
   :description      "A bot that looks for URIs in messages and 'unfurls' them into a new message."
   :url              "https://github.com/pmonks/bot-unfurl"
-  :license          {:name "Apache License, Version 2.0"
-                     :url  "http://www.apache.org/licenses/LICENSE-2.0"}
+  :license          {:spdx-license-identifier "Apache-2.0"
+                     :name                    "Apache License, Version 2.0"
+                     :url                     "http://www.apache.org/licenses/LICENSE-2.0"}
   :min-lein-version "2.5.0"
   :repositories     [["sonatype-snapshots" {:url "https://oss.sonatype.org/content/groups/public" :snapshots true}]
                      ["jitpack"            {:url "https://jitpack.io"}]]
