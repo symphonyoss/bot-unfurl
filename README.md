@@ -31,6 +31,7 @@ that Symphony needs in order for a bot to connect to a pod.
 
 It also allows one to optionally:
 
+* specify how [Jolokia](https://jolokia.org/) is configured
 * specify a blacklist of URL prefixes that the bot should never, under any circumstances, unfurl
 * provide the coordinates of an HTTP proxy
 
@@ -47,6 +48,12 @@ Its structure as is follows:
     :trust-store      ["<path to Java truststore>"        "<password of truststore>"]
     :user-cert        ["<path to bot user's certificate>" "<password of bot user's certificate>"]
     :user-email       "<bot user's email address>"
+  }
+  ; For details, see https://github.com/rhuss/jolokia/blob/master/agent/jvm/src/main/resources/default-jolokia-agent.properties
+  ; Note: All keys and values MUST be strings - this is a Jolokia requirement
+  :jolokia-config {
+    "host" "localhost"    ; The host / IP address for the Jolokia server to listen on
+    "port" "8778"         ; The port for the Jolokia server to bind to
   }
   :url-blacklist ["<url prefix>" "<another url prefix>" "http://www.microsoft.com/" ...]   ; Optional
   :http-proxy ["<proxy-host>" <proxy-port>]   ; Optional - only needed if you use an HTTP proxy

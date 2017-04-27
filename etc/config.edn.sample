@@ -15,9 +15,10 @@
   :url-blacklist ["https://drive.google.com/" "https://docs.google.com/"]
 
   ; For details, see https://github.com/rhuss/jolokia/blob/master/agent/jvm/src/main/resources/default-jolokia-agent.properties
+  ; Note: All keys and values MUST be strings - this is a Jolokia requirement
   :jolokia-config {
-    "host" "localhost"
-    "port" "8778"
+;    "host" "localhost"
+;    "port" "8778"
   }
 
 ;  :http-proxy ["proxy.acme.com" 80]
