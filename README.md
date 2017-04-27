@@ -65,7 +65,7 @@ you're on a fully-hosted Symphony "business tier" subscription - for enterprise 
 agent (at least) will typically reside on-premises, with a completely different hostname than the
 other system components.
 
-The ':jolokia-config` map is passed directly to Jolokia's [`JolokiaServerConfig` constructor](https://github.com/rhuss/jolokia/blob/master/agent/jvm/src/main/java/org/jolokia/jvmagent/JolokiaServerConfig.java#L92).
+The `:jolokia-config` map is passed directly to Jolokia's [`JolokiaServerConfig` constructor](https://github.com/rhuss/jolokia/blob/master/agent/jvm/src/main/java/org/jolokia/jvmagent/JolokiaServerConfig.java#L92).
 See the [default Jolokia property file](https://github.com/rhuss/jolokia/blob/master/agent/jvm/src/main/resources/default-jolokia-agent.properties)
 for a full list of the supported configuration options and their default values, and note that all
 keys and values in this map MUST be strings (this is a Jolokia requirement).
