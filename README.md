@@ -51,7 +51,7 @@ Its structure as is follows:
   }
   :jolokia-config {
     "host" "<jolokia-server-host>"
-    "port" "<jolokia-server-post-as-a-string>"
+    "port" "<jolokia-server-port-as-a-string>"
   }
   :url-blacklist ["<url prefix>" "<another url prefix>" "http://www.microsoft.com/" ...]   ; Optional
   :http-proxy ["<proxy-host>" <proxy-port>]   ; Optional - only needed if you use an HTTP proxy
