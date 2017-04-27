@@ -31,6 +31,8 @@
                       [mount                            "0.1.11"]
                       [org.clojure/tools.cli            "0.3.5"]
                       [org.clojure/tools.logging        "0.3.1"]
+                      [org.jolokia/jolokia-jvm          "1.3.6"]
+                      [org.jolokia/jolokia-jvm          "1.3.6" :classifier "agent"]
                       [com.linkedin.urls/url-detector   "0.1.17"         :exclusions [org.apache.commons/commons-lang3 org.beanshell/bsh junit org.yaml/snakeyaml]]
                       [org.clojars.pmonks/unfurl        "0.2.0"          :exclusions [org.clojure/clojure]]
                       [org.symphonyoss/clj-symphony     "0.1.0-SNAPSHOT" :exclusions [org.clojure/clojure]]

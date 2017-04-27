@@ -12,5 +12,11 @@
     :user-email  #env BOT_USER_EMAIL
   }
 
+  ; For details, see https://github.com/rhuss/jolokia/blob/master/agent/jvm/src/main/resources/default-jolokia-agent.properties
+  :jolokia-config {
+    "host" "localhost"
+    "port" "8778"
+  }
+
   :url-blacklist ["https://drive.google.com/" "https://docs.google.com/"]
 }

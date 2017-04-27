@@ -22,7 +22,8 @@
             [clojure.tools.logging :as log]
             [mount.core            :as mnt :refer [defstate]]
             [bot-unfurl.config     :as cfg]
-            [bot-unfurl.core       :as uf])
+            [bot-unfurl.core       :as uf]
+            [bot-unfurl.status     :as st])
   (:gen-class))
 
 (def ^:private cli-opts
