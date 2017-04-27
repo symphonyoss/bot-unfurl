@@ -49,11 +49,9 @@ Its structure as is follows:
     :user-cert        ["<path to bot user's certificate>" "<password of bot user's certificate>"]
     :user-email       "<bot user's email address>"
   }
-  ; For details, see https://github.com/rhuss/jolokia/blob/master/agent/jvm/src/main/resources/default-jolokia-agent.properties
-  ; Note: All keys and values MUST be strings - this is a Jolokia requirement
   :jolokia-config {
-    "host" "localhost"    ; The host / IP address for the Jolokia server to listen on
-    "port" "8778"         ; The port for the Jolokia server to bind to
+    "host" "<jolokia-server-host>"
+    "port" "<jolokia-server-post-as-a-string>"
   }
   :url-blacklist ["<url prefix>" "<another url prefix>" "http://www.microsoft.com/" ...]   ; Optional
   :http-proxy ["<proxy-host>" <proxy-port>]   ; Optional - only needed if you use an HTTP proxy
@@ -66,6 +64,11 @@ and have the same semantics as what's described there.  Typically `:pod-id` can 
 you're on a fully-hosted Symphony "business tier" subscription - for enterprise deployments the
 agent (at least) will typically reside on-premises, with a completely different hostname than the
 other system components.
+
+The ':jolokia-config` map is passed directly to Jolokia's [`JolokiaServerConfig` constructor](https://github.com/rhuss/jolokia/blob/master/agent/jvm/src/main/java/org/jolokia/jvmagent/JolokiaServerConfig.java#L92).
+See the [default Jolokia property file](https://github.com/rhuss/jolokia/blob/master/agent/jvm/src/main/resources/default-jolokia-agent.properties)
+for a full list of the supported configuration options and their default values, and note that all
+keys and values in this map MUST be strings (this is a Jolokia requirement).
 
 Note: the HTTP proxy is only used for requests to the URLs that are being unfurled.  Use of an
 HTTP proxy to make calls to Symphony are [not yet supported by clj-symphony](https://github.com/symphonyoss/clj-symphony/issues/1).
