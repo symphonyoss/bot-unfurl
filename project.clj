@@ -26,11 +26,11 @@
                      ["jitpack"            {:url "https://jitpack.io"}]]
   :dependencies     [
                       [org.clojure/clojure              "1.8.0"]
-                      [org.apache.commons/commons-lang3 "3.5"]
+                      [org.apache.commons/commons-lang3 "3.6"]
                       [aero                             "1.1.2"]
                       [mount                            "0.1.11"]
                       [org.clojure/tools.cli            "0.3.5"]
-                      [org.clojure/tools.logging        "0.3.1"]
+                      [org.clojure/tools.logging        "0.4.0"]
                       [org.jolokia/jolokia-jvm          "1.3.6"]
                       [org.jolokia/jolokia-jvm          "1.3.6" :classifier "agent"]
                       [com.linkedin.urls/url-detector   "0.1.17"         :exclusions [org.apache.commons/commons-lang3 org.beanshell/bsh junit org.yaml/snakeyaml]]
