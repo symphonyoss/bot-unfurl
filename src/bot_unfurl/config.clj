@@ -1,5 +1,6 @@
 ;
-; Copyright © 2016 Symphony Software Foundation
+; Copyright © 2016, 2017 Symphony Software Foundation
+; SPDX-License-Identifier: Apache-2.0
 ;
 ; Licensed under the Apache License, Version 2.0 (the "License");
 ; you may not use this file except in compliance with the License.
@@ -15,10 +16,11 @@
 ;
 
 (ns bot-unfurl.config
-  (:require [aero.core  :as a]
-            [mount.core :as mnt :refer [defstate]]))
+  (:require [clojure.java.io :as io]
+            [aero.core       :as a]
+            [mount.core      :as mnt :refer [defstate]]))
 
 (defstate config
           :start (if-let [config-file (:config-file (mnt/args))]
                    (a/read-config config-file)
-                   (a/read-config "config.edn")))
+                   (a/read-config (io/resource "config.edn"))))

@@ -1,5 +1,6 @@
 ;
-; Copyright © 2016 Symphony Software Foundation
+; Copyright © 2016, 2017 Symphony Software Foundation
+; SPDX-License-Identifier: Apache-2.0
 ;
 ; Licensed under the Apache License, Version 2.0 (the "License");
 ; you may not use this file except in compliance with the License.
@@ -21,7 +22,8 @@
             [clojure.tools.logging :as log]
             [mount.core            :as mnt :refer [defstate]]
             [bot-unfurl.config     :as cfg]
-            [bot-unfurl.core       :as uf])
+            [bot-unfurl.core       :as uf]
+            [bot-unfurl.status     :as st])
   (:gen-class))
 
 (def ^:private cli-opts

@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/symphonyoss/bot-unfurl.svg?branch=master)](https://travis-ci.org/symphonyoss/bot-unfurl)
 [![Open Issues](https://img.shields.io/github/issues/symphonyoss/bot-unfurl.svg)](https://github.com/symphonyoss/bot-unfurl/issues)
+[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/symphonyoss/bot-unfurl.svg)](http://isitmaintained.com/project/symphonyoss/bot-unfurl "Average time to resolve an issue")
 [![License](https://img.shields.io/github/license/symphonyoss/bot-unfurl.svg)](https://github.com/symphonyoss/bot-unfurl/blob/master/LICENSE)
 [![Dependencies Status](http://jarkeeper.com/symphonyoss/bot-unfurl/status.svg)](http://jarkeeper.com/symphonyoss/bot-unfurl)
 [![Symphony Software Foundation - Incubating](https://cdn.rawgit.com/symphonyoss/contrib-toolbox/master/images/ssf-badge-incubating.svg)](https://symphonyoss.atlassian.net/wiki/display/FM/Project+lifecycle)
@@ -9,6 +10,14 @@
 A small [Symphony](http://www.symphony.com/) bot that attempts to
 [unfurl](https://medium.com/slack-developer-blog/everything-you-ever-wanted-to-know-about-unfurling-but-were-afraid-to-ask-or-how-to-make-your-e64b4bb9254)
 URLs posted to any chat or room the bot is invited to.
+
+"Unfurling" involves reading a variety of metadata from the given URL (title, server-preferred URL, description,
+preview image, etc.), formatting those elements into a human-readable message, and posting it back to the same chat.
+
+Here it is in action:
+<p align="center">
+  <img width="500px" alt="Unfurl bot example screenshot" src="https://raw.githubusercontent.com/symphonyoss/bot-unfurl/master/bot-unfurl-example.png"/>
+</p>
 
 ## Installation
 
@@ -22,6 +31,7 @@ that Symphony needs in order for a bot to connect to a pod.
 
 It also allows one to optionally:
 
+* specify how [Jolokia](https://jolokia.org/) is configured
 * specify a blacklist of URL prefixes that the bot should never, under any circumstances, unfurl
 * provide the coordinates of an HTTP proxy
 
@@ -39,10 +49,13 @@ Its structure as is follows:
     :user-cert        ["<path to bot user's certificate>" "<password of bot user's certificate>"]
     :user-email       "<bot user's email address>"
   }
+  :jolokia-config {
+    "host" "<jolokia-server-host>"
+    "port" "<jolokia-server-port-as-a-string>"
+  }
   :url-blacklist ["<url prefix>" "<another url prefix>" "http://www.microsoft.com/" ...]   ; Optional
-  :http-proxy ["<proxy-host>" proxy-port]   ; Optional - only needed if you use an HTTP proxy
+  :http-proxy ["<proxy-host>" <proxy-port>]   ; Optional - only needed if you use an HTTP proxy
 }
-
 ```
 
 The `:symphony-coords` described above are passed directly to the
@@ -52,10 +65,19 @@ you're on a fully-hosted Symphony "business tier" subscription - for enterprise 
 agent (at least) will typically reside on-premises, with a completely different hostname than the
 other system components.
 
+The `:jolokia-config` map is passed directly to Jolokia's [`JolokiaServerConfig` constructor](https://github.com/rhuss/jolokia/blob/master/agent/jvm/src/main/java/org/jolokia/jvmagent/JolokiaServerConfig.java#L92).
+See the [default Jolokia property file](https://github.com/rhuss/jolokia/blob/master/agent/jvm/src/main/resources/default-jolokia-agent.properties)
+for a full list of the supported configuration options and their default values, and note that all
+keys and values in this map MUST be strings (this is a Jolokia requirement).
+
 Note: the HTTP proxy is only used for requests to the URLs that are being unfurled.  Use of an
 HTTP proxy to make calls to Symphony are [not yet supported by clj-symphony](https://github.com/symphonyoss/clj-symphony/issues/1).
 
 [A sample `config.edn` file is provided in the `etc` directory.](https://github.com/symphonyoss/bot-unfurl/blob/master/etc/config.edn.sample)
+
+Finally, this file is loaded using the [aero](https://github.com/juxt/aero) library, which offers quite a bit
+of flexibility around how values are specified in the file (they can be read from environment variables,
+for example).  See the [aero documentation](https://github.com/juxt/aero/blob/master/README.md) for details.
 
 ## Usage
 
@@ -109,9 +131,11 @@ This assumes that the `etc` directory contains the certificate, truststore, `con
 
 ## License
 
-Copyright © 2016 Symphony Software Foundation
+Copyright © 2016, 2017 Symphony Software Foundation
 
 Distributed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
+
+SPDX-License-Identifier: [Apache-2.0](https://spdx.org/licenses/Apache-2.0)
 
 ### 3rd Party Licenses
 
@@ -126,42 +150,4 @@ To see the dependencies and licenses in detail, run:
 ```shell
 $ lein licenses
 ```
-
-This project depends on the following libraries, which are licensed under Common Development and Distribution License 1.0, 1.1 or 2.0.  For details, please see each individuals library's page.
-
-* [javax.annotation/javax.annotation-api](https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api)
-* [javax.ws.rs/javax.ws.rs-api](https://mvnrepository.com/artifact/javax.ws.rs/javax.ws.rs-api)
-* [org.glassfish.hk2.external/aopalliance-repackaged](https://mvnrepository.com/artifact/org.glassfish.hk2.external/aopalliance-repackaged)
-* [org.glassfish.hk2.external/javax.inject](https://mvnrepository.com/artifact/org.glassfish.hk2.external/javax.inject)
-* [org.glassfish.hk2/hk2-api](https://mvnrepository.com/artifact/org.glassfish.hk2/hk2-api)
-* [org.glassfish.hk2/hk2-locator](https://mvnrepository.com/artifact/org.glassfish.hk2/hk2-locator)
-* [org.glassfish.hk2/hk2-utils](https://mvnrepository.com/artifact/org.glassfish.hk2/hk2-utils)
-* [org.glassfish.hk2/osgi-resource-locator](https://mvnrepository.com/artifact/org.glassfish.hk2/osgi-resource-locator)
-* [org.glassfish.jersey.bundles.repackaged/jersey-guava](https://mvnrepository.com/artifact/org.glassfish.jersey.bundles.repackaged/jersey-guava)
-* [org.glassfish.jersey.core/jersey-client](https://mvnrepository.com/artifact/org.glassfish.jersey.core/jersey-client)
-* [org.glassfish.jersey.core/jersey-common](https://mvnrepository.com/artifact/org.glassfish.jersey.core/jersey-common)
-* [org.glassfish.jersey.ext/jersey-entity-filtering](https://mvnrepository.com/artifact/org.glassfish.jersey.ext/jersey-entity-filtering)
-* [org.glassfish.jersey.media/jersey-media-json-jackson](https://mvnrepository.com/artifact/org.glassfish.jersey.media/jersey-media-json-jackson)
-* [org.glassfish.jersey.media/jersey-media-multipart](https://mvnrepository.com/artifact/org.glassfish.jersey.media/jersey-media-multipart)
-* [org.jvnet.mimepull/mimepull](https://mvnrepository.com/artifact/org.jvnet.mimepull/mimepull)
-
-
-This project depends on the following libraries, which are licensed under Eclipse Public License 1.0.  For details, please see each individuals library's page.
-
-* [clojure-complete](https://github.com/ninjudd/clojure-complete)
-* [colorize](https://github.com/ibdknox/colorize)
-* [environ](https://github.com/weavejester/environ)
-* [flare](https://github.com/andersfurseth/flare)
-* [junit](http://junit.org/junit4/)
-* [ordered](https://github.com/amalloy/ordered)
-* [org.clojure/clojure](https://github.com/clojure/clojure)
-* [org.clojure/core.unify](https://github.com/clojure/core.unify)
-* [org.clojure/math.combinatorics](https://github.com/clojure/math.combinatorics)
-* [org.clojure/tools.macro](https://github.com/clojure/tools.macro)
-* [org.clojure/tools.namespace](https://github.com/clojure/tools.namespace)
-* [org.clojure/tools.nrepl](https://github.com/clojure/tools.nrepl)
-* [org.tcrawley/dynapath](https://github.com/tobias/dynapath)
-* [slingshot](https://github.com/scgilardi/slingshot)
-* [swiss-arrows](https://github.com/rplevy/swiss-arrows)
-
 

@@ -1,5 +1,6 @@
 ;
-; Copyright © 2016 Symphony Software Foundation
+; Copyright © 2016, 2017 Symphony Software Foundation
+; SPDX-License-Identifier: Apache-2.0
 ;
 ; Licensed under the Apache License, Version 2.0 (the "License");
 ; you may not use this file except in compliance with the License.
@@ -19,13 +20,14 @@
             [clojure.tools.logging :as log]
             [mount.core            :as mnt :refer [defstate]]
             [unfurl.api            :as uf]
-            [clj-symphony.api      :as sy]
+            [clj-symphony.connect  :as syc]
+            [clj-symphony.message  :as sym]
             [bot-unfurl.config     :as cfg]))
 
 (def ^:private messageml-link-regex #"<a\s+href\s*=\s*\"([^\"]+)\"\s*/>")
 
-(defstate session
-          :start (sy/connect (:symphony-coords cfg/config)))
+(defstate symphony-connection
+          :start (syc/connect (:symphony-coords cfg/config)))
 
 (defstate url-blacklist
           :start (:url-blacklist cfg/config))
@@ -99,21 +101,22 @@
 
 (defn- unfurl-urls-and-post-msg!
   "Finds all messageML links in the given message and if any are detected, unfurls their URLs and posts a single summary message back to the same stream."
-  [msg-id timestamp stream-id user-id msg-format msg-type msg]
+  [{:keys [message-id timestamp stream-id user-id type text]}]
   (try
-    (log/debug "Received message" msg-id "from user" user-id "in stream" stream-id ":" msg)
-    (when msg
-      (let [urls         (map second (re-seq messageml-link-regex msg))
+    (log/debug "Received message" message-id "from user" user-id "in stream" stream-id ":" text)
+    (when text
+      (let [urls         (map second (re-seq messageml-link-regex text))
             _            (log/debug "Found" (count urls) "url(s):" (s/join ", " urls))
             message-body (s/join "<br/>" (pmap unfurl-url-and-build-msg urls))
-            message      (if (pos? (.length message-body)) (str "<messageML>" message-body "</messageML>"))]
+            message      (when (pos? (count message-body))
+                           (str "<messageML>" message-body "</messageML>"))]
         (when message
-          (log/info  "Found" (count urls) "url(s) in message" msg-id "- posting unfurl message to stream" stream-id)
+          (log/info  "Found" (count urls) "url(s) in message" message-id "- posting unfurl message to stream" stream-id)
           (log/debug "Unfurl message:" message)
-          (sy/send-message! session stream-id message))))
+          (sym/send-message! symphony-connection stream-id message))))
     (catch Exception e
-      (log/error e "Unexpected exception while processing message" msg-id))))
+      (log/error e "Unexpected exception while processing message" message-id))))
 
 (defstate unfurl-listener
-          :start (sy/register-message-listener   session unfurl-urls-and-post-msg!)
-          :stop  (sy/deregister-message-listener session unfurl-listener))
+          :start (sym/register-listener   symphony-connection unfurl-urls-and-post-msg!)
+          :stop  (sym/deregister-listener symphony-connection unfurl-listener))
