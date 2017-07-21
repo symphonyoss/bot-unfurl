@@ -42,7 +42,7 @@
   "Returns true if the given url is blacklisted. Falsey otherwise."
   [^String url]
   (let [url-hostname (.getHost (java.net.URL. url))]
-    (some identity (map (partial = url-hostname) blacklist))))
+    (some identity (map (partial s/ends-with? url-hostname) blacklist))))
 
 (defn- detect-urls
   "Detects all URLs in the given string."
