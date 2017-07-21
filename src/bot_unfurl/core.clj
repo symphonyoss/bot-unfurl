@@ -21,13 +21,16 @@
             [mount.core            :as mnt :refer [defstate]]
             [unfurl.api            :as uf]
             [clj-symphony.connect  :as syc]
+            [clj-symphony.user     :as syu]
             [clj-symphony.message  :as sym]
             [bot-unfurl.config     :as cfg]))
 
-(def ^:private messageml-link-regex #"<a\s+href\s*=\s*\"([^\"]+)\"\s*/>")
+(def ^:private messageml-link-regex #"<a\s+href\s*=\s*\"([^\"]+)\"\s*/?>")   ; Note: this regex should handle both MessageML v1 and v2
 
 (defstate symphony-connection
-          :start (syc/connect (:symphony-coords cfg/config)))
+          :start (let [cnxn (syc/connect (:symphony-coords cfg/config))
+                       _    (log/info (str "Connected as " (:display-name (syu/user cnxn))))]
+                    cnxn))
 
 (defstate url-blacklist
           :start (:url-blacklist cfg/config))
@@ -92,10 +95,13 @@
               title       (message-ml-escape (:title       unfurled))
               description (process-description (message-ml-escape (:description unfurled)))
               preview-url (message-ml-escape (:preview-url unfurled))]
-          (str (if title       (str "<b>"        title "</b> - "))
-               "<a href=\"" url "\"/><br/>"
-               (if description (str "<i>"        description "</i><br/>"))
-               (if preview-url (str "<a href=\"" preview-url "\"/><br/>")))))
+          (str "<card accent=\"tempo-bg-color--cyan\">"
+               "<header>"
+               (if title (str "<b>" title "</b> - ")) "<a href=\"" url "\">" url "</a>"
+               (if description (str "<p class=\"tempo-text-color--secondary\">" description "</p>"))
+               "</header>"
+               (if preview-url (str "<body><img src=\"" preview-url "\"/></body>"))
+               "</card>")))
       (catch Exception e
         (log/error e "Unexpected exception while unfurling url" url)))))
 
