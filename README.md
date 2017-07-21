@@ -32,7 +32,7 @@ that Symphony needs in order for a bot to connect to a pod.
 It also allows one to optionally:
 
 * specify how [Jolokia](https://jolokia.org/) is configured
-* specify a blacklist of URL prefixes that the bot should never, under any circumstances, unfurl
+* specify a blacklist of domain names that the bot should never, under any circumstances, unfurl
 * provide the coordinates of an HTTP proxy
 
 Its structure as is follows:
@@ -53,7 +53,7 @@ Its structure as is follows:
     "host" "<jolokia-server-host>"
     "port" "<jolokia-server-port-as-a-string>"
   }
-  :url-blacklist ["<url prefix>" "<another url prefix>" "http://www.microsoft.com/" ...]   ; Optional
+  :blacklist ["<hostname>" "<hostname>" "www.microsoft.com" ...]   ; Optional
   :http-proxy ["<proxy-host>" <proxy-port>]   ; Optional - only needed if you use an HTTP proxy
 }
 ```

@@ -32,8 +32,8 @@
                        _    (log/info (str "Connected as " (:display-name (syu/user cnxn))))]
                     cnxn))
 
-(defstate url-blacklist
-          :start (:url-blacklist cfg/config))
+(defstate blacklist
+          :start (:blacklist cfg/config))
 
 (defstate http-proxy
           :start (:http-proxy cfg/config))
@@ -41,7 +41,8 @@
 (defn- blacklisted?
   "Returns true if the given url is blacklisted. Falsey otherwise."
   [^String url]
-  (some identity (map #(.startsWith url ^String %) url-blacklist)))
+  (let [url-hostname (.getHost (java.net.URL. url))]
+    (some identity (map (partial = url-hostname) blacklist))))
 
 (defn- detect-urls
   "Detects all URLs in the given string."

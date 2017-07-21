@@ -19,5 +19,5 @@
     "port" #or [#env JOLOKIA_PORT "8778"]
   }
 
-  :url-blacklist ["https://drive.google.com/" "https://docs.google.com/"]
+  :blacklist ["drive.google.com" "docs.google.com"]
 }
