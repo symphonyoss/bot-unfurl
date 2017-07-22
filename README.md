@@ -33,7 +33,7 @@ It also allows one to optionally:
 
 * specify how [Jolokia](https://jolokia.org/) is configured
 * specify a blacklist of host names that the bot should never, under any circumstances, unfurl
-  * The blacklist can either be provided inline in the configuration file, in a separate text file (entries separated by whitespace), or both (in which case the two lists are merged).  The blacklist file may be hosted anywhere that can be read by [`clojure.core/slurp`](https://clojure.github.io/clojure/clojure.core-api.html#clojure.core/slurp).
+  * The blacklist can either be provided inline in the configuration file, in a separate text file (entries separated by whitespace), or both (in which case the two lists are merged and de-duped).  The blacklist file may be hosted anywhere that can be read by [`clojure.core/slurp`](https://clojure.github.io/clojure/clojure.core-api.html#clojure.core/slurp).
   * Note that host names are matched "end to end", so if the blacklist contains an entry such as ".xxx", all host names that end with ".xxx" will be ignored (blacklisted)
 * provide the coordinates of an HTTP proxy
 
