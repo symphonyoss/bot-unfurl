@@ -31,7 +31,7 @@ that Symphony needs in order for a bot to connect to a pod.
 
 It also allows one to optionally:
 
-* specify how [Jolokia](https://jolokia.org/) is configured
+* specify how [Jolokia](https://jolokia.org/) is configured (used for server-side monitoring)
 * specify a blacklist of host names that the bot should never, under any circumstances, unfurl
   * The blacklist can either be provided inline in the configuration file, in a separate text file (entries separated by whitespace), or both (in which case the two lists are merged and de-duped).  The blacklist file may be hosted anywhere that can be read by [`clojure.core/slurp`](https://clojure.github.io/clojure/clojure.core-api.html#clojure.core/slurp).
   * Note that host names are matched "end to end", so if the blacklist contains an entry such as ".xxx", all host names that end with ".xxx" will be ignored (blacklisted)
@@ -56,8 +56,8 @@ Its structure as is follows:
     "port" "<jolokia-server-port-as-a-string>"
   }
   :blacklist ["<hostname>" "<hostname>" ".xxx" "microsoft.com" ...]   ; Optional
-  :blacklist-file "/path/to/text/fie"
-  :http-proxy ["<proxy-host>" <proxy-port>]   ; Optional - only needed if you use an HTTP proxy
+  :blacklist-file "/path/to/text/file.txt"                            ; Optional
+  :http-proxy ["<proxy-host>" <proxy-port>]                           ; Optional - only needed if you use an HTTP proxy
 }
 ```
 
