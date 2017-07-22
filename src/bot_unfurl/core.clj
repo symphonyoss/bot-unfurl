@@ -29,17 +29,21 @@
 
 (defstate symphony-connection
           :start (let [cnxn (syc/connect (:symphony-coords cfg/config))
-                       _    (log/info (str "Connected as " (:display-name (syu/user cnxn))))]
+                       bot  (syu/user cnxn)
+                       _    (log/info (str "Connected as " (:display-name bot) " (" (:email-address bot) ")"))]
                     cnxn))
 
 (defstate blacklist
-          :start (:blacklist cfg/config))
+          :start (concat (:blacklist cfg/config)                                ; Entries inline in the config file
+                         (if-let [blacklist-file (:blacklist-file cfg/config)]  ; Entries in a separate text file
+                           (s/split (slurp blacklist-file) #"\s+"))))
 
 (defstate http-proxy
           :start (:http-proxy cfg/config))
 
+; TODO: Consider using a binary search here, to better support very large blacklists
 (defn- blacklisted?
-  "Returns true if the given url is blacklisted. Falsey otherwise."
+  "Returns true if the given url is blacklisted, false otherwise."
   [^String url]
   (let [url-hostname (.getHost (java.net.URL. url))]
     (some identity (map (partial s/ends-with? url-hostname) blacklist))))
