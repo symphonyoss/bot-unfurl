@@ -25,7 +25,7 @@
             [clj-symphony.message  :as sym]
             [bot-unfurl.config     :as cfg]))
 
-(def ^:private messageml-link-regex #"<a\s+href\s*=\s*\"([^\"]+)\"\s*/?>")   ; Note: this regex should handle both MessageML v1 and v2
+(def ^:private messageml-link-regex #"<a\s+href\s*=\s*\"([^\"]+)\"\s*/?>")   ; Note: this regex matches both MessageML v1 and v2 versions of the <a> tag
 
 (defstate symphony-connection
           :start (let [cnxn (syc/connect (:symphony-coords cfg/config))
