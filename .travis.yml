@@ -14,5 +14,5 @@ env:
 
 after_success: "if [[ $TRAVIS_BRANCH =~ master ]]; then curl -s https://raw.githubusercontent.com/symphonyoss/contrib-toolbox/master/scripts/oc-deploy.sh | bash ; fi"
 
-# notifications:
-webhooks: https://foundation.symphony.com/integration/v1/whi/simpleWebHookIntegration/58ae440fe4b0d18517ab5177/58af9f79e4b0d18517ab51a9
+notifications:
+  webhooks: https://foundation.symphony.com/integration/v1/whi/simpleWebHookIntegration/58ae440fe4b0d18517ab5177/58af9f79e4b0d18517ab51a9
