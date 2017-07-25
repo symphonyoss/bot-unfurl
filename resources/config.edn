@@ -6,7 +6,7 @@
     :agent-api-url    #env AGENT_URL
     :pod-api-url      #env POD_URL
 
-    :trust-store [#env TRUSTSTORE_FILE #env TRUSTSTORE_PASSWORD]
+    :trust-store [#env TRUSTSTORE_FILE    #env TRUSTSTORE_PASSWORD]
     :user-cert   [#env BOT_USER_CERT_FILE #env BOT_USER_CERT_PASSWORD]
 
     :user-email  #env BOT_USER_EMAIL
@@ -19,5 +19,6 @@
     "port" #or [#env JOLOKIA_PORT "8778"]
   }
 
-  :url-blacklist ["https://drive.google.com/" "https://docs.google.com/"]
+  :blacklist [".xxx" "drive.google.com" "docs.google.com"]
+  :blacklist-file #env BLACKLIST_FILE
 }

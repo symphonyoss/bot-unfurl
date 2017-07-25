@@ -31,8 +31,10 @@ that Symphony needs in order for a bot to connect to a pod.
 
 It also allows one to optionally:
 
-* specify how [Jolokia](https://jolokia.org/) is configured
-* specify a blacklist of URL prefixes that the bot should never, under any circumstances, unfurl
+* specify how [Jolokia](https://jolokia.org/) is configured (used for server-side monitoring)
+* specify a blacklist of host names that the bot should never, under any circumstances, unfurl
+  * The blacklist can either be provided inline in the configuration file, in a separate text file (entries separated by whitespace), or both (in which case the two lists are merged and de-duped).  The blacklist file may be hosted anywhere that can be read by [`clojure.core/slurp`](https://clojure.github.io/clojure/clojure.core-api.html#clojure.core/slurp).
+  * Note that host names are matched "end to end", so if the blacklist contains an entry such as ".xxx", all host names that end with ".xxx" will be ignored (blacklisted)
 * provide the coordinates of an HTTP proxy
 
 Its structure as is follows:
@@ -53,13 +55,14 @@ Its structure as is follows:
     "host" "<jolokia-server-host>"
     "port" "<jolokia-server-port-as-a-string>"
   }
-  :url-blacklist ["<url prefix>" "<another url prefix>" "http://www.microsoft.com/" ...]   ; Optional
-  :http-proxy ["<proxy-host>" <proxy-port>]   ; Optional - only needed if you use an HTTP proxy
+  :blacklist ["<hostname>" "<hostname>" ".xxx" "microsoft.com" ...]   ; Optional
+  :blacklist-file "/path/to/text/file.txt"                            ; Optional
+  :http-proxy ["<proxy-host>" <proxy-port>]                           ; Optional - only needed if you use an HTTP proxy
 }
 ```
 
 The `:symphony-coords` described above are passed directly to the
-[clj-symphony library's `connect` function](https://github.com/symphonyoss/clj-symphony#usage),
+[clj-symphony library's `connect` function](https://symphonyoss.github.io/clj-symphony/clj-symphony.connect.html#var-connect),
 and have the same semantics as what's described there.  Typically `:pod-id` can only be used if
 you're on a fully-hosted Symphony "business tier" subscription - for enterprise deployments the
 agent (at least) will typically reside on-premises, with a completely different hostname than the
@@ -76,7 +79,7 @@ HTTP proxy to make calls to Symphony are [not yet supported by clj-symphony](htt
 [A sample `config.edn` file is provided in the `etc` directory.](https://github.com/symphonyoss/bot-unfurl/blob/master/etc/config.edn.sample)
 
 Finally, this file is loaded using the [aero](https://github.com/juxt/aero) library, which offers quite a bit
-of flexibility around how values are specified in the file (they can be read from environment variables,
+of flexibility around how values are specified in the file (they can be read [from environment variables](https://github.com/symphonyoss/bot-unfurl/blob/master/resources/config.edn),
 for example).  See the [aero documentation](https://github.com/juxt/aero/blob/master/README.md) for details.
 
 ## Usage
