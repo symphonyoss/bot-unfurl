@@ -1,15 +1,13 @@
 language: clojure
 lein: lein2
-script: alias lein=lein2 ; ./build-uberjar.sh
+script: lein2 do check, midje, uberjar
 jdk:
   - oraclejdk8
 sudo: false
 
 env:
   global:
-    - OC_BINARY_FOLDER=./uberjar
-    - OC_PROJECT_NAME=botfarm-dev
-    - OC_TEMPLATE=.openshift-template.yaml
+    - OC_BINARY_FILE=./target/bot-unfurl-standalone.jar
     - OC_BUILD_CONFIG_NAME=botunfurl
 
 after_success: "if [[ \"$TRAVIS_PULL_REQUEST\" = \"false\" && $TRAVIS_BRANCH =~ master ]]; then curl -s https://raw.githubusercontent.com/symphonyoss/contrib-toolbox/master/scripts/oc-deploy.sh | bash ; fi"
