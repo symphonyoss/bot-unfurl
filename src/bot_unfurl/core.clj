@@ -21,24 +21,32 @@
             [mount.core            :as mnt :refer [defstate]]
             [unfurl.api            :as uf]
             [clj-symphony.connect  :as syc]
+            [clj-symphony.user     :as syu]
             [clj-symphony.message  :as sym]
             [bot-unfurl.config     :as cfg]))
 
-(def ^:private messageml-link-regex #"<a\s+href\s*=\s*\"([^\"]+)\"\s*/>")
+(def ^:private messageml-link-regex #"<a\s+href\s*=\s*\"([^\"]+)\"\s*/?>")   ; Note: this regex matches both MessageML v1 and v2 versions of the <a> tag
 
 (defstate symphony-connection
-          :start (syc/connect (:symphony-coords cfg/config)))
+          :start (let [cnxn (syc/connect (:symphony-coords cfg/config))
+                       bot  (syu/user cnxn)
+                       _    (log/info (str "Connected as " (:display-name bot) " (" (:email-address bot) ")"))]
+                    cnxn))
 
-(defstate url-blacklist
-          :start (:url-blacklist cfg/config))
+(defstate blacklist
+          :start (concat (:blacklist cfg/config)                                ; Entries inline in the config file
+                         (if-let [blacklist-file (:blacklist-file cfg/config)]  ; Entries in a separate text file
+                           (s/split (slurp blacklist-file) #"\s+"))))
 
 (defstate http-proxy
           :start (:http-proxy cfg/config))
 
+; TODO: Consider using a binary search here, to better support very large blacklists
 (defn- blacklisted?
-  "Returns true if the given url is blacklisted. Falsey otherwise."
+  "Returns true if the given url is blacklisted, false otherwise."
   [^String url]
-  (some identity (map #(.startsWith url ^String %) url-blacklist)))
+  (let [url-hostname (.getHost (java.net.URL. url))]
+    (some identity (map (partial s/ends-with? url-hostname) blacklist))))
 
 (defn- detect-urls
   "Detects all URLs in the given string."
@@ -92,10 +100,13 @@
               title       (message-ml-escape (:title       unfurled))
               description (process-description (message-ml-escape (:description unfurled)))
               preview-url (message-ml-escape (:preview-url unfurled))]
-          (str (if title       (str "<b>"        title "</b> - "))
-               "<a href=\"" url "\"/><br/>"
-               (if description (str "<i>"        description "</i><br/>"))
-               (if preview-url (str "<a href=\"" preview-url "\"/><br/>")))))
+          (str "<card accent=\"tempo-bg-color--cyan\">"
+               "<header>"
+               (if title (str "<b>" title "</b> - ")) "<a href=\"" url "\">" url "</a>"
+               (if description (str "<p class=\"tempo-text-color--secondary\">" description "</p>"))
+               "</header>"
+               (if preview-url (str "<body><img src=\"" preview-url "\"/></body>"))
+               "</card>")))
       (catch Exception e
         (log/error e "Unexpected exception while unfurling url" url)))))
 
