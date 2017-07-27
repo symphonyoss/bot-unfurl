@@ -17,7 +17,7 @@ parameters:
   description: The command to run when the container starts
   displayName: Run Command
   required: true
-  value: "java -cp /opt/openshift/bot-unfurl-standalone.jar bot_unfurl.main"
+  value: "java -jar /opt/openshift/bot-unfurl-standalone.jar"
 objects:
 - apiVersion: v1
   kind: ImageStream
