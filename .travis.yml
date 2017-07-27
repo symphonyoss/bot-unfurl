@@ -7,10 +7,10 @@ sudo: false
 
 env:
   global:
-    - OC_BINARY_FOLDER=./target
+    - OC_BINARY_FILE=./target/bot-unfurl-standalone.jar
     - OC_BUILD_CONFIG_NAME=botunfurl
 
-after_success: curl -s https://raw.githubusercontent.com/symphonyoss/contrib-toolbox/master/scripts/oc-deploy.sh | bash
+after_success: "if [[ \"$TRAVIS_PULL_REQUEST\" = \"false\" && $TRAVIS_BRANCH =~ master ]]; then curl -s https://raw.githubusercontent.com/symphonyoss/contrib-toolbox/master/scripts/oc-deploy.sh | bash ; fi"
 
 notifications:
   webhooks: https://foundation.symphony.com/integration/v1/whi/simpleWebHookIntegration/58ae440fe4b0d18517ab5177/58af9f79e4b0d18517ab51a9
