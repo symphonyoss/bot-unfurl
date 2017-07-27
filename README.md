@@ -25,7 +25,7 @@ For now unfurl bot is available in source form only, so fire up your favourite g
 
 ## Configuration
 
-unfurl bot is configured via a single [EDN](https://github.com/edn-format/edn) file that's specified on the command
+unfurl bot is configured via a single, optional [EDN](https://github.com/edn-format/edn) file that's specified on the command
 line.  This configuration file contains the coordinates of the various endpoints, certificates, knickknacks and gewgaws
 that Symphony needs in order for a bot to connect to a pod.
 
@@ -33,11 +33,16 @@ It also allows one to optionally:
 
 * specify how [Jolokia](https://jolokia.org/) is configured (used for server-side monitoring)
 * specify a blacklist of host names that the bot should never, under any circumstances, unfurl
-  * The blacklist can either be provided inline in the configuration file, in a separate text file (entries separated by whitespace), or both (in which case the two lists are merged and de-duped).  The blacklist file may be hosted anywhere that can be read by [`clojure.core/slurp`](https://clojure.github.io/clojure/clojure.core-api.html#clojure.core/slurp).
-  * Note that host names are matched "end to end", so if the blacklist contains an entry such as ".xxx", all host names that end with ".xxx" will be ignored (blacklisted)
+  * The blacklist can either be provided inline in the configuration file, in a separate text file (entries separated by
+    whitespace), or both (in which case the two lists are merged and de-duped).  The blacklist file may be hosted anywhere
+    that can be read by [`clojure.core/slurp`](https://clojure.github.io/clojure/clojure.core-api.html#clojure.core/slurp).
+  * Note that host names are matched "end to end", so if the blacklist contains an entry such as ".xxx", all host names
+    that end with ".xxx" will be ignored (blacklisted)
 * provide the coordinates of an HTTP proxy
 
-Its structure as is follows:
+### Configuration File Format
+
+The configuration file is structured as follows:
 
 ```edn
 {
@@ -56,12 +61,12 @@ Its structure as is follows:
     "port" "<jolokia-server-port-as-a-string>"
   }
   :blacklist ["<hostname>" "<hostname>" ".xxx" "microsoft.com" ...]   ; Optional
-  :blacklist-file "/path/to/text/file.txt"                            ; Optional
+  :blacklist-file "/path/or/url/of/text/file.txt"                     ; Optional
   :http-proxy ["<proxy-host>" <proxy-port>]                           ; Optional - only needed if you use an HTTP proxy
 }
 ```
 
-The `:symphony-coords` described above are passed directly to the
+The `:symphony-coords` are passed directly to the
 [clj-symphony library's `connect` function](https://symphonyoss.github.io/clj-symphony/clj-symphony.connect.html#var-connect),
 and have the same semantics as what's described there.  Typically `:pod-id` can only be used if
 you're on a fully-hosted Symphony "business tier" subscription - for enterprise deployments the
@@ -74,25 +79,50 @@ for a full list of the supported configuration options and their default values,
 keys and values in this map MUST be strings (this is a Jolokia requirement).
 
 Note: the HTTP proxy is only used for requests to the URLs that are being unfurled.  Use of an
-HTTP proxy to make calls to Symphony are [not yet supported by clj-symphony](https://github.com/symphonyoss/clj-symphony/issues/1).
+HTTP proxy to make calls to the Symphony APIs are [not yet supported by clj-symphony](https://github.com/symphonyoss/clj-symphony/issues/1).
 
-[A sample `config.edn` file is provided in the `etc` directory.](https://github.com/symphonyoss/bot-unfurl/blob/master/etc/config.edn.sample)
+### Configuration File Location and Loading Mechanism
 
-Finally, this file is loaded using the [aero](https://github.com/juxt/aero) library, which offers quite a bit
-of flexibility around how values are specified in the file (they can be read [from environment variables](https://github.com/symphonyoss/bot-unfurl/blob/master/resources/config.edn),
-for example).  See the [aero documentation](https://github.com/juxt/aero/blob/master/README.md) for details.
+The `config.edn` file may be stored anywhere that can be read by the bot's JVM process, and is loaded using the
+[aero](https://github.com/juxt/aero) library - see the [aero documentation](https://github.com/juxt/aero/blob/master/README.md)
+for details on the various advanced options aero supports.
+
+The bot ships with a [default `config.edn` file](https://github.com/symphonyoss/bot-unfurl/blob/master/resources/config.edn)
+that will be read if a file is not specified on the command line.  This file delegates basically all of the settings to environment
+variables, allowing the administrator to deploy and run the tool as a standalone uberjar, and configure it exclusively via
+the shell.
+
+### A Note on Security
+
+The bot's configuration includes sensitive information (certificate locations and passwords), so please be extra
+careful to secure this configuration, however you choose to manage it (in a file, environment variables, etc.).
+
+### Logging Configuration
+
+unfurl bot uses the [logback](https://logback.qos.ch/) library for logging, and ships with a
+[reasonable default `logback.xml` file](https://github.com/symphonyoss/bot-unfurl/blob/master/resources/logback.xml).
+Please review the [logback documentation](https://logback.qos.ch/manual/configuration.html#configFileProperty) if you
+wish to override this default logging configuration.
 
 ## Usage
 
-For now, you can run unfurl bot either standalone or as a Docker image.
+For now, you can run unfurl bot either directly or as a Docker image.
 
-### Standalone
+### Direct Execution
 
 ```
 $ lein run -- -c <path to EDN configuration file>
 ```
 
-### Docker
+or
+
+```
+$ lein uberjar
+...
+$ java -jar ./target/bot-unfurl-standalone.jar -c <path to EDN configuration file>
+```
+
+### Dockerised Execution
 
 To build the container:
 
@@ -114,9 +144,10 @@ _on the Docker host_.  This configuration directory must contain:
 
  1. the service account certificate and truststore that the bot should use
  2. a `config.edn` file (in the format described above), that points to the certificates using `/etc/opt/bot-unfurl` as the base path (that's where the configuration folder is mounted _within_ the container)
- 3. a log4j v1.x configuration file (either `log4j.xml` or `log4j.properties`) - technically this is optional but the bot will generate a lot of logging output without it.  It is recommended that the log4j files be written to the console (STDOUT), so that docker's `logs` command can be utilised.
 
-[A sample `log4j.xml` file is provided in the `etc` directory.](https://github.com/symphonyoss/bot-unfurl/blob/master/etc/log4j.xml.sample)
+ And it may optionally also contain:
+ 1. a blacklist file (see above for details)
+ 2. a logback configuration file (typically not needed - the bot's JAR file includes a [reasonable default logback configuration](https://github.com/symphonyoss/bot-unfurl/blob/master/resources/logback.xml))
 
 You can also use Docker Compose, by running:
 
@@ -124,7 +155,7 @@ You can also use Docker Compose, by running:
 $ docker-compose up -d
 ```
 
-This assumes that the `etc` directory contains the certificate, truststore, `config.edn` file, and log4j configuration file, as described above.
+This assumes that the `etc` directory contains the certificate, truststore, and `config.edn` file, as described above.
 
 ## Developer Information
 

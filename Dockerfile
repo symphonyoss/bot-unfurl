@@ -6,4 +6,4 @@ COPY project.clj /opt/bot-unfurl/
 RUN lein deps
 COPY . /opt/bot-unfurl/
 RUN mv "$(lein uberjar | sed -n 's/^Created \(.*standalone\.jar\)/\1/p')" bot-unfurl-standalone.jar
-CMD ["java", "-cp", "/etc/opt/bot-unfurl:/opt/bot-unfurl/bot-unfurl-standalone.jar", "bot_unfurl.main"]
+CMD ["java", "-jar", "/opt/bot-unfurl/bot-unfurl-standalone.jar", "-c", "/etc/opt/bot-unfurl/config.edn"]
