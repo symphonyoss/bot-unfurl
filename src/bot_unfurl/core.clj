@@ -118,7 +118,7 @@
     (when text
       (let [urls         (map second (re-seq messageml-link-regex text))
             _            (log/debug "Found" (count urls) "url(s):" (s/join ", " urls))
-            message-body (s/join "<br/>" (pmap unfurl-url-and-build-msg urls))
+            message-body (s/join "<br/>" (remove s/blank? (pmap unfurl-url-and-build-msg urls)))
             message      (when (pos? (count message-body))
                            (str "<messageML>" message-body "</messageML>"))]
         (when message
