@@ -1,6 +1,7 @@
-[![Bot Unfurl Prod Log Watcher](https://hv0dbm9dsd.execute-api.us-east-1.amazonaws.com/Prod/badge?oc_bot_name=botunfurl-prod&oc_project_name=ssf-prod&oc_account=pro)](https://foundation.symphony.com)
-[![Bot Unfurl Dev Log Watcher](https://hv0dbm9dsd.execute-api.us-east-1.amazonaws.com/Prod/badge?oc_bot_name=botunfurl-dev&oc_project_name=ssf-dev&oc_account=pro)](https://foundation-dev.symphony.com)
+[![Bot Unfurl Prod Log Watcher](https://hv0dbm9dsd.execute-api.us-east-1.amazonaws.com/Prod/badge?oc_bot_name=botunfurl-prod&oc_project_name=ssf-prod)](https://foundation.symphony.com)
+[![Bot Unfurl Dev Log Watcher](https://hv0dbm9dsd.execute-api.us-east-1.amazonaws.com/Prod/badge?oc_bot_name=botunfurl-dev&oc_project_name=ssf-dev)](https://foundation-dev.symphony.com)
 
+http://localhost:3000/watcher?oc_bot_name=botunfurl-dev&oc_project_name=ssf-dev
 [![Build Status](https://travis-ci.org/symphonyoss/bot-unfurl.svg?branch=master)](https://travis-ci.org/symphonyoss/bot-unfurl)
 [![Open Issues](https://img.shields.io/github/issues/symphonyoss/bot-unfurl.svg)](https://github.com/symphonyoss/bot-unfurl/issues)
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/symphonyoss/bot-unfurl.svg)](http://isitmaintained.com/project/symphonyoss/bot-unfurl "Average time to resolve an issue")
