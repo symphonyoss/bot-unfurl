@@ -5,8 +5,8 @@
 [![Dependencies Status](http://jarkeeper.com/symphonyoss/bot-unfurl/status.svg)](http://jarkeeper.com/symphonyoss/bot-unfurl)
 [![Symphony Software Foundation - Incubating](https://cdn.rawgit.com/symphonyoss/contrib-toolbox/master/images/ssf-badge-incubating.svg)](https://symphonyoss.atlassian.net/wiki/display/FM/Incubating)
 
-[![Unfurl Bot Production Status](https://hv0dbm9dsd.execute-api.us-east-1.amazonaws.com/Prod/badge?oc_bot_name=botunfurl-prod&oc_project_name=ssf-prod)](https://foundation.symphony.com)
-[![Unfurl Bot ODP Status](https://hv0dbm9dsd.execute-api.us-east-1.amazonaws.com/Prod/badge?oc_bot_name=botunfurl-dev&oc_project_name=ssf-dev)](https://foundation-dev.symphony.com)
+![Unfurl Bot (ODP) Log Status](https://hv0dbm9dsd.execute-api.us-east-1.amazonaws.com/Prod/badge?oc_bot_name=botunfurl-dev&oc_project_name=ssf-dev)
+![Unfurl Bot (Production) Log Status](https://hv0dbm9dsd.execute-api.us-east-1.amazonaws.com/Prod/badge?oc_bot_name=botunfurl-prod&oc_project_name=ssf-prod)
 
 # unfurl bot
 
@@ -25,6 +25,10 @@ Here it is in action:
 ## Installation
 
 For now unfurl bot is available in source form only, so fire up your favourite git client and get cloning!
+
+The bot is also running in the production Symphony network, hosted in the [Foundation's production pod](https://foundation.symphony.com).
+It is not yet enabled for cross-pod communication (so other pods cannot yet see this instance), but the intention is to
+enable this as soon as the project is [Activated](https://symphonyoss.atlassian.net/wiki/spaces/FM/pages/62783520/Activation).
 
 ## Configuration
 
@@ -97,8 +101,8 @@ the shell.
 
 ### A Note on Security
 
-The bot's configuration includes sensitive information (certificate locations and passwords), so please be extra
-careful to secure this configuration, however you choose to manage it (in a file, environment variables, etc.).
+The bot's configuration includes sensitive information (certificate locations and passwords), so please be extra careful
+to secure this configuration, however you choose to manage it (in a file, environment variables, etc.).
 
 ### Logging Configuration
 
@@ -165,6 +169,18 @@ This assumes that the `etc` directory contains the certificate, truststore, and 
 [GitHub project](https://github.com/symphonyoss/bot-unfurl)
 
 [Bug Tracker](https://github.com/symphonyoss/bot-unfurl/issues)
+
+### Branching Structure
+
+This project has two permanent branches called `master` and `dev`.  `master` is a
+[GitHub protected branch](https://help.github.com/articles/about-protected-branches/) and cannot be pushed to directly -
+all pushes (from project team members) and pull requests (from the wider community) must be made against the `dev`
+branch.  The project team will periodically merge outstanding changes from `dev` to `master`.
+
+All commits to the `dev` branch automatically trigger redeployment of the instance of the bot that's configured to run against the
+[Foundation's Open Developer Platform (ODP)](https://symphonyoss.atlassian.net/wiki/spaces/FM/pages/37847084/Open+Developer+Platform).
+All commits to the `master` branch automatically trigger redeployment of the instance of the bot that's configured to run
+against [the Foundation's production pod](https://foundation.symphony.com/).
 
 ## License
 
