@@ -1,16 +1,12 @@
 language: clojure
 lein: lein2
-script: lein2 do check, midje, uberjar
+script: lein2 do check, midje, uberjar ; mkdir -p  target/oc ; cp target/*-standalone.jar target/oc/
+
 jdk:
   - oraclejdk8
 sudo: false
 
-env:
-  global:
-    - OC_BINARY_FILE=./target/bot-unfurl-standalone.jar
-    - OC_BUILD_CONFIG_NAME=botunfurl
-
-after_success: "if [[ \"$TRAVIS_PULL_REQUEST\" = \"false\" && $TRAVIS_BRANCH =~ master ]]; then curl -s https://raw.githubusercontent.com/symphonyoss/contrib-toolbox/master/scripts/oc-deploy.sh | bash ; fi"
+after_success: ./after-success.sh $TRAVIS_BRANCH $TRAVIS_PULL_REQUEST
 
 notifications:
   webhooks: https://foundation.symphony.com/integration/v1/whi/simpleWebHookIntegration/58ae440fe4b0d18517ab5177/58af9f79e4b0d18517ab51a9

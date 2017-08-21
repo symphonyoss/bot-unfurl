@@ -7,18 +7,23 @@ parameters:
   description: The Bot name
   displayName: Bot Name
   required: true
-  value: "botunfurl"
-- name: S2I_STREAM_TAG
-  description: The S2I ImageStreamTag
-  displayName: S2I ImageStreamTag
+- name: SYMPHONY_API_HOST
+  description: The hostname serving the Symphony API endpoints
+  displayName: Symphony API hostname
   required: true
-  value: "s2i-java-binary:latest"
-- name: RUN_COMMAND
-  description: The command to run when the container starts
-  displayName: Run Command
+- name: SYMPHONY_POD_HOST
+  description: The hostname serving the Symphony API endpoints
+  displayName: Symphony Pod hostname
   required: true
-  value: "java -jar /opt/openshift/bot-unfurl-standalone.jar"
 objects:
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    labels:
+      app: ${BOT_NAME}
+    name: s2i-java-binary
+  spec:
+    dockerImageRepository: "docker.io/maoo/s2i-java-binary"
 - apiVersion: v1
   kind: ImageStream
   metadata:
@@ -50,7 +55,7 @@ objects:
       sourceStrategy:
         from:
           kind: ImageStreamTag
-          name: ${S2I_STREAM_TAG}
+          name: s2i-java-binary:latest
     triggers: {}
 - apiVersion: v1
   kind: DeploymentConfig
@@ -88,17 +93,15 @@ objects:
           terminationMessagePath: /dev/termination-log
           env:
           - name: RUN_COMMAND
-            value: ${RUN_COMMAND}
-          - name: LOG4J_FILE
-            value: ${LOG4J_FILE}
+            value: "java -jar /opt/openshift/bot-unfurl-standalone.jar"
           - name: SESSIONAUTH_URL
-            value: https://foundation-dev-api.symphony.com/sessionauth
+            value: https://${SYMPHONY_API_HOST}/sessionauth
           - name: KEYAUTH_URL
-            value: https://foundation-dev-api.symphony.com/keyauth
+            value: https://${SYMPHONY_API_HOST}/keyauth
           - name: POD_URL
-            value: https://foundation-dev.symphony.com/pod
+            value: https://${SYMPHONY_POD_HOST}/pod
           - name: AGENT_URL
-            value: https://foundation-dev.symphony.com/agent
+            value: https://${SYMPHONY_POD_HOST}/agent
           - name: DOWNLOAD_HOST
             valueFrom:
               secretKeyRef:
