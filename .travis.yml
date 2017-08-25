@@ -7,6 +7,3 @@ jdk:
 sudo: false
 
 after_success: ./after-success.sh $TRAVIS_BRANCH $TRAVIS_PULL_REQUEST
-
-notifications:
-  webhooks: https://foundation.symphony.com/integration/v1/whi/simpleWebHookIntegration/58ae440fe4b0d18517ab5177/58af9f79e4b0d18517ab51a9
