@@ -1,6 +1,6 @@
 language: clojure
-lein: lein2
-script: lein2 do check, midje, uberjar ; mkdir -p  target/oc ; cp target/*-standalone.jar target/oc/
+lein: 2.7.1
+script: lein do check, midje, uberjar ; mkdir -p  target/oc ; cp target/*-standalone.jar target/oc/
 
 jdk:
   - oraclejdk8
