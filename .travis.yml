@@ -6,4 +6,4 @@ jdk:
   - oraclejdk8
 sudo: false
 
-after_success: ./after-success.sh $TRAVIS_BRANCH $TRAVIS_PULL_REQUEST
+after_success: ./after-success.sh $TRAVIS_BRANCH $TRAVIS_PULL_REQUEST ; lein pom && mvn org.whitesource:whitesource\-maven\-plugin:3.2.9:update -Dorg.whitesource.orgToken=$WHITESOURCE_TOKEN
