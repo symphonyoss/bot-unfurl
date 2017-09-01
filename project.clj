@@ -17,11 +17,11 @@
 
 (defproject org.symphonyoss.symphony/bot-unfurl "0.1.0-SNAPSHOT"
   :description      "A bot that looks for URIs in messages and 'unfurls' them into a new message."
-  :url              "https://github.com/pmonks/bot-unfurl"
+  :url              "https://github.com/symphonyoss/bot-unfurl"
   :license          {:spdx-license-identifier "Apache-2.0"
                      :name                    "Apache License, Version 2.0"
                      :url                     "http://www.apache.org/licenses/LICENSE-2.0"}
-  :min-lein-version "2.5.0"
+  :min-lein-version "2.7.0"
   :repositories     [["sonatype-snapshots" {:url "https://oss.sonatype.org/content/groups/public" :snapshots true}]
                      ["jitpack"            {:url "https://jitpack.io"}]]
   :dependencies     [
@@ -37,7 +37,7 @@
                       [org.jolokia/jolokia-jvm          "1.3.7"]
                       [org.jolokia/jolokia-jvm          "1.3.7" :classifier "agent"]
                       [com.linkedin.urls/url-detector   "0.1.17"         :exclusions [org.apache.commons/commons-lang3 org.beanshell/bsh junit org.yaml/snakeyaml]]
-                      [org.clojars.pmonks/unfurl        "0.5.0"          :exclusions [org.clojure/clojure commons-logging]]
+                      [org.clojars.pmonks/unfurl        "0.6.0"          :exclusions [org.clojure/clojure commons-logging]]
                       [org.symphonyoss/clj-symphony     "0.2.0-SNAPSHOT" :exclusions [org.clojure/clojure org.slf4j/slf4j-log4j12]]
                     ]
   :managed-dependencies [
@@ -50,7 +50,7 @@
                       [org.hamcrest/hamcrest-core                               "1.3"]
                     ]
   :profiles         {:dev {:dependencies [[midje         "1.8.3"]]
-                           :plugins      [[lein-midje    "3.2.1"]      ; Don't remove these or travis-ci will assplode!
+                           :plugins      [[lein-midje    "3.2.1"]
                                           [lein-licenses "0.2.1"]]}
                      :uberjar {:aot          :all
                                :uberjar-name "bot-unfurl-standalone.jar"}}
