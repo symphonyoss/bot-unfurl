@@ -13,4 +13,4 @@ env:
 
 script: lein do check, midje, uberjar ; mkdir -p target/oc ; cp target/*-standalone.jar target/oc/
 
-after_success: ./after-success.sh $TRAVIS_BRANCH $TRAVIS_PULL_REQUEST ; lein pom && mvn org.whitesource:whitesource\-maven\-plugin:3.3.0:update -Dorg.whitesource.orgToken=$WHITESOURCE_TOKEN
+after_success: ./after-success.sh $TRAVIS_BRANCH $TRAVIS_PULL_REQUEST ; lein pom && mvn org.whitesource:whitesource\-maven\-plugin:3.3.1:update -Dorg.whitesource.orgToken=$WHITESOURCE_TOKEN -Dorg.whitesource.ignoredScopes=test,provided,runtime,system
