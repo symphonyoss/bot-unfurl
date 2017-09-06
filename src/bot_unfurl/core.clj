@@ -16,16 +16,19 @@
 ;
 
 (ns bot-unfurl.core
-  (:require [clojure.string        :as s]
-            [clojure.tools.logging :as log]
-            [mount.core            :as mnt :refer [defstate]]
-            [unfurl.api            :as uf]
-            [clj-symphony.connect  :as syc]
-            [clj-symphony.user     :as syu]
-            [clj-symphony.message  :as sym]
-            [bot-unfurl.config     :as cfg]))
+  (:require [clojure.string               :as s]
+            [clojure.tools.logging        :as log]
+            [mount.core                   :as mnt :refer [defstate]]
+            [unfurl.api                   :as uf]
+            [clj-symphony.connect         :as syc]
+            [clj-symphony.user            :as syu]
+            [clj-symphony.message         :as sym]
+            [clj-symphony.user-connection :as syuc]
+            [bot-unfurl.config            :as cfg]))
 
 (def ^:private messageml-link-regex #"<a\s+href\s*=\s*\"([^\"]+)\"\s*/?>")   ; Note: this regex matches both MessageML v1 and v2 versions of the <a> tag
+
+(def ^:private accept-connections-interval-ms (* 1000 60 30))   ; 30 minutes
 
 (defstate symphony-connection
           :start (let [cnxn (syc/connect (:symphony-coords cfg/config))
@@ -131,3 +134,22 @@
 (defstate unfurl-listener
           :start (sym/register-listener   symphony-connection unfurl-urls-and-post-msg!)
           :stop  (sym/deregister-listener symphony-connection unfurl-listener))
+
+(defn- accept-all-connection-requests-and-log
+  "Unconditionally accepts all incoming connection requests, and logs the number accepted."
+  [connection]
+  (let [accept-count (syuc/accept-all-connection-requests! connection)]
+    (log/info (str "Accepted " accept-count " incoming connection requests."))))
+
+(defstate accept-connections-job
+          :start (let [p (promise)]
+                   (future
+                     (accept-all-connection-requests-and-log symphony-connection)  ; Accept upon startup
+                     (try
+                       (while (= :timedout (deref p accept-connections-interval-ms :timedout))
+                         (accept-all-connection-requests-and-log symphony-connection))
+                       (catch InterruptedException ie)  ; Ignore interrupted exceptions
+                       (catch Exception e
+                         (log/warn e))))
+                   #(deliver p :stopped))
+          :stop  (accept-connections-job))
