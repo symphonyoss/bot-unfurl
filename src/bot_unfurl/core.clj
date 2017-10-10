@@ -37,9 +37,12 @@
                     cnxn))
 
 (defstate blacklist
-          :start (concat (:blacklist cfg/config)                                ; Entries inline in the config file
-                         (if-let [blacklist-file (:blacklist-file cfg/config)]  ; Entries in a separate text file
-                           (s/split (slurp blacklist-file) #"\s+"))))
+          :start (distinct (concat (:blacklist cfg/config)                                  ; Entries inline in the config file
+                                   (if-let [blacklist-files (:blacklist-files cfg/config)]  ; Entries in separate text files
+                                     (flatten (map #(s/split (slurp %) #"\s+") blacklist-files))))))
+
+(defstate test!!
+          :start (println blacklist))
 
 (defstate http-proxy
           :start (:http-proxy cfg/config))

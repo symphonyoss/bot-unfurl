@@ -17,8 +17,14 @@
 
 (ns bot-unfurl.config
   (:require [clojure.java.io :as io]
+            [clojure.string  :as s]
             [aero.core       :as a]
             [mount.core      :as mnt :refer [defstate]]))
+
+(defmethod a/reader 'split
+  [opts tag value]
+  (let [[s re] value]
+    (s/split s (re-pattern re))))
 
 (defstate config
           :start (if-let [config-file (:config-file (mnt/args))]
