@@ -37,9 +37,12 @@
                     cnxn))
 
 (defstate blacklist
-          :start (concat (:blacklist cfg/config)                                ; Entries inline in the config file
-                         (if-let [blacklist-file (:blacklist-file cfg/config)]  ; Entries in a separate text file
-                           (s/split (slurp blacklist-file) #"\s+"))))
+          :start (distinct (concat (:blacklist cfg/config)                                  ; Entries inline in the config file
+                                   (if-let [blacklist-files (:blacklist-files cfg/config)]  ; Entries in separate text files
+                                     (flatten (map #(s/split (slurp %) #"\s+") blacklist-files))))))
+
+(defstate test!!
+          :start (println blacklist))
 
 (defstate http-proxy
           :start (:http-proxy cfg/config))
@@ -85,12 +88,6 @@
       #"\$([^\s]+)"
       " <cash tag=\"$1\"/>")))
 
-(defn- message-ml-escape
-  "Escapes the given string for MessageML."
-  [^String s]
-  (when s
-    (org.apache.commons.lang3.StringEscapeUtils/escapeXml11 s)))
-
 (defn- unfurl-url-and-build-msg
   "Unfurls a single URL and builds a MessageML message fragment for it."
   [^String url]
@@ -99,10 +96,10 @@
       (if (blacklisted? url)
         (log/warn "url" url "is blacklisted - ignoring.")
         (let [unfurled    (uf/unfurl url :proxy-host (first http-proxy) :proxy-port (second http-proxy))
-              url         (message-ml-escape (get unfurled :url url))
-              title       (message-ml-escape (:title       unfurled))
-              description (process-description (message-ml-escape (:description unfurled)))
-              preview-url (message-ml-escape (:preview-url unfurled))]
+              url         (sym/escape (get unfurled :url url))
+              title       (sym/escape (:title       unfurled))
+              description (process-description (sym/escape (:description unfurled)))
+              preview-url (sym/escape (:preview-url unfurled))]
           (str "<card accent=\"tempo-bg-color--cyan\">"
                "<header>"
                (if title (str "<b>" title "</b> - ")) "<a href=\"" url "\">" url "</a>"

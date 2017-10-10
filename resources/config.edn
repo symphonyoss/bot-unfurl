@@ -19,6 +19,6 @@
     "port" #or [#env JOLOKIA_PORT "8778"]
   }
 
-  :blacklist [".xxx" "drive.google.com" "docs.google.com"]
-  :blacklist-file #env BLACKLIST_FILE
+  :blacklist       [".xxx" "drive.google.com" "docs.google.com"]
+  :blacklist-files #split [#env BLACKLIST_FILES "\\s*,\\s*"]
 }
