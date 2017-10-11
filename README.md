@@ -32,20 +32,9 @@ enable this as soon as the project is [Activated](https://symphonyoss.atlassian.
 
 ## Configuration
 
-unfurl bot is configured via a single, optional [EDN](https://github.com/edn-format/edn) file that's specified on the command
-line.  This configuration file contains the coordinates of the various endpoints, certificates, knickknacks and gewgaws
+unfurl bot is configured via a single, optional [EDN](https://github.com/edn-format/edn) file that may be specified on the
+command line.  This configuration file contains the coordinates of the various endpoints, certificates, knickknacks and gewgaws
 that Symphony needs in order for a bot to connect to a pod.
-
-It also allows one to optionally:
-
-* specify how [Jolokia](https://jolokia.org/) is configured (used for server-side monitoring)
-* specify a blacklist of host names that the bot should never, under any circumstances, unfurl
-  * The blacklist can either be provided inline in the configuration file, in separate text files (blacklist entries separated by
-    whitespace in each file), or both (in which case the various lists are merged and de-duped).  Each blacklist file may be hosted
-    anywhere that can be read by [`clojure.core/slurp`](https://clojure.github.io/clojure/clojure.core-api.html#clojure.core/slurp).
-  * Note that host names are matched "end to end", so if the blacklist contains an entry such as ".xxx", all host names
-    that end with ".xxx" will be ignored (blacklisted)
-* provide the coordinates of an HTTP proxy
 
 ### Configuration File Format
 
@@ -83,16 +72,30 @@ other system components.
 The `:jolokia-config` map is passed directly to Jolokia's [`JolokiaServerConfig` constructor](https://github.com/rhuss/jolokia/blob/master/agent/jvm/src/main/java/org/jolokia/jvmagent/JolokiaServerConfig.java#L92).
 See the [default Jolokia property file](https://github.com/rhuss/jolokia/blob/master/agent/jvm/src/main/resources/default-jolokia-agent.properties)
 for a full list of the supported configuration options and their default values, and note that all
-keys and values in this map MUST be strings (this is a Jolokia requirement).
+keys and values in this map MUST be strings (this is a Jolokia requirement).  [Jolokia](https://jolokia.org/)
+used for server-side monitoring of the bot.
 
-Note: the HTTP proxy is only used for requests to the URLs that are being unfurled.  Use of an
-HTTP proxy to make calls to the Symphony APIs are [not yet supported by clj-symphony](https://github.com/symphonyoss/clj-symphony/issues/1).
+The two `:blacklist-*` entries specify a blacklist of host names that the bot should never, under any circumstances, unfurl.
+The blacklist can be provided:
+* inline in the configuration file
+* in separate text files (blacklist entries separated by whitespace in each file)
+* both
+Regardless of how they're provided, all blacklist entries are merged and de-duped.  Each blacklist file may be hosted anywhere
+that can be read by [`clojure.core/slurp`](https://clojure.github.io/clojure/clojure.core-api.html#clojure.core/slurp) - this
+includes both local files and remote URLs.
+
+Note that host names are matched "end to end" against the blacklist, so if the blacklist contains an entry such as ".xxx", **all**
+host names that *end* with ".xxx" will be ignored (blacklisted), regardless of the rest of the contents of the URL.
+
+The `:http-proxy` tuple allows thje administrator to provide the coordinates of an HTTP proxy.  Note: the HTTP proxy is only
+used for requests to the URLs that are being unfurled.  Use of an HTTP proxy to make calls to the Symphony APIs are
+[not yet supported by clj-symphony](https://github.com/symphonyoss/clj-symphony/issues/1).
 
 ### Configuration File Location and Loading Mechanism
 
-The `config.edn` file may be stored anywhere that can be read by the bot's JVM process, and is loaded using the
-[aero](https://github.com/juxt/aero) library - see the [aero documentation](https://github.com/juxt/aero/blob/master/README.md)
-for details on the various advanced options aero supports.
+The configuration file is typically called `config.edn` and may be stored anywhere that can be read by the bot's JVM process.
+It's loaded using the [aero](https://github.com/juxt/aero) library - see the [aero documentation](https://github.com/juxt/aero/blob/master/README.md)
+for details on the various advanced loading options aero supports.
 
 The bot ships with a [default `config.edn` file](https://github.com/symphonyoss/bot-unfurl/blob/master/resources/config.edn)
 that will be read if a file is not specified on the command line.  This file delegates basically all of the settings to environment
