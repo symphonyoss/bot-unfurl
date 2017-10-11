@@ -80,6 +80,7 @@ The blacklist can be provided:
 * inline in the configuration file
 * in separate text files (blacklist entries separated by whitespace in each file)
 * both
+
 Regardless of how they're provided, all blacklist entries are merged and de-duped.  Each blacklist file may be hosted anywhere
 that can be read by [`clojure.core/slurp`](https://clojure.github.io/clojure/clojure.core-api.html#clojure.core/slurp) - this
 includes both local files and remote URLs.
