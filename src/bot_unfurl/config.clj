@@ -21,8 +21,13 @@
             [aero.core       :as a]
             [mount.core      :as mnt :refer [defstate]]))
 
+; Because java.util.logging is a hot mess
+(org.slf4j.bridge.SLF4JBridgeHandler/removeHandlersForRootLogger)
+(org.slf4j.bridge.SLF4JBridgeHandler/install)
+
 (defmethod a/reader 'split
   [opts tag value]
+  "Adds a #split reader macro to EDN"
   (let [[s re] value]
     (s/split s (re-pattern re))))
 
