@@ -33,14 +33,15 @@ enable this as soon as the project is [Activated](https://symphonyoss.atlassian.
 ## Configuration
 
 unfurl bot is configured via a single, optional [EDN](https://github.com/edn-format/edn) file that may be specified on the
-command line.  This configuration file contains the coordinates of the various endpoints, certificates, knickknacks and geegaws
-that Symphony needs in order for a bot to connect to a pod.
+command line via the "-c" command line option.  You can also provide a "-h" command line option to get help on all of the
+command line options the bot supports.
 
 ### Configuration File Location and Loading Mechanism
 
-The configuration file is traditionally called `config.edn` and may be stored anywhere that can be read by the bot's JVM process.
-It's loaded using the [aero](https://github.com/juxt/aero) library - see the [aero documentation](https://github.com/juxt/aero/blob/master/README.md)
-for details on the various advanced options aero supports.
+The configuration file is traditionally called `config.edn` (but may be called anything you like) and may be stored anywhere
+that can be read by the bot's JVM process via standard POSIX file I/O.  It's loaded using the [aero](https://github.com/juxt/aero)
+library - see the [aero documentation](https://github.com/juxt/aero/blob/master/README.md) for details on the various advanced
+options aero supports.
 
 The bot ships with a [default `config.edn` file](https://github.com/symphonyoss/bot-unfurl/blob/master/resources/config.edn)
 that will be read if a config file is not specified on the command line.  This file delegates basically all configuration to
@@ -78,39 +79,40 @@ The configuration file is structured as follows:
   :blacklist ["<hostname>" "<hostname>" ".xxx" "microsoft.com" ...]    ; Optional
   :blacklist-files ["/path/or/url/of/text/file.txt" "/path/or/url/of/some/other/file.txt"]    ; Optional
   :http-proxy ["<proxy-host>" <proxy-port>]    ; Optional - only needed if you use an HTTP proxy
+  :accept-connections-interval <minutes>    ; Optional - defaults to 30 minutes
 }
 ```
 
 #### :symphony-coords
 
-The `:symphony-coords` are passed directly to the
+The coordinates of the various endpoints, certificates, knickknacks and geegaws that the bot needs in order to connect to a
+Symphony pod.  This map is passed directly to the
 [clj-symphony library's `connect` function](https://symphonyoss.github.io/clj-symphony/clj-symphony.connect.html#var-connect),
-and have the same semantics as what's described there.  Typically `:pod-id` can only be used if
-you're on a fully-hosted Symphony "business tier" subscription - for enterprise deployments the
-agent (at least) will typically reside on-premises, with a completely different hostname than the
-other system components.
+and has the same semantics as what's described there.
 
 #### :jolokia-config
 
-The `:jolokia-config` map is passed directly to Jolokia's [`JolokiaServerConfig` constructor](https://github.com/rhuss/jolokia/blob/master/agent/jvm/src/main/java/org/jolokia/jvmagent/JolokiaServerConfig.java#L92).
+The configuration of the [Jolokia](https://jolokia.org/) library, used to support server-side ops monitoring of the bot.
+This map is passed directly to Jolokia's [`JolokiaServerConfig` constructor](https://github.com/rhuss/jolokia/blob/master/agent/jvm/src/main/java/org/jolokia/jvmagent/JolokiaServerConfig.java#L92).
 See the [default Jolokia property file](https://github.com/rhuss/jolokia/blob/master/agent/jvm/src/main/resources/default-jolokia-agent.properties)
 for a full list of the supported configuration options and their default values, and note that all
-keys and values in this map MUST be strings (this is a Jolokia requirement).  [Jolokia](https://jolokia.org/)
-used for server-side monitoring of the bot.
+keys and values in this map MUST be strings (this is a Jolokia requirement).
 
 #### :blacklist and :blacklist-files
 
-The two optional `:blacklist-*` entries specify a blacklist of URLs that the bot should never, under any circumstances, unfurl.
-The blacklist can be provided:
-* inline in the configuration file
-* in one or more text files (blacklist entries separated by whitespace within each file)
+The blacklist the bot should refer to, in order to determine whether a given URL should be unfurled or not.  This can be
+provided:
+* inline in the configuration file (`:blacklist`)
+* in one or more text files (`:blacklist-files`), containing blacklist entries separated by whitespace or newlines
 * both
 
-Regardless of how they're provided, all blacklist entries are merged into a single list and de-duped.  Each blacklist file may
-be hosted anywhere that can be read by [`clojure.core/slurp`](https://clojure.github.io/clojure/clojure.core-api.html#clojure.core/slurp) -
-this includes both local files and remote URLs.
+Each blacklist file may be hosted anywhere that can be read by
+[`clojure.core/slurp`](https://clojure.github.io/clojure/clojure.core-api.html#clojure.core/slurp) - this includes both
+local files and remote URLs.
 
-Each blacklist entry may be a hostname, domain name, or TLD, and must not begin with a full stop (.) character.  Some examples:
+Regardless of how they're provided, all blacklist entries are merged into a single list and de-duped.  Each blacklist
+entry in that list may be a hostname, domain name, or TLD, and must not begin with a full stop (.) character.  Some
+examples:
 
 | Blacklist Entry  | Description                                        |
 | ---------------- | -------------------------------------------------- |
@@ -120,18 +122,19 @@ Each blacklist entry may be a hostname, domain name, or TLD, and must not begin 
 | drive.google.com | Blacklists Google Drive.                           |
 
 If you're looking for a curated public blacklist, [Université Toulouse 1 Capitole provides a comprehensive one](http://dsi.ut-capitole.fr/blacklists/index_en.php)
-that's compatible with this feature (configure unfurl bot to use whichever of the various `domain` files suit your needs).
+that's compatible with this feature (configure unfurl bot to use whichever of the various `domain` files suit your needs,
+via the `:blacklist-files` setting).
 
 #### :http-proxy
 
-The `:http-proxy` tuple allows the administrator to provide the coordinates of an HTTP proxy.  Note: the HTTP proxy is only
-used for requests to the URLs that are being unfurled.  Use of an HTTP proxy to make calls to the Symphony APIs are
+The coordinates of an HTTP proxy to be used when accessing URLs that are to be unfurled.
+
+Note that use of an HTTP proxy to make calls to the Symphony APIs are
 [not yet supported by clj-symphony](https://github.com/symphonyoss/clj-symphony/issues/1).
 
 #### :accept-connections-interval
 
-The `:accept-connections-interval` setting allows the administrator to provide an interval (in minutes) that the bot will
-use to check for and accept incoming cross-pod connection requests.
+The interval (in minutes) that the bot will use to check for and accept incoming cross-pod connection requests.
 
 ### Logging Configuration
 
