@@ -2,8 +2,8 @@
 [![Open Issues](https://img.shields.io/github/issues/symphonyoss/bot-unfurl.svg)](https://github.com/symphonyoss/bot-unfurl/issues)
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/symphonyoss/bot-unfurl.svg)](http://isitmaintained.com/project/symphonyoss/bot-unfurl "Average time to resolve an issue")
 [![License](https://img.shields.io/github/license/symphonyoss/bot-unfurl.svg)](https://github.com/symphonyoss/bot-unfurl/blob/master/LICENSE)
-[![Dependencies Status](http://jarkeeper.com/symphonyoss/bot-unfurl/status.svg)](http://jarkeeper.com/symphonyoss/bot-unfurl)
 [![Symphony Software Foundation - Incubating](https://cdn.rawgit.com/symphonyoss/contrib-toolbox/master/images/ssf-badge-incubating.svg)](https://symphonyoss.atlassian.net/wiki/display/FM/Incubating)
+<!--- [![Dependencies Status](http://jarkeeper.com/symphonyoss/bot-unfurl/status.svg)](http://jarkeeper.com/symphonyoss/bot-unfurl) -->
 
 ![Unfurl Bot (ODP) Log Status](https://hv0dbm9dsd.execute-api.us-east-1.amazonaws.com/Prod/badge?oc_bot_name=botunfurl-dev&oc_project_name=ssf-dev)
 ![Unfurl Bot (Production) Log Status](https://hv0dbm9dsd.execute-api.us-east-1.amazonaws.com/Prod/badge?oc_bot_name=botunfurl-prod&oc_project_name=ssf-prod)
