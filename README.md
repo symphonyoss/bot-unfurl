@@ -184,8 +184,8 @@ _on the Docker host_.  This configuration directory must contain:
  2. a `config.edn` file (in the format described above), that points to the certificates using `/etc/opt/bot-unfurl` as the base path (that's where the configuration folder is mounted _within_ the container)
 
  And it may optionally also contain:
- 1. a blacklist file (see above for details)
- 2. a logback configuration file (typically not needed - the bot's JAR file includes a [reasonable default logback configuration](https://github.com/symphonyoss/bot-unfurl/blob/master/resources/logback.xml))
+ 1. blacklist files (see above for details)
+ 2. a logback configuration file
 
 You can also use Docker Compose, by running:
 
