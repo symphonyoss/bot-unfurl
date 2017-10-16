@@ -100,8 +100,7 @@ keys and values in this map MUST be strings (this is a Jolokia requirement).
 
 #### :blacklist and :blacklist-files
 
-The blacklist the bot should refer to, in order to determine whether a given URL should be unfurled or not.  This can be
-provided:
+The blacklist the bot should refer to, in order to determine whether a given URL should be ignored.  This can be provided:
 * inline in the configuration file (`:blacklist`)
 * in one or more text files (`:blacklist-files`), containing blacklist entries separated by whitespace or newlines
 * both
@@ -114,12 +113,12 @@ Regardless of how they're provided, all blacklist entries are merged into a sing
 entry in that list may be a hostname, domain name, or TLD, and must not begin with a full stop (.) character.  Some
 examples:
 
-| Blacklist Entry  | Description                                        |
-| ---------------- | -------------------------------------------------- |
-| localhost        | Blacklists localhost.                              |
-| xxx              | Blacklists everything in the ".xxx" TLD.           |
-| microsoft.com    | Blacklists every site with a ".microsoft.com" URL. |
-| drive.google.com | Blacklists Google Drive.                           |
+| Blacklist Entry    | Description                                        |
+| ------------------ | -------------------------------------------------- |
+| `localhost`        | Blacklists localhost.                              |
+| `xxx`              | Blacklists everything in the ".xxx" TLD.           |
+| `microsoft.com`    | Blacklists every site with a ".microsoft.com" URL. |
+| `drive.google.com` | Blacklists Google Drive.                           |
 
 If you're looking for a curated public blacklist, [Université Toulouse 1 Capitole provides a comprehensive one](http://dsi.ut-capitole.fr/blacklists/index_en.php)
 that's compatible with this feature (configure unfurl bot to use whichever of the various `domain` files suit your needs,
