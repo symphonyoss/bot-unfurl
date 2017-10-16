@@ -33,7 +33,7 @@ enable this as soon as the project is [Activated](https://symphonyoss.atlassian.
 ## Configuration
 
 unfurl bot is configured via a single, optional [EDN](https://github.com/edn-format/edn) file that may be specified on the
-command line.  This configuration file contains the coordinates of the various endpoints, certificates, knickknacks and gewgaws
+command line.  This configuration file contains the coordinates of the various endpoints, certificates, knickknacks and geegaws
 that Symphony needs in order for a bot to connect to a pod.
 
 ### Configuration File Location and Loading Mechanism
