@@ -28,28 +28,46 @@
 
 (def ^:private messageml-link-regex #"<a\s+href\s*=\s*\"([^\"]+)\"\s*/?>")   ; Note: this regex matches both MessageML v1 and v2 versions of the <a> tag
 
-(def ^:private accept-connections-interval-ms (* 1000 60 30))   ; 30 minutes
+(defstate blacklist
+          :start (let [blacklist (doall
+                                   (map (partial str ".")
+                                        (sort
+                                          (distinct
+                                            (concat (:blacklist cfg/config)                                  ; Entries inline in the config file
+                                                    (if-let [blacklist-files (:blacklist-files cfg/config)]  ; Entries in separate text files
+                                                      (flatten (pmap #(s/split (slurp %) #"\s+")
+                                                                     blacklist-files))))))))
+                       _         (log/info "Loaded blacklist with" (count blacklist) "unique entries.")]
+                   blacklist))
 
 (defstate symphony-connection
           :start (let [cnxn (syc/connect (:symphony-coords cfg/config))
                        bot  (syu/user cnxn)
-                       _    (log/info (str "Connected as " (:display-name bot) " (" (:email-address bot) ")"))]
+                       _    (log/info (str "Connected to Symphony as " (:display-name bot) " (" (:email-address bot) ")"))]
                     cnxn))
-
-(defstate blacklist
-          :start (distinct (concat (:blacklist cfg/config)                                  ; Entries inline in the config file
-                                   (if-let [blacklist-files (:blacklist-files cfg/config)]  ; Entries in separate text files
-                                     (flatten (map #(s/split (slurp %) #"\s+") blacklist-files))))))
 
 (defstate http-proxy
           :start (:http-proxy cfg/config))
 
+(defstate accept-connections-interval-ms
+          :start (if-let [accept-connections-interval (:accept-connections-interval cfg/config)]
+                   (* 1000 60 accept-connections-interval)    ; Convert to ms
+                   (* 1000 60 30)))                           ; If not specified, default to 30 minutes
+
+(defn- nth-blacklist-entry
+  "Retrieves the nth blacklist entry, stripping the leading '.' character added by the tool during loading."
+  [i]
+  (subs (nth blacklist i) 1))
+
 ; TODO: Consider using a binary search here, to better support very large blacklists
-(defn- blacklisted?
-  "Returns true if the given url is blacklisted, false otherwise."
+; Note: in testing with the full Université Toulouse 1 Capitole blacklist (~1.2 million entries), this method is still plenty fast enough.
+; It's plausible that memory issues will surface before performance ones do...
+(defn- blacklist-matches
+  "Returns the list of blacklist matches for the given hostname, or nil if no matches."
   [^String url]
-  (let [url-hostname (.getHost (java.net.URL. url))]
-    (some identity (map (partial s/ends-with? url-hostname) blacklist))))
+  (let [url-hostname (str "." (.getHost (java.net.URL. url)))]
+    (seq (map nth-blacklist-entry
+              (remove nil? (map-indexed #(if (s/ends-with? url-hostname %2) %1) blacklist))))))
 
 (defn- detect-urls
   "Detects all URLs in the given string."
@@ -90,8 +108,8 @@
   [^String url]
   (when url
     (try
-      (if (blacklisted? url)
-        (log/warn "url" url "is blacklisted - ignoring.")
+      (if-let [blacklist-matches (blacklist-matches url)]
+        (log/warn "url" url "is blacklisted - matches:" (s/join ", " blacklist-matches))
         (let [unfurled    (uf/unfurl url :proxy-host (first http-proxy) :proxy-port (second http-proxy))
               url         (sym/escape (get unfurled :url url))
               title       (sym/escape (:title       unfurled))
