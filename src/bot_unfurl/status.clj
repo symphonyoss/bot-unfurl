@@ -24,7 +24,7 @@
 (defstate jolokia-server
           :start (let [server (org.jolokia.jvmagent.JolokiaServer.
                                 (org.jolokia.jvmagent.JolokiaServerConfig.
-                                  (into {} (:jolokia-config cfg/config)))
+                                  (into {"logHandlerClass" "org.jolokia.util.JulLogHandler"} (:jolokia-config cfg/config)))  ; Hardcode Jolokia to use JUL
                                 false)]
                    (.start server)
                    server)

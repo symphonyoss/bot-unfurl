@@ -19,6 +19,9 @@
     "port" #or [#env JOLOKIA_PORT "8778"]
   }
 
-  :blacklist       [".xxx" "drive.google.com" "docs.google.com"]
+  :blacklist       ["localhost" "xxx"]
   :blacklist-files #split [#env BLACKLIST_FILES "\\s*,\\s*"]
+
+  ; The interval (in minutes) for checking and accepting new connection requests
+  :accept-connections-interval #long #or [#env ACCEPT_CONNECTIONS_INTERVAL 30]
 }

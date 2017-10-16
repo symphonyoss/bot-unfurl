@@ -34,6 +34,7 @@
                       [ch.qos.logback/logback-classic   "1.2.3"]
                       [org.slf4j/jcl-over-slf4j         "1.7.25"]
                       [org.slf4j/log4j-over-slf4j       "1.7.25"]
+                      [org.slf4j/jul-to-slf4j           "1.7.25"]
                       [org.jolokia/jolokia-jvm          "1.3.7"]
                       [org.jolokia/jolokia-jvm          "1.3.7" :classifier "agent"]
                       [com.linkedin.urls/url-detector   "0.1.17"         :exclusions [org.apache.commons/commons-lang3 org.beanshell/bsh junit org.yaml/snakeyaml]]
