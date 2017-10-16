@@ -13,8 +13,9 @@
     </encoder>
   </appender>
 
-  <logger name="org.apache" level="ERROR" />
+  <logger name="org.apache"      level="ERROR" />
   <logger name="org.symphonyoss" level="ERROR" />
+  <logger name="org.jolokia"     level="ERROR" />
 
   <root level="INFO">
     <appender-ref ref="FILE" />
