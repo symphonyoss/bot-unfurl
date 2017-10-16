@@ -36,6 +36,25 @@ unfurl bot is configured via a single, optional [EDN](https://github.com/edn-for
 command line.  This configuration file contains the coordinates of the various endpoints, certificates, knickknacks and gewgaws
 that Symphony needs in order for a bot to connect to a pod.
 
+### Configuration File Location and Loading Mechanism
+
+The configuration file is traditionally called `config.edn` and may be stored anywhere that can be read by the bot's JVM process.
+It's loaded using the [aero](https://github.com/juxt/aero) library - see the [aero documentation](https://github.com/juxt/aero/blob/master/README.md)
+for details on the various advanced options aero supports.
+
+The bot ships with a [default `config.edn` file](https://github.com/symphonyoss/bot-unfurl/blob/master/resources/config.edn)
+that will be read if a config file is not specified on the command line.  This file delegates basically all configuration to
+environment variables, allowing the administrator to deploy and run the bot as a standalone uberjar, and configure it exclusively
+from the runtime environment.
+
+Please refer to the [default `config.edn` file](https://github.com/symphonyoss/bot-unfurl/blob/master/resources/config.edn)
+for details on those environment variables.
+
+### A Note on Security
+
+**The bot's configuration includes sensitive information (certificate locations and passwords), so please be extra careful
+to secure this configuration, however you choose to manage it (in a file, environment variables, etc.).**
+
 ### Configuration File Format
 
 The configuration file is structured as follows:
@@ -62,6 +81,8 @@ The configuration file is structured as follows:
 }
 ```
 
+#### :symphony-coords
+
 The `:symphony-coords` are passed directly to the
 [clj-symphony library's `connect` function](https://symphonyoss.github.io/clj-symphony/clj-symphony.connect.html#var-connect),
 and have the same semantics as what's described there.  Typically `:pod-id` can only be used if
@@ -69,44 +90,48 @@ you're on a fully-hosted Symphony "business tier" subscription - for enterprise 
 agent (at least) will typically reside on-premises, with a completely different hostname than the
 other system components.
 
+#### :jolokia-config
+
 The `:jolokia-config` map is passed directly to Jolokia's [`JolokiaServerConfig` constructor](https://github.com/rhuss/jolokia/blob/master/agent/jvm/src/main/java/org/jolokia/jvmagent/JolokiaServerConfig.java#L92).
 See the [default Jolokia property file](https://github.com/rhuss/jolokia/blob/master/agent/jvm/src/main/resources/default-jolokia-agent.properties)
 for a full list of the supported configuration options and their default values, and note that all
 keys and values in this map MUST be strings (this is a Jolokia requirement).  [Jolokia](https://jolokia.org/)
 used for server-side monitoring of the bot.
 
-The two `:blacklist-*` entries specify a blacklist of host names that the bot should never, under any circumstances, unfurl.
+#### :blacklist and :blacklist-files
+
+The two optional `:blacklist-*` entries specify a blacklist of URLs that the bot should never, under any circumstances, unfurl.
 The blacklist can be provided:
 * inline in the configuration file
-* in separate text files (blacklist entries separated by whitespace in each file)
+* in one or more text files (blacklist entries separated by whitespace within each file)
 * both
 
-Regardless of how they're provided, all blacklist entries are merged and de-duped.  Each blacklist file may be hosted anywhere
-that can be read by [`clojure.core/slurp`](https://clojure.github.io/clojure/clojure.core-api.html#clojure.core/slurp) - this
-includes both local files and remote URLs.
+Regardless of how they're provided, all blacklist entries are merged into a single list and de-duped.  Each blacklist file may
+be hosted anywhere that can be read by [`clojure.core/slurp`](https://clojure.github.io/clojure/clojure.core-api.html#clojure.core/slurp) -
+this includes both local files and remote URLs.
 
-Note that host names are matched "end to end" against the blacklist, so if the blacklist contains an entry such as ".xxx", **all**
-host names that *end* with ".xxx" will be ignored (blacklisted), regardless of the rest of the contents of the URL.
+Each blacklist entry may be a hostname, domain name, or TLD, and must not begin with a full stop (.) character.  Some examples:
 
-The `:http-proxy` tuple allows thje administrator to provide the coordinates of an HTTP proxy.  Note: the HTTP proxy is only
+| Blacklist Entry  | Description                                        |
+| ---------------- | -------------------------------------------------- |
+| localhost        | Blacklists localhost.                              |
+| xxx              | Blacklists everything in the ".xxx" TLD.           |
+| microsoft.com    | Blacklists every site with a ".microsoft.com" URL. |
+| drive.google.com | Blacklists Google Drive.                           |
+
+If you're looking for a curated public blacklist, [Université Toulouse 1 Capitole provides a comprehensive one](http://dsi.ut-capitole.fr/blacklists/index_en.php)
+that's compatible with this feature (configure unfurl bot to use whichever of the various `domain` files suit your needs).
+
+#### :http-proxy
+
+The `:http-proxy` tuple allows the administrator to provide the coordinates of an HTTP proxy.  Note: the HTTP proxy is only
 used for requests to the URLs that are being unfurled.  Use of an HTTP proxy to make calls to the Symphony APIs are
 [not yet supported by clj-symphony](https://github.com/symphonyoss/clj-symphony/issues/1).
 
-### Configuration File Location and Loading Mechanism
+#### :accept-connections-interval
 
-The configuration file is typically called `config.edn` and may be stored anywhere that can be read by the bot's JVM process.
-It's loaded using the [aero](https://github.com/juxt/aero) library - see the [aero documentation](https://github.com/juxt/aero/blob/master/README.md)
-for details on the various advanced loading options aero supports.
-
-The bot ships with a [default `config.edn` file](https://github.com/symphonyoss/bot-unfurl/blob/master/resources/config.edn)
-that will be read if a file is not specified on the command line.  This file delegates basically all of the settings to environment
-variables, allowing the administrator to deploy and run the tool as a standalone uberjar, and configure it exclusively via
-the shell.
-
-### A Note on Security
-
-The bot's configuration includes sensitive information (certificate locations and passwords), so please be extra careful
-to secure this configuration, however you choose to manage it (in a file, environment variables, etc.).
+The `:accept-connections-interval` setting allows the administrator to provide an interval (in minutes) that the bot will
+use to check for and accept incoming cross-pod connection requests.
 
 ### Logging Configuration
 
