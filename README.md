@@ -49,7 +49,7 @@ environment variables, allowing the administrator to deploy and run the bot as a
 from the runtime environment.
 
 Please refer to the [default `config.edn` file](https://github.com/symphonyoss/bot-unfurl/blob/master/resources/config.edn)
-for details on those environment variables.
+for details on using these environment variables.  Their use is not described here.
 
 ### A Note on Security
 
