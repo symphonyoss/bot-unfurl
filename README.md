@@ -123,7 +123,7 @@ examples:
 | `drive.google.com` | Blacklists Google Drive.                           |
 
 If you're looking for a curated public blacklist, [Université Toulouse 1 Capitole provides a comprehensive one](http://dsi.ut-capitole.fr/blacklists/index_en.php)
-that's compatible with this feature (configure unfurl bot to use whichever of the various `domain` files suit your needs,
+that's compatible with this feature (configure unfurl bot to use whichever of the various `domains` files suit your needs,
 via the `:blacklist-files` setting).
 
 #### :http-proxy
