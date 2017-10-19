@@ -101,8 +101,10 @@ keys and values in this map MUST be strings (this is a Jolokia requirement).
 #### :blacklist and :blacklist-files
 
 The blacklist the bot should refer to, in order to determine whether a given URL should be ignored.  This can be provided:
+
 * inline in the configuration file (`:blacklist`)
-* in one or more text files (`:blacklist-files`), containing blacklist entries separated by whitespace or newlines
+* in one or more text files (`:blacklist-files`)
+ * blacklist entries inside each text file are separated by whitespace or newlines
 * both
 
 Each blacklist file may be hosted anywhere that can be read by
