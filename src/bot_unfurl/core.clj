@@ -43,7 +43,7 @@
 (defstate symphony-connection
           :start (let [cnxn (syc/connect (:symphony-coords cfg/config))
                        bot  (syu/user cnxn)
-                       _    (log/info (str "Connected to Symphony as " (:display-name bot) " (" (:email-address bot) ")"))]
+                       _    (log/info (str "Connected to Symphony v" (syc/version cnxn) " as " (:display-name bot) " (" (:email-address bot) ")"))]
                     cnxn))
 
 (defstate http-proxy

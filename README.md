@@ -49,7 +49,7 @@ environment variables, allowing the administrator to deploy and run the bot as a
 from the runtime environment.
 
 Please refer to the [default `config.edn` file](https://github.com/symphonyoss/bot-unfurl/blob/master/resources/config.edn)
-for details on those environment variables.
+for details on using these environment variables.  Their use is not described here.
 
 ### A Note on Security
 
@@ -100,18 +100,21 @@ keys and values in this map MUST be strings (this is a Jolokia requirement).
 
 #### :blacklist and :blacklist-files
 
-The blacklist the bot should refer to, in order to determine whether a given URL should be ignored.  This can be provided:
+These two settings define the blacklist (aka blocklist) the bot should refer to, in order to determine whether a given URL
+should be ignored.  It can be provided:
+
 * inline in the configuration file (`:blacklist`)
-* in one or more text files (`:blacklist-files`), containing blacklist entries separated by whitespace or newlines
-* both
+  * each entry in this list is added verbatim to the blacklist
+* in one or more text files (`:blacklist-files`)
+  * each file may be hosted anywhere that can be read by
+    [`clojure.core/slurp`](https://clojure.github.io/clojure/clojure.core-api.html#clojure.core/slurp) - this includes
+    both local files and remote URLs
+  * each file is split into individual entries on whitespace (incl. newlines)
 
-Each blacklist file may be hosted anywhere that can be read by
-[`clojure.core/slurp`](https://clojure.github.io/clojure/clojure.core-api.html#clojure.core/slurp) - this includes both
-local files and remote URLs.
+Regardless of how the blacklist is provided (inline, files, or both), all entries are merged and de-duped, resulting in
+a single blacklist used by the bot at runtime.
 
-Regardless of how they're provided, all blacklist entries are merged into a single list and de-duped.  Each blacklist
-entry in that list may be a hostname, domain name, or TLD, and must not begin with a full stop (.) character.  Some
-examples:
+Entries themselves may be a hostname, domain name, or TLD, and must not begin with a full stop (.) character.  Some examples:
 
 | Blacklist Entry    | Description                                        |
 | ------------------ | -------------------------------------------------- |
@@ -121,7 +124,7 @@ examples:
 | `drive.google.com` | Blacklists Google Drive.                           |
 
 If you're looking for a curated public blacklist, [Université Toulouse 1 Capitole provides a comprehensive one](http://dsi.ut-capitole.fr/blacklists/index_en.php)
-that's compatible with this feature (configure unfurl bot to use whichever of the various `domain` files suit your needs,
+that's compatible with this feature (configure unfurl bot to use whichever of the various `domains` files suit your needs,
 via the `:blacklist-files` setting).
 
 #### :http-proxy
