@@ -102,7 +102,12 @@ objects:
             value: https://${SYMPHONY_POD_HOST}/pod
           - name: AGENT_URL
             value: https://${SYMPHONY_POD_HOST}/agent
-          - name: DOWNLOAD_HOST
+          - name: BLACKLIST_FILES
+            valueFrom:
+              secretKeyRef:
+                name: ${BOT_NAME}.certs
+                key: blacklist.files
+            - name: DOWNLOAD_HOST
             valueFrom:
               secretKeyRef:
                 name: symphony.foundation
