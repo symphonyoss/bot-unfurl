@@ -104,7 +104,7 @@ The blacklist the bot should refer to, in order to determine whether a given URL
 
 * inline in the configuration file (`:blacklist`)
 * in one or more text files (`:blacklist-files`)
- * blacklist entries inside each text file are separated by whitespace or newlines
+  * blacklist entries inside each text file are separated by whitespace or newlines
 * both
 
 Each blacklist file may be hosted anywhere that can be read by
