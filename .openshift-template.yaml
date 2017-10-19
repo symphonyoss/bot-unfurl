@@ -107,7 +107,7 @@ objects:
               secretKeyRef:
                 name: ${BOT_NAME}.certs
                 key: blacklist.files
-            - name: DOWNLOAD_HOST
+          - name: DOWNLOAD_HOST
             valueFrom:
               secretKeyRef:
                 name: symphony.foundation
