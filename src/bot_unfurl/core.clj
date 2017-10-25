@@ -110,7 +110,7 @@
     (try
       (if-let [blacklist-matches (blacklist-matches url)]
         (log/warn "url" url "is blacklisted - matches:" (s/join ", " blacklist-matches))
-        (let [unfurled    (uf/unfurl url :proxy-host (first http-proxy) :proxy-port (second http-proxy))
+        (let [unfurled    (uf/unfurl url :timeout-ms 10000 :proxy-host (first http-proxy) :proxy-port (second http-proxy))
               url         (sym/escape (get unfurled :url url))
               title       (sym/escape (:title       unfurled))
               description (process-description (sym/escape (:description unfurled)))
