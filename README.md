@@ -141,7 +141,8 @@ Note that use of an HTTP proxy to make calls to the Symphony APIs are
 
 #### :accept-connections-interval
 
-The interval (in minutes) that the bot will use to check for and accept incoming cross-pod connection requests.
+The interval (in minutes) that the bot will use to check for and accept incoming cross-pod connection requests.  If not
+specified, defaults to 30 minutes.
 
 ### Logging Configuration
 
