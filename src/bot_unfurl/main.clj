@@ -21,7 +21,7 @@
             [clojure.tools.cli     :as cli]
             [clojure.tools.logging :as log]
             [mount.core            :as mnt :refer [defstate]]
-            [bot-unfurl.CLJ-2253   :as buggy-shit]
+            [bot-unfurl.CLJ-2253   :as clj-2253]
             [bot-unfurl.config     :as cfg]
             [bot-unfurl.core       :as uf]
             [bot-unfurl.status     :as st])
