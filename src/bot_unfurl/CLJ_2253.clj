@@ -15,10 +15,11 @@
 ; limitations under the License.
 ;
 
+; Workaround for https://dev.clojure.org/jira/browse/CLJ-2253
+
 (ns bot-unfurl.CLJ-2253
   (:require [clojure.java.io :as io]))
 
-; Workaround for https://dev.clojure.org/jira/browse/CLJ-2253
 (defmacro base64-encode
   [^String s]
   (let [jvm-version (System/getProperty "java.version")]
