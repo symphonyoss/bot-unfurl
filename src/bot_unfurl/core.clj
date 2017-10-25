@@ -46,6 +46,11 @@
                        _    (log/info (str "Connected to Symphony v" (syc/version cnxn) " as " (:display-name bot) " (" (:email-address bot) ")"))]
                     cnxn))
 
+(defstate unfurl-timeout-ms
+          :start (if-let [unfurl-timeout-ms (:unfurl-timeout-ms cfg/config)]
+                   unfurl-timeout-ms
+                   2000))   ; If not specified, default to 2 seconds
+
 (defstate http-proxy
           :start (:http-proxy cfg/config))
 
@@ -110,7 +115,7 @@
     (try
       (if-let [blacklist-matches (blacklist-matches url)]
         (log/warn "url" url "is blacklisted - matches:" (s/join ", " blacklist-matches))
-        (let [unfurled    (uf/unfurl url :timeout-ms 10000 :proxy-host (first http-proxy) :proxy-port (second http-proxy))
+        (let [unfurled    (uf/unfurl url :timeout-ms unfurl-timeout-ms :proxy-host (first http-proxy) :proxy-port (second http-proxy))
               url         (sym/escape (get unfurled :url url))
               title       (sym/escape (:title       unfurled))
               description (process-description (sym/escape (:description unfurled)))
