@@ -78,6 +78,7 @@ The configuration file is structured as follows:
   }
   :blacklist ["<hostname>" "<hostname>" ".xxx" "microsoft.com" ...]    ; Optional
   :blacklist-files ["/path/or/url/of/text/file.txt" "/path/or/url/of/some/other/file.txt"]    ; Optional
+  :unfurl-timeout-ms <timeout-in-ms>    ; Optional - defaults to 2 seconds
   :http-proxy ["<proxy-host>" <proxy-port>]    ; Optional - only needed if you use an HTTP proxy
   :accept-connections-interval <minutes>    ; Optional - defaults to 30 minutes
 }
@@ -126,6 +127,10 @@ Entries themselves may be a hostname, domain name, or TLD, and must not begin wi
 If you're looking for a curated public blacklist, [Université Toulouse 1 Capitole provides a comprehensive one](http://dsi.ut-capitole.fr/blacklists/index_en.php)
 that's compatible with this feature (configure unfurl bot to use whichever of the various `domains` files suit your needs,
 via the `:blacklist-files` setting).
+
+#### :unfurl-timeout-ms
+
+The timeout, in milliseconds, for each unfurling operation.  If not specified, defaults to 2 seconds.
 
 #### :http-proxy
 

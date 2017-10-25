@@ -22,6 +22,8 @@
   :blacklist       ["localhost" "xxx"]
   :blacklist-files #split [#env BLACKLIST_FILES "\\s*,\\s*"]
 
+  :unfurl-timeout-ms #or [#env UNFURL_TIMEOUT_MS 2000]
+
   ; The interval (in minutes) for checking and accepting new connection requests
   :accept-connections-interval #long #or [#env ACCEPT_CONNECTIONS_INTERVAL 30]
 }
