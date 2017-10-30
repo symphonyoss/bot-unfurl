@@ -16,10 +16,11 @@
 ;
 
 (ns bot-unfurl.config
-  (:require [clojure.java.io :as io]
-            [clojure.string  :as s]
-            [aero.core       :as a]
-            [mount.core      :as mnt :refer [defstate]]))
+  (:require [clojure.java.io       :as io]
+            [clojure.string        :as s]
+            [clojure.tools.logging :as log]
+            [aero.core             :as a]
+            [mount.core            :as mnt :refer [defstate]]))
 
 ; Because java.util.logging is a hot mess
 (org.slf4j.bridge.SLF4JBridgeHandler/removeHandlersForRootLogger)
@@ -35,3 +36,11 @@
           :start (if-let [config-file (:config-file (mnt/args))]
                    (a/read-config config-file)
                    (a/read-config (io/resource "config.edn"))))
+
+(defn reload
+  "Reloads all of configuration for the bot.  This will briefly take the bot offline."
+  []
+  (log/debug "Reloading unfurl-bot configuration...")
+  (mnt/stop)
+  (mnt/start)
+  (log/debug "unfurl-bot configuration reloaded."))

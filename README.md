@@ -78,6 +78,7 @@ The configuration file is structured as follows:
   }
   :blacklist ["<hostname>" "<hostname>" ".xxx" "microsoft.com" ...]    ; Optional
   :blacklist-files ["/path/or/url/of/text/file.txt" "/path/or/url/of/some/other/file.txt"]    ; Optional
+  :unfurl-timeout-ms <timeout-in-ms>    ; Optional - defaults to 2 seconds
   :http-proxy ["<proxy-host>" <proxy-port>]    ; Optional - only needed if you use an HTTP proxy
   :accept-connections-interval <minutes>    ; Optional - defaults to 30 minutes
 }
@@ -127,6 +128,10 @@ If you're looking for a curated public blacklist, [Université Toulouse 1 Capito
 that's compatible with this feature (configure unfurl bot to use whichever of the various `domains` files suit your needs,
 via the `:blacklist-files` setting).
 
+#### :unfurl-timeout-ms
+
+The timeout, in milliseconds, for each unfurling operation.  If not specified, defaults to 2 seconds.
+
 #### :http-proxy
 
 The coordinates of an HTTP proxy to be used when accessing URLs that are to be unfurled.
@@ -136,7 +141,8 @@ Note that use of an HTTP proxy to make calls to the Symphony APIs are
 
 #### :accept-connections-interval
 
-The interval (in minutes) that the bot will use to check for and accept incoming cross-pod connection requests.
+The interval (in minutes) that the bot will use to check for and accept incoming cross-pod connection requests.  If not
+specified, defaults to 30 minutes.
 
 ### Logging Configuration
 
