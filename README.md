@@ -81,6 +81,7 @@ The configuration file is structured as follows:
   :unfurl-timeout-ms <timeout-in-ms>    ; Optional - defaults to 2 seconds
   :http-proxy ["<proxy-host>" <proxy-port>]    ; Optional - only needed if you use an HTTP proxy
   :accept-connections-interval <minutes>    ; Optional - defaults to 30 minutes
+  :admin-emails ["user1@domain" "user2@domain"]    ; Optional
 }
 ```
 
