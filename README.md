@@ -27,8 +27,8 @@ Here it is in action:
 For now unfurl bot is available in source form only, so fire up your favourite git client and get cloning!
 
 The bot is also running in the production Symphony network, hosted in the [Foundation's production pod](https://foundation.symphony.com).
-It is not yet enabled for cross-pod communication (so other pods cannot yet see this instance), but the intention is to
-enable this as soon as the project is [Activated](https://symphonyoss.atlassian.net/wiki/spaces/FM/pages/62783520/Activation).
+It is not yet enabled for cross-pod communication (so users in other pods cannot yet see it), but the intention is to enable
+this as soon as the project is [Activated](https://symphonyoss.atlassian.net/wiki/spaces/FM/pages/62783520/Activation).
 
 ## Configuration
 
@@ -81,6 +81,7 @@ The configuration file is structured as follows:
   :unfurl-timeout-ms <timeout-in-ms>    ; Optional - defaults to 2 seconds
   :http-proxy ["<proxy-host>" <proxy-port>]    ; Optional - only needed if you use an HTTP proxy
   :accept-connections-interval <minutes>    ; Optional - defaults to 30 minutes
+  :admin-emails ["user1@domain.tld" "user2@domain.tld"]    ; Optional
 }
 ```
 
@@ -126,11 +127,12 @@ Entries themselves may be a hostname, domain name, or TLD, and must not begin wi
 
 If you're looking for a curated public blacklist, [Université Toulouse 1 Capitole provides a comprehensive one](http://dsi.ut-capitole.fr/blacklists/index_en.php)
 that's compatible with this feature (configure unfurl bot to use whichever of the various `domains` files suit your needs,
-via the `:blacklist-files` setting).
+via the `:blacklist-files` setting).  Note that configuring this entire blacklist results in the bot using approximately 2GB of
+memory - make sure your server and JVM are sized appropriately.
 
 #### :unfurl-timeout-ms
 
-The timeout, in milliseconds, for each unfurling operation.  If not specified, defaults to 2 seconds.
+The timeout, in milliseconds, for each unfurling operation.  If not specified, defaults to 2000 (2 seconds).
 
 #### :http-proxy
 
@@ -143,6 +145,11 @@ Note that use of an HTTP proxy to make calls to the Symphony APIs are
 
 The interval (in minutes) that the bot will use to check for and accept incoming cross-pod connection requests.  If not
 specified, defaults to 30 minutes.
+
+#### :admin-emails
+
+A list of administrator email addresses.  These users will be able to interact with the bot via ChatOps (1:1 chats with the bot
+in Symphony).  Administrators should say `help` to the bot to get a list of the available admin commands.
 
 ### Logging Configuration
 

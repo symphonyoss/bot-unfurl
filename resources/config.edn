@@ -26,4 +26,6 @@
 
   ; The interval (in minutes) for checking and accepting new connection requests
   :accept-connections-interval #long #or [#env ACCEPT_CONNECTIONS_INTERVAL 30]
+
+  :admin-emails #split [#env ADMIN_EMAILS "\\s*,\\s*"]
 }
