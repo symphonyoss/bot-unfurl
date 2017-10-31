@@ -91,8 +91,10 @@
                          "<tr><td><b>Bot uptime</b></td><td>" (interval-to-string uptime) "</td></tr>"
                          "<tr><td><b>Time since last configuration reload</b></td><td>" (interval-to-string last-reload) "</td></tr>"
                          "<tr><td><b># blacklist entries</b></td><td>" (count uf/blacklist) "</td></tr>"
-                         "<tr><td><b>Current configuration</b></td><td><pre>" (pp/write cfg/safe-config :stream nil) "</pre></td></tr>"
                          "</table>"
+                         "<card accent=\"tempo-bg-color--cyan\">"
+                         "<header><b>Current configuration</b></header>"
+                         "<body><pre>" (pp/write cfg/safe-config :stream nil) "</pre></body></card>"
                          "</messageML>")]
     (sym/send-message! cnxn/symphony-connection stream-id message)))
 
