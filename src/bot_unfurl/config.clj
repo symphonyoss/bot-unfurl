@@ -88,7 +88,9 @@
                    result))
 
 (def ^:private build-info
-  (edn/read-string (slurp (io/resource "deploy-info.edn"))))
+  (if-let [deploy-info (io/resource "deploy-info.edn")]
+    (edn/read-string (slurp deploy-info))
+    (throw (RuntimeException. "deploy-info.edn classpath resource not found - did you remember to include the 'git-info-edn' task in your build?"))))
 
 (def git-revision
   (s/trim (:hash build-info)))
