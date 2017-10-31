@@ -97,7 +97,7 @@
 
 (defn- send-status-message!
   "Provides status information about the bot."
-  [stream-id _]
+  [stream-id _ _]
   (let [now           (tm/now)
         uptime        (tm/interval cfg/boot-time now)
         last-reload   (tm/interval cfg/last-reload-time now)
@@ -121,9 +121,31 @@
                            "</messageML>")]
     (sym/send-message! cnxn/symphony-connection stream-id message)))
 
+(defn- build-blacklisted-row
+  [[url blacklist-matches]]
+  (str "<tr>"
+       "<td>" url "</td>"
+       "<td>" (if (empty? blacklist-matches) "No" "Yes") "</td>"
+       "<td>" (s/join "<br/>" blacklist-matches) "</td>"
+       "</tr>"))
+
+(defn- blacklisted!
+  "Reports whether the given URL(s) are blacklisted, and if so which blacklist entries they matched."
+  [stream-id text _]
+  (if-let [urls (uf/find-messageml-urls text)]
+    (let [blacklist-matches (into {} (map #(hash-map % (uf/blacklist-matches (str %))) urls))
+          message           (str "<messageML>"
+                                 "<table>"
+                                 "<tr><th>URL</th><th>Blacklisted?</th><th>Blacklist entry matches</th></tr>"
+                                 (s/join (map build-blacklisted-row blacklist-matches))
+                                 "</table>"
+                                 "</messageML>")]
+      (sym/send-message! cnxn/symphony-connection stream-id message))
+    (sym/send-message! cnxn/symphony-connection stream-id "<messageML>No URLs were found in your command.</messageML>")))
+
 (defn- reload-config!
   "Reloads the configuration of the unfurl bot. The bot will be temporarily unavailable during this operation."
-  [stream-id _]
+  [stream-id _ _]
   (sym/send-message! cnxn/symphony-connection
                      stream-id
                      (str "<messageML>Configuration reload initiated at "
@@ -136,7 +158,7 @@
 
 (defn- garbage-collect!
   "Force JVM garbage collection."
-  [stream-id _]
+  [stream-id _ _]
   (sym/send-message! cnxn/symphony-connection
                      stream-id
                      (str "<messageML>Garbage collection initiated at "
@@ -152,18 +174,19 @@
 ; Table of commands - each of these must be a function of 2 args (strean-id and message text)
 (def ^:private commands
   {
-    "status" #'send-status-message!
-    "reload" #'reload-config!
-    "gc"     #'garbage-collect!
-    "help"   #'send-help-message!
-    "?"      #'send-help-message!
+    "status"      #'send-status-message!
+    "blacklisted" #'blacklisted!
+    "reload"      #'reload-config!
+    "gc"          #'garbage-collect!
+    "help"        #'send-help-message!
+    "?"           #'send-help-message!
   })
 
 (defn- send-help-message!
   "Displays this help message."
-  [stream-id _]
+  [stream-id _ _]
   (let [message (str "<messageML>"
-                     "Hi there!  I'm unfurl bot, and I support the following admin commands:"
+                     "Administrative commands:"
                      "<table>"
                      "<tr><th>Command</th><th>Description</th></tr>"
                      (s/join (map #(str "<tr><td><b>" (key %) "</b></td><td>" (:doc (meta (val %))) "</td></tr>") (sort-by key commands)))
@@ -173,20 +196,26 @@
 
 (defn- process-command!
   "Looks for given command in the message text, exeucting it and returning true if it was found, false otherwise."
-  [from-user-id stream-id text [command-name command-fn]]
-  (if (s/starts-with? text command-name)
+  [from-user-id stream-id text plain-text [command-name command-fn]]
+  (if (s/starts-with? plain-text command-name)
     (do
       (log/debug "Admin command" command-name
                  "requested by" (:email-address (syu/user cnxn/symphony-connection from-user-id))
                  "in stream" stream-id)
-      (command-fn stream-id text)
+      (command-fn stream-id text plain-text)
       true)
     false))
 
 (defn process-admin-commands!
-  "Finds an admin command in the given message and if found, executes it, or displays help instead."
+  "If this is a 1:1 chat with an admin, attempts to find an admin command in the given message and if found, executes it, or displays help instead.  Returns true if an admin command (or help) was displayed, false otherwise."
   [from-user-id stream-id text]
-  (if-let [plain-text (s/lower-case (s/trim (sym/to-plain-text text)))]
-    (if (cnxn/is-admin? from-user-id)
-      (if (not-any? identity (map (partial process-command! from-user-id stream-id plain-text) commands))
-        (send-help-message! stream-id text)))))
+  (if (and text
+           (= :IM (sys/stream-type cnxn/symphony-connection stream-id))
+           (cnxn/is-admin? from-user-id))
+    (let [plain-text (s/lower-case (s/trim (sym/to-plain-text text)))]
+      (if (some identity (map (partial process-command! from-user-id stream-id text plain-text) commands))
+        true
+        (do
+          (sym/send-message! cnxn/symphony-connection stream-id "<messageML>Unrecognised command - type 'help' for help.</messageML>")
+          false)))
+    false))

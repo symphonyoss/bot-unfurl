@@ -57,7 +57,7 @@
 ; TODO: Consider using a binary search here, to better support very large blacklists
 ; Note: in testing with the full Université Toulouse 1 Capitole blacklist (~1.2 million entries), this method is still plenty fast enough.
 ; It's plausible that memory issues will surface before performance ones do...
-(defn- blacklist-matches
+(defn blacklist-matches
   "Returns the list of blacklist matches for the given hostname, or nil if no matches."
   [^String url]
   (let [url-hostname (str "." (.getHost (java.net.URL. url)))]
@@ -65,10 +65,10 @@
               (remove nil? (map-indexed #(if (s/ends-with? url-hostname %2) %1) blacklist))))))
 
 (defn- detect-urls
-  "Detects all URLs in the given string."
+  "Detects all URLs in the given string, or nil if none were detected."
   ([s]     (detect-urls s com.linkedin.urls.detection.UrlDetectorOptions/Default))
   ([s opt] (when (and s opt)
-             (.detect (com.linkedin.urls.detection.UrlDetector. s opt)))))
+             (seq (.detect (com.linkedin.urls.detection.UrlDetector. s opt))))))
 
 (defn- hyperlink-url
   "Hyperlinks the given URL in the given description, using a MessageML format <a> tag."
@@ -120,12 +120,17 @@
       (catch Exception e
         (log/error e "Unexpected exception while unfurling url" url)))))
 
+(defn find-messageml-urls
+  "Returns unique URLs in the given MessageML message, or nil if there aren't any."
+  [m]
+  (seq (distinct (map second (re-seq messageml-link-regex m)))))
+
 (defn unfurl-urls-and-post-previews!
   "Finds all messageML links in the given message and if any are detected, unfurls their URLs and posts a single summary message back to the same stream."
   [message-id stream-id text]
   (when text
-    (let [urls         (map second (re-seq messageml-link-regex text))
-          _            (log/debug "Found" (count urls) "url(s):" (s/join ", " urls))
+    (let [urls         (find-messageml-urls text)
+          _            (log/debug "Found" (count urls) "unique url(s):" (s/join ", " urls))
           message-body (s/join "<br/>" (remove s/blank? (pmap unfurl-url-and-build-msg urls)))
           message      (when (pos? (count message-body))
                          (str "<messageML>" message-body "</messageML>"))]
