@@ -89,11 +89,13 @@ objects:
           ports:
           - containerPort: 4567
             protocol: TCP
-          resources: {}
+          resources:
+            limits:
+              memory: 1532Mi
           terminationMessagePath: /dev/termination-log
           env:
           - name: RUN_COMMAND
-            value: "java -jar /opt/openshift/bot-unfurl-standalone.jar"
+            value: "java -Xmx1G -jar /opt/openshift/bot-unfurl-standalone.jar"
           - name: SESSIONAUTH_URL
             value: https://${SYMPHONY_API_HOST}/sessionauth
           - name: KEYAUTH_URL
