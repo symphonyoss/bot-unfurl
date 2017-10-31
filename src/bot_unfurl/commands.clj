@@ -22,6 +22,7 @@
             [mount.core            :as mnt :refer [defstate]]
             [clj-time.core         :as tm]
             [clj-time.format       :as tf]
+            [clj-symphony.user     :as syu]
             [clj-symphony.message  :as sym]
             [clj-symphony.stream   :as sys]
             [bot-unfurl.config     :as cfg]
@@ -172,10 +173,12 @@
 
 (defn- process-command!
   "Looks for given command in the message text, exeucting it and returning true if it was found, false otherwise."
-  [stream-id text [command-name command-fn]]
+  [from-user-id stream-id text [command-name command-fn]]
   (if (s/starts-with? text command-name)
     (do
-      (log/info "Admin command" command-name "found in stream" stream-id)
+      (log/debug "Admin command" command-name
+                 "requested by" (:email-address (syu/user cnxn/symphony-connection from-user-id))
+                 "in stream" stream-id)
       (command-fn stream-id text)
       true)
     false))
@@ -185,5 +188,5 @@
   [from-user-id stream-id text]
   (if-let [plain-text (s/lower-case (s/trim (sym/to-plain-text text)))]
     (if (cnxn/is-admin? from-user-id)
-      (if (not-any? identity (map (partial process-command! stream-id plain-text) commands))
+      (if (not-any? identity (map (partial process-command! from-user-id stream-id plain-text) commands))
         (send-help-message! stream-id text)))))
