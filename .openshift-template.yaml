@@ -91,7 +91,7 @@ objects:
             protocol: TCP
           resources:
             limits:
-              memory: 1532Mi
+              memory: 1536Mi
           terminationMessagePath: /dev/termination-log
           env:
           - name: RUN_COMMAND
