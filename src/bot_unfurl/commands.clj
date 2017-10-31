@@ -168,7 +168,6 @@
 (defn- process-command!
   "Looks for given command in the message text, exeucting it and returning true if it was found, false otherwise."
   [stream-id text [command-name command-fn]]
-  (println text)  ; ####TEST!!!!
   (if (s/starts-with? text command-name)
     (do
       (log/info "Admin command" command-name "found in stream" stream-id)
