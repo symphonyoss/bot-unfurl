@@ -130,7 +130,7 @@ via the `:blacklist-files` setting).
 
 #### :unfurl-timeout-ms
 
-The timeout, in milliseconds, for each unfurling operation.  If not specified, defaults to 2 seconds.
+The timeout, in milliseconds, for each unfurling operation.  If not specified, defaults to 2000 (2 seconds).
 
 #### :http-proxy
 

@@ -16,12 +16,12 @@
 ;
 
 (ns bot-unfurl.main
-  (:require [clojure.string        :as s]
+  (:require [bot-unfurl.CLJ-2253   :as clj-2253]
+            [clojure.string        :as s]
             [clojure.java.io       :as io]
             [clojure.tools.cli     :as cli]
             [clojure.tools.logging :as log]
             [mount.core            :as mnt :refer [defstate]]
-            [bot-unfurl.CLJ-2253   :as clj-2253]
             [bot-unfurl.config     :as cfg]
             [bot-unfurl.core       :as uf]
             [bot-unfurl.status     :as st])
