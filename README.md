@@ -150,6 +150,8 @@ specified, defaults to 30 minutes.
 A list of administrator email addresses.  These users will be able to interact with the bot via ChatOps (1:1 chats with the bot
 in Symphony).
 
+Saying `help` to the bot will list the available admin commands.
+
 ### Logging Configuration
 
 unfurl bot uses the [logback](https://logback.qos.ch/) library for logging, and ships with a
