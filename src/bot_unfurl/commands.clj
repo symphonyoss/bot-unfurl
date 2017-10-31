@@ -145,8 +145,8 @@
 
 (defn process-admin-commands!
   "Finds an admin command in the given message and if found, executes it, or displays help instead."
-  [message-id stream-id text]
-  (when text
-    (if (not-any? identity (map (partial process-command! stream-id (s/lower-case (s/trim (sym/to-plain-text text))))
-                                commands))
-      (send-help-message! stream-id text))))
+  [from-user-id stream-id text]
+  (if-let [plain-text (s/lower-case (s/trim (sym/to-plain-text text)))]
+    (if (cnxn/is-admin? from-user-id)
+      (if (not-any? identity (map (partial process-command! stream-id plain-text) commands))
+        (send-help-message! stream-id text)))))
