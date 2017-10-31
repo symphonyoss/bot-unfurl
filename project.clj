@@ -38,7 +38,7 @@
                       [org.slf4j/jcl-over-slf4j         "1.7.25"]
                       [org.slf4j/log4j-over-slf4j       "1.7.25"]
                       [org.slf4j/jul-to-slf4j           "1.7.25"]
-                      [org.clojure/java.jmx             "0.3.4"]
+;                      [org.clojure/java.jmx             "0.3.4"]
                       [org.jolokia/jolokia-jvm          "1.3.7"]
                       [org.jolokia/jolokia-jvm          "1.3.7" :classifier "agent"]
                       [clj-time                         "0.14.0"]
