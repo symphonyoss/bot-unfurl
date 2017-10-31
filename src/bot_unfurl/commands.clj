@@ -20,6 +20,7 @@
             [clojure.pprint        :as pp]
             [clojure.tools.logging :as log]
             [mount.core            :as mnt :refer [defstate]]
+            [clojure.java.jmx      :as jmx]
             [clj-time.core         :as tm]
             [clj-time.format       :as tf]
             [clj-symphony.message  :as sym]
@@ -76,21 +77,37 @@
                (pos? (:seconds im)))
          (str (:seconds im) " secs"))))))
 
+(def ^:private sizes ["bytes" "KB" "MB" "GB" "TB" "PB" "EB" "ZB" "YB"])
+
+(defn- size-to-string
+  [sz]
+  (loop [i      0
+         result (double sz)]
+    (if (<= result 1024)
+      (format "%.2f %s" result (nth sizes i))
+      (recur (inc i)
+             (/ result 1024)))))
+
 (defn- send-status-message!
   "Provides status information about the bot."
   [stream-id _]
   (let [now         (tm/now)
         uptime      (tm/interval cfg/boot-time now)
         last-reload (tm/interval cfg/last-reload-time now)
+        allocated-ram (+ (:committed (jmx/read "java.lang:type=Memory" :HeapMemoryUsage))
+                         (:committed (jmx/read "java.lang:type=Memory" :NonHeapMemoryUsage)))
         message     (str "<messageML>"
                          "<b>Unfurl bot status as at " (date-as-string now) "</b>"
                          "<table>"
                          "<tr><td><b>Symphony pod version</b></td><td>" cnxn/symphony-version "</td></tr>"
-                         "<tr><td><b>Build date</b></td><td>" (date-as-string cfg/build-date) "</td></tr>"
-                         "<tr><td><b>Build revision</b></td><td><a href=\"" cfg/git-url "\">" cfg/git-revision "</a></td></tr>"
+                         "<tr><td><b>Java version</b></td><td>" (System/getProperty "java.version") "</td></tr>"
+                         "<tr><td><b>Clojure version</b></td><td>" (clojure-version) "</td></tr>"
+                         "<tr><td><b>Bot build date</b></td><td>" (date-as-string cfg/build-date) "</td></tr>"
+                         "<tr><td><b>Bot build revision</b></td><td><a href=\"" cfg/git-url "\">" cfg/git-revision "</a></td></tr>"
                          "<tr><td><b>Bot uptime</b></td><td>" (interval-to-string uptime) "</td></tr>"
                          "<tr><td><b>Time since last configuration reload</b></td><td>" (interval-to-string last-reload) "</td></tr>"
-                         "<tr><td><b># blacklist entries</b></td><td>" (count uf/blacklist) "</td></tr>"
+                         "<tr><td><b>Memory allocated</b></td><td>" (size-to-string allocated-ram) "</td></tr>"
+                         "<tr><td><b># blacklist entries</b></td><td>" (format "%,d" (count uf/blacklist)) "</td></tr>"
                          "</table>"
                          "<card accent=\"tempo-bg-color--cyan\">"
                          "<header><b>Current configuration</b></header>"
@@ -111,6 +128,19 @@
                      stream-id
                      (str "<messageML>Configuration reload completed at " (date-as-string (tm/now)) "</messageML>")))
 
+(defn- garbage-collect!
+  "Force JVM garbage collection."
+  [stream-id _]
+  (sym/send-message! cnxn/symphony-connection
+                     stream-id
+                     (str "<messageML>Garbage collection initiated at "
+                          (date-as-string (tm/now))
+                          "</messageML>"))
+  (jmx/invoke "java.lang:type=Memory" :gc)
+  (sym/send-message! cnxn/symphony-connection
+                     stream-id
+                     (str "<messageML>Garbage collection completed at " (date-as-string (tm/now)) "</messageML>")))
+
 (declare send-help-message!)
 
 ; Table of commands - each of these must be a function of 2 args (strean-id and message text)
@@ -118,6 +148,7 @@
   {
     "status" #'send-status-message!
     "reload" #'reload-config!
+    "gc"     #'garbage-collect!
     "help"   #'send-help-message!
     "?"      #'send-help-message!
   })
