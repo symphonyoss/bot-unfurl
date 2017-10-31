@@ -33,6 +33,20 @@
 (defstate symphony-version
           :start (syc/version symphony-connection))
 
+(defstate admins
+          :start (let [result (map (partial syu/user symphony-connection) (:admin-emails cfg/config))]
+                   (if (pos? (count result))
+                     (do
+                       (log/info "Admins:" (s/join ", " (map :email-address result)))
+                       result)
+                     (log/info "No admins configured - ChatOps interface will not be available."))))
+
+(defn is-admin?
+  "Is the given user an admin of the bot?"
+  [u]
+  (let [user-id (syu/user-id u)]
+    (some identity (map #(= user-id (syu/user-id %)) admins))))
+
 (defstate accept-connections-interval-ms
           :start (if-let [accept-connections-interval (:accept-connections-interval cfg/config)]
                    (* 1000 60 accept-connections-interval)    ; Convert to ms

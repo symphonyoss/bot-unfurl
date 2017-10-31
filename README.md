@@ -144,6 +144,11 @@ Note that use of an HTTP proxy to make calls to the Symphony APIs are
 The interval (in minutes) that the bot will use to check for and accept incoming cross-pod connection requests.  If not
 specified, defaults to 30 minutes.
 
+#### :admin-emails
+
+A list of administrator email addresses.  These users will be able to interact with the bot via ChatOps (1:1 chats with the bot
+in Symphony).
+
 ### Logging Configuration
 
 unfurl bot uses the [logback](https://logback.qos.ch/) library for logging, and ships with a

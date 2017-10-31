@@ -31,7 +31,7 @@
   (try
     (log/debug "Received message" message-id "from user" user-id "in stream" stream-id ":" text)
     (if (= :IM (sys/stream-type cnxn/symphony-connection stream-id))
-      (cmd/process-admin-commands! message-id stream-id text))
+      (cmd/process-admin-commands! user-id stream-id text))
     (uf/unfurl-urls-and-post-previews! message-id stream-id text)
     (catch Exception e
       (log/error e "Unexpected exception while processing message" message-id))))
