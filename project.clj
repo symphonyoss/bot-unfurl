@@ -24,6 +24,9 @@
   :min-lein-version "2.7.0"
   :repositories     [["sonatype-snapshots" {:url "https://oss.sonatype.org/content/groups/public" :snapshots true}]
                      ["jitpack"            {:url "https://jitpack.io"}]]
+  :plugins          [
+                      [org.noisesmith/git-info-edn "0.2.1"]
+                    ]
   :dependencies     [
                       [org.clojure/clojure              "1.8.0"]
                       [org.apache.commons/commons-lang3 "3.6"]
@@ -37,17 +40,17 @@
                       [org.slf4j/jul-to-slf4j           "1.7.25"]
                       [org.jolokia/jolokia-jvm          "1.3.7"]
                       [org.jolokia/jolokia-jvm          "1.3.7" :classifier "agent"]
+                      [clj-time                         "0.14.0"]
                       [com.linkedin.urls/url-detector   "0.1.17"         :exclusions [org.apache.commons/commons-lang3 org.beanshell/bsh junit org.yaml/snakeyaml]]
                       [org.clojars.pmonks/unfurl        "0.6.0"          :exclusions [org.clojure/clojure commons-logging]]
                       [org.symphonyoss/clj-symphony     "0.2.0-SNAPSHOT" :exclusions [org.clojure/clojure org.slf4j/slf4j-log4j12]]
-                    ]
-  :managed-dependencies [
+
                       ; The following dependencies are inherited but have conflicting versions, so we "pin" the versions here
-                      [com.fasterxml.jackson.core/jackson-core                  "2.8.5"]
-                      [com.fasterxml.jackson.core/jackson-databind              "2.8.5"]
-                      [com.fasterxml.jackson.core/jackson-annotations           "2.8.5"]
-                      [com.fasterxml.jackson.dataformat/jackson-dataformat-yaml "2.8.5"]
-                      [joda-time/joda-time                                      "2.9.7"]
+;                      [com.fasterxml.jackson.core/jackson-core                  "2.9.2"]   ; Non-functional with SJC
+;                      [com.fasterxml.jackson.core/jackson-databind              "2.9.2"]   ; Non-functional with SJC
+;                      [com.fasterxml.jackson.core/jackson-annotations           "2.9.2"]   ; Non-functional with SJC
+;                      [com.fasterxml.jackson.dataformat/jackson-dataformat-yaml "2.9.2"]   ; Non-functional with SJC
+                      [joda-time/joda-time                                      "2.9.9"]
                       [org.hamcrest/hamcrest-core                               "1.3"]
                     ]
   :profiles         {:dev {:dependencies [[midje         "1.8.3"]]
