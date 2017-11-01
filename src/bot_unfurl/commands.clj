@@ -19,81 +19,17 @@
   (:require [clojure.string        :as s]
             [clojure.pprint        :as pp]
             [clojure.tools.logging :as log]
+            [clojure.java.io       :as io]
             [mount.core            :as mnt :refer [defstate]]
             [clj-time.core         :as tm]
             [clj-time.format       :as tf]
             [clj-symphony.user     :as syu]
             [clj-symphony.message  :as sym]
             [clj-symphony.stream   :as sys]
+            [bot-unfurl.utils      :as u]
             [bot-unfurl.config     :as cfg]
             [bot-unfurl.connection :as cnxn]
             [bot-unfurl.unfurl     :as uf]))
-
-(def ^:private human-readable-formatter
-   "e.g. 2017-08-17 7:31AM UTC"
-   (tf/formatter "yyyy-MM-dd h:mmaa ZZZ"))
-
-(defn- date-as-string
-  "Returns the given date/time as a string, using the given formatter (defaults to human-readable-formatter if not provided)."
-  ([date] (date-as-string human-readable-formatter date))
-  ([formatter date]
-   (tf/unparse formatter date)))
-
-(defn- now-as-string
-  "Returns the current date/time as a string, using the given formatter (defaults to human-readable-formatter if not provided)."
-  ([] (now-as-string human-readable-formatter))
-  ([formatter] (date-as-string (tm/now))))
-
-(defn- naive-pluralise
-  "Naively pluralises the given string, based on the value of the given number."
-  [i s]
-  (if (= i 1)
-    s
-    (str s "s")))
-
-(defn- interval-to-string
-  [i]
-  (let [im (tf/instant->map i)]
-   (s/trim
-     (str
-       (if (pos? (:years im))
-         (str (:years im) (naive-pluralise (:years im) " yr") " "))
-       (if (or (pos? (:years im))
-               (pos? (:months im)))
-         (str (:months im) (naive-pluralise (:months im) " mth") " "))
-       (if (or (pos? (:years im))
-               (pos? (:months im))
-               (pos? (:days im)))
-         (str (:days im) (naive-pluralise (:days im) " day") " "))
-       (if (or (pos? (:years im))
-               (pos? (:months im))
-               (pos? (:days im))
-               (pos? (:hours im)))
-         (str (:hours im) (naive-pluralise (:hours im) " hr") " "))
-       (if (or (pos? (:years im))
-               (pos? (:months im))
-               (pos? (:days im))
-               (pos? (:hours im))
-               (pos? (:minutes im)))
-         (str (:minutes im) (naive-pluralise (:minutes im) " min") " "))
-       (if (or (pos? (:years im))
-               (pos? (:months im))
-               (pos? (:days im))
-               (pos? (:hours im))
-               (pos? (:minutes im))
-               (pos? (:seconds im)))
-         (str (:seconds im) (naive-pluralise (:seconds im) " sec") " "))))))
-
-(def ^:private sizes ["bytes" "KB" "MB" "GB" "TB" "PB" "EB" "ZB" "YB"])
-
-(defn- size-to-string
-  [sz]
-  (loop [i      0
-         result (double sz)]
-    (if (<= result 1024)
-      (format "%.2f %s" result (nth sizes i))
-      (recur (inc i)
-             (/ result 1024)))))
 
 (defn- send-status-message!
   "Provides status information about the bot."
@@ -103,16 +39,16 @@
         last-reload   (tm/interval cfg/last-reload-time now)
         allocated-ram (.totalMemory (java.lang.Runtime/getRuntime))
         message       (str "<messageML>"
-                           "<b>Unfurl bot status as at " (date-as-string now) "</b>"
+                           "<b>Unfurl bot status as at " (u/date-as-string now) ":</b>"
                            "<table>"
                            "<tr><td><b>Symphony pod version</b></td><td>" cnxn/symphony-version "</td></tr>"
                            "<tr><td><b>Java version</b></td><td>" (System/getProperty "java.version") " (" (System/getProperty "os.arch") ")</td></tr>"
                            "<tr><td><b>Clojure version</b></td><td>" (clojure-version) "</td></tr>"
-                           "<tr><td><b>Bot build date</b></td><td>" (date-as-string cfg/build-date) "</td></tr>"
+                           "<tr><td><b>Bot build date</b></td><td>" (u/date-as-string cfg/build-date) "</td></tr>"
                            "<tr><td><b>Bot build revision</b></td><td><a href=\"" cfg/git-url "\">" cfg/git-revision "</a></td></tr>"
-                           "<tr><td><b>Bot uptime</b></td><td>" (interval-to-string uptime) "</td></tr>"
-                           "<tr><td><b>Time since last configuration reload</b></td><td>" (interval-to-string last-reload) "</td></tr>"
-                           "<tr><td><b>Memory allocated</b></td><td>" (size-to-string allocated-ram) "</td></tr>"
+                           "<tr><td><b>Bot uptime</b></td><td>" (u/interval-to-string uptime) "</td></tr>"
+                           "<tr><td><b>Time since last configuration reload</b></td><td>" (u/interval-to-string last-reload) "</td></tr>"
+                           "<tr><td><b>Memory allocated</b></td><td>" (u/size-to-string allocated-ram) "</td></tr>"
                            "<tr><td><b># blacklist entries</b></td><td>" (format "%,d" (count uf/blacklist)) "</td></tr>"
                            "</table>"
                            "<card accent=\"tempo-bg-color--cyan\">"
@@ -143,18 +79,30 @@
       (sym/send-message! cnxn/symphony-connection stream-id message))
     (sym/send-message! cnxn/symphony-connection stream-id "<messageML>No URLs were found in your command.</messageML>")))
 
+(defn- logs!
+  "Posts the bot's current logs as a zip file."
+  [stream-id _ _]
+  (let [tmp-zip-file (java.io.File/createTempFile "bot-unfurl-logs-" ".zip")
+        log-files    (cfg/log-files)]
+    (u/zip-files! tmp-zip-file log-files)
+    (sym/send-message! cnxn/symphony-connection stream-id
+                                                (str "<messageML><b>Unfurl bot logs as at " (u/now-as-string) ":</b></messageML>")
+                                                nil
+                                                tmp-zip-file)
+    (io/delete-file tmp-zip-file true)))
+
 (defn- reload-config!
   "Reloads the configuration of the unfurl bot. The bot will be temporarily unavailable during this operation."
   [stream-id _ _]
   (sym/send-message! cnxn/symphony-connection
                      stream-id
                      (str "<messageML>Configuration reload initiated at "
-                          (date-as-string (tm/now))
+                          (u/now-as-string)
                           ". This may take several minutes, during which time the bot will be unavailable.</messageML>"))
   (cfg/reload!)
   (sym/send-message! cnxn/symphony-connection
                      stream-id
-                     (str "<messageML>Configuration reload completed at " (date-as-string (tm/now)) "</messageML>")))
+                     (str "<messageML>Configuration reload completed at " (u/now-as-string) "</messageML>")))
 
 (defn- garbage-collect!
   "Force JVM garbage collection."
@@ -162,12 +110,12 @@
   (sym/send-message! cnxn/symphony-connection
                      stream-id
                      (str "<messageML>Garbage collection initiated at "
-                          (date-as-string (tm/now))
+                          (u/now-as-string)
                           "</messageML>"))
   (.gc (java.lang.Runtime/getRuntime))
   (sym/send-message! cnxn/symphony-connection
                      stream-id
-                     (str "<messageML>Garbage collection completed at " (date-as-string (tm/now)) "</messageML>")))
+                     (str "<messageML>Garbage collection completed at " (u/now-as-string) "</messageML>")))
 
 (declare send-help-message!)
 
@@ -176,6 +124,7 @@
   {
     "status"      #'send-status-message!
     "blacklisted" #'blacklisted!
+    "logs"        #'logs!
     "reload"      #'reload-config!
     "gc"          #'garbage-collect!
     "help"        #'send-help-message!
