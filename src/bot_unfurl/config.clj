@@ -108,3 +108,18 @@
   (mnt/stop)
   (mnt/start)
   (log/debug "unfurl-bot configuration reloaded."))
+
+(defn log-files
+  "Returns the names (as Strings) of all current log files, or nil if there aren't any."
+  []
+  (seq
+    (distinct
+      (remove nil?
+        (flatten
+          (map (fn [^ch.qos.logback.classic.Logger logger]
+                 (let [appenders (iterator-seq (.iteratorForAppenders logger))]
+                   (map (fn [^ch.qos.logback.core.Appender appender]
+                          (if (instance? ch.qos.logback.core.FileAppender appender)
+                            (.getFile ^ch.qos.logback.core.FileAppender appender)))
+                        appenders)))
+               (.getLoggerList ^ch.qos.logback.classic.LoggerContext (org.slf4j.LoggerFactory/getILoggerFactory))))))))
