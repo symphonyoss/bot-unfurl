@@ -19,8 +19,8 @@
     "port" #or [#env JOLOKIA_PORT "8778"]
   }
 
-  :blacklist       ["localhost" "xxx"]
-  :blacklist-files #split [#env BLACKLIST_FILES "\\s*,\\s*"]
+  :blacklist       #split [#env BLACKLIST_ENTRIES "\\s*,\\s*"]
+  :blacklist-files #split [#env BLACKLIST_FILES   "\\s*,\\s*"]
 
   :unfurl-timeout-ms #or [#env UNFURL_TIMEOUT_MS 2000]
 
