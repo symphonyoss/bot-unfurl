@@ -127,7 +127,7 @@ Entries themselves may be a hostname, domain name, or TLD, and must not begin wi
 
 If you're looking for a curated public blacklist, [Université Toulouse 1 Capitole provides a comprehensive one](http://dsi.ut-capitole.fr/blacklists/index_en.php)
 that's compatible with this feature (configure unfurl bot to use whichever of the various `domains` files suit your needs,
-via the `:blacklist-files` setting).  Note that configuring this entire blacklist results in the bot using approximately 2GB of
+via the `:blacklist-files` setting).  Note that configuring this entire blacklist results in the bot using approximately 1GB of
 memory - make sure your server and JVM are sized appropriately.
 
 #### :unfurl-timeout-ms
