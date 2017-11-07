@@ -165,13 +165,14 @@ For now, you can run unfurl bot either directly or as a Docker image.
 ### Direct Execution
 
 ```
+$ lein git-info-edn
 $ lein run -- -c <path to EDN configuration file>
 ```
 
 or
 
 ```
-$ lein uberjar
+$ lein do git-info-edn, uberjar
 ...
 $ java -jar ./target/bot-unfurl-standalone.jar -c <path to EDN configuration file>
 ```
