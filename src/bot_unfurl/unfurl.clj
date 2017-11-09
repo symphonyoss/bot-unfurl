@@ -110,13 +110,16 @@
               title       (sym/escape (:title       unfurled))
               description (process-description (sym/escape (:description unfurled)))
               preview-url (sym/escape (:preview-url unfurled))]
-          (str "<card accent=\"tempo-bg-color--cyan\">"
-               "<header>"
-               (if title (str "<b>" title "</b> - ")) "<a href=\"" url "\">" url "</a>"
-               (if description (str "<p class=\"tempo-text-color--secondary\">" description "</p>"))
-               "</header>"
-               (if preview-url (str "<body><img src=\"" preview-url "\"/></body>"))
-               "</card>")))
+          (if (or (not (s/blank? title))
+                  (not (s/blank? description))
+                  (not (s/blank? preview-url)))
+            (str "<card accent=\"tempo-bg-color--cyan\">"
+                 "<header>"
+                 (if title (str "<b>" title "</b> - ")) "<a href=\"" url "\">" url "</a>"
+                 (if description (str "<p class=\"tempo-text-color--secondary\">" description "</p>"))
+                 "</header>"
+                 (if preview-url (str "<body><img src=\"" preview-url "\"/></body>"))
+                 "</card>"))))
       (catch Exception e
         (log/error e "Unexpected exception while unfurling url" url)))))
 
@@ -132,7 +135,7 @@
     (let [urls         (find-messageml-urls text)
           _            (log/debug "Found" (count urls) "unique url(s):" (s/join ", " urls))
           message-body (s/join "<br/>" (remove s/blank? (pmap unfurl-url-and-build-msg urls)))
-          message      (when (pos? (count message-body))
+          message      (when-not (s/blank? message-body)
                          (str "<messageML>" message-body "</messageML>"))]
       (when message
         (log/info  "Found" (count urls) "url(s) in message" message-id "- posting unfurl message to stream" stream-id)
