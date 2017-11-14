@@ -36,6 +36,6 @@
       (log/error e "Unexpected exception while processing message" message-id))))
 
 (defstate unfurl-bot-listener
-          :start (sym/register-listener   cnxn/symphony-connection process-message!)
-          :stop  (sym/deregister-listener cnxn/symphony-connection unfurl-bot-listener))
+          :start (sym/register-listener!   cnxn/symphony-connection process-message!)
+          :stop  (sym/deregister-listener! cnxn/symphony-connection unfurl-bot-listener))
 
