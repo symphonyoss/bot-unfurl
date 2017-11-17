@@ -110,7 +110,7 @@ objects:
                 name: ${BOT_NAME}.certs
                 key: admin.emails
           - name: BLACKLIST_ENTRIES
-            value: "localhost,xxx,drive.google.com,docs.google.com"
+            value: "localhost,xxx,drive.google.com,docs.google.com,hubspot.com,webex.com,gotomeeting.com,trello.com"
           - name: BLACKLIST_FILES
             valueFrom:
               secretKeyRef:
