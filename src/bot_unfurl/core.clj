@@ -27,10 +27,10 @@
 
 (defn- process-message!
   "Processes all messages received by the bot."
-  [{:keys [message-id timestamp stream-id user-id type text]}]
+  [{:keys [message-id timestamp stream-id user-id type text entity-data]}]
   (try
     (log/debug "Received message" message-id "from user" user-id "in stream" stream-id ":" text)
-    (if-not (cmd/process-admin-commands! user-id stream-id text)
+    (if-not (cmd/process-commands! user-id stream-id text entity-data)
       (uf/unfurl-urls-and-post-previews! message-id stream-id text))
     (catch Exception e
       (log/error e "Unexpected exception while processing message" message-id))))

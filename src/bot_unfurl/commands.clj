@@ -146,7 +146,7 @@
 (defn- process-command!
   "Looks for given command in the message text, exeucting it and returning true if it was found, false otherwise."
   [from-user-id stream-id text plain-text [command-name command-fn]]
-  (if (s/starts-with? plain-text command-name)
+  (if (s/includes? plain-text command-name)
     (do
       (log/debug "Admin command" command-name
                  "requested by" (:email-address (syu/user cnxn/symphony-connection from-user-id))
@@ -155,12 +155,14 @@
       true)
     false))
 
-(defn process-admin-commands!
-  "If this is a 1:1 chat with an admin, attempts to find an admin command in the given message and if found, executes it, or displays help instead.  Returns true if an admin command (or help) was displayed, false otherwise."
-  [from-user-id stream-id text]
-  (if (and text
-           (= :IM (sys/stream-type cnxn/symphony-connection stream-id))
-           (cnxn/is-admin? from-user-id))
+(defn process-commands!
+  "Process any commands in the given message.  Returns true if a command (or help) was displayed, false otherwise."
+  [from-user-id stream-id text entity-data]
+  (if (and (not (s/blank? text))                                             ; Message text is not blank, AND
+           (cnxn/is-admin? from-user-id)                                     ; Message came from an admin, AND
+           (or (= :IM (sys/stream-type cnxn/symphony-connection stream-id))  ; Message is a 1:1 chat with the bot, OR
+               (some #(= (syu/user-id cnxn/bot-user) %)                      ; Bot user is @mention'ed in the message
+                     (sym/mentions {:entity-data entity-data}))))
     (let [plain-text (s/lower-case (s/trim (sym/to-plain-text text)))]
       (if (some identity (map (partial process-command! from-user-id stream-id text plain-text) commands))
         true
