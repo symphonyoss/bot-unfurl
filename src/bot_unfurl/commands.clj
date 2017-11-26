@@ -162,9 +162,5 @@
                (some #(= (syu/user-id cnxn/bot-user) %)                      ; Bot user is @mention'ed in the message
                      (sym/mentions {:entity-data entity-data}))))
     (let [plain-text (s/lower-case (s/trim (sym/to-plain-text text)))]
-      (if (some identity (map (partial process-command! from-user-id stream-id text plain-text) commands))
-        true
-        (do
-          (sym/send-message! cnxn/symphony-connection stream-id "<messageML>Unrecognised command - type 'help' for help.</messageML>")
-          false)))
+      (boolean (some identity (map (partial process-command! from-user-id stream-id text plain-text) commands))))
     false))

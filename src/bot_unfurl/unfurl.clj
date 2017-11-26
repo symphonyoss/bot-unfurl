@@ -104,10 +104,10 @@
   (when url
     (try
       (if-let [blacklist-matches (blacklist-matches url)]
-        (log/warn "url" url "is blacklisted - matches:" (s/join ", " blacklist-matches))
+        (log/warn url "is blacklisted - matches:" (s/join ", " blacklist-matches))
         (let [unfurled    (uf/unfurl url :timeout-ms unfurl-timeout-ms :proxy-host (first http-proxy) :proxy-port (second http-proxy))
               url         (sym/escape (get unfurled :url url))
-              title       (sym/escape (:title       unfurled))
+              title       (sym/escape (:title unfurled))
               description (process-description (sym/escape (:description unfurled)))
               preview-url (sym/escape (:preview-url unfurled))]
           (if (or (not (s/blank? title))
@@ -121,7 +121,7 @@
                  (if preview-url (str "<body><img src=\"" preview-url "\"/></body>"))
                  "</card>"))))
       (catch Exception e
-        (log/error e "Unexpected exception while unfurling url" url)))))
+        (log/error "Unexpected exception while unfurling" url ":" (str e))))))
 
 (defn find-messageml-urls
   "Returns unique URLs in the given MessageML message, or nil if there aren't any."
@@ -138,6 +138,5 @@
           message      (when-not (s/blank? message-body)
                          (str "<messageML>" message-body "</messageML>"))]
       (when message
-        (log/info  "Found" (count urls) "url(s) in message" message-id "- posting unfurl message to stream" stream-id)
-        (log/debug "Unfurl message:" message)
+        (log/debug "Found" (count urls) "url(s) in message" message-id "- posting unfurl message to stream" stream-id ":" message)
         (sym/send-message! cnxn/symphony-connection stream-id message)))))
