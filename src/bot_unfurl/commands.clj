@@ -31,7 +31,7 @@
             [bot-unfurl.connection :as cnxn]
             [bot-unfurl.unfurl     :as uf]))
 
-(defn- send-status-message!
+(defn- status!
   "Provides status information about the bot."
   [stream-id _ _]
   (let [now           (tm/now)
@@ -40,7 +40,7 @@
         allocated-ram (.totalMemory (java.lang.Runtime/getRuntime))
         message       (str "<messageML>"
                            "<b>Unfurl bot status as at " (u/date-as-string now) ":</b>"
-                           "<table>"
+                           "<p><table>"
                            "<tr><td><b>Symphony pod</b></td><td>" (:company cnxn/bot-user) " v" cnxn/symphony-version "</td></tr>"
                            "<tr><td><b>Runtime</b></td><td>Clojure v" (clojure-version) " on JVM v" (System/getProperty "java.version") " (" (System/getProperty "os.arch") ")</td></tr>"
                            "<tr><td><b>Bot build</b></td><td><a href=\"" cfg/git-url "\">git revision " cfg/git-revision "</a>, built " (u/date-as-string cfg/build-date) "</td></tr>"
@@ -48,11 +48,18 @@
                            "<tr><td><b>Time since last configuration reload</b></td><td>" (u/interval-to-string last-reload) "</td></tr>"
                            "<tr><td><b>Memory allocated</b></td><td>" (u/size-to-string allocated-ram) "</td></tr>"
                            "<tr><td><b># blacklist entries</b></td><td>" (format "%,d" (count uf/blacklist)) "</td></tr>"
-                           "</table>"
-                           "<card accent=\"tempo-bg-color--cyan\">"
-                           "<header><b>Current configuration</b></header>"
-                           "<body><pre>" (pp/write cfg/safe-config :stream nil) "</pre></body></card>"
+                           "</table></p>"
                            "</messageML>")]
+    (sym/send-message! cnxn/symphony-connection stream-id message)))
+
+(defn- config!
+  "Provides the current configuration of the bot."
+  [stream-id _ _]
+  (let [now     (tm/now)
+        message (str "<messageML>"
+                     "<b>Clojure bot config as at " (u/date-as-string now) ":</b>"
+                     "<p><pre>" (pp/write cfg/safe-config :stream nil) "</pre></p>"
+                     "</messageML>")]
     (sym/send-message! cnxn/symphony-connection stream-id message)))
 
 (defn- build-blacklisted-row
@@ -69,10 +76,10 @@
   (if-let [urls (uf/find-messageml-urls text)]
     (let [blacklist-matches (into {} (map #(hash-map % (uf/blacklist-matches (str %))) urls))
           message           (str "<messageML>"
-                                 "<table>"
+                                 "<p><table>"
                                  "<tr><th>URL</th><th>Blacklisted?</th><th>Blacklist entry matches</th></tr>"
                                  (s/join (map build-blacklisted-row blacklist-matches))
-                                 "</table>"
+                                 "</table></p>"
                                  "</messageML>")]
       (sym/send-message! cnxn/symphony-connection stream-id message))
     (sym/send-message! cnxn/symphony-connection stream-id "<messageML>No URLs were found in your command.</messageML>")))
@@ -100,36 +107,35 @@
   (cfg/reload!)
   (sym/send-message! cnxn/symphony-connection
                      stream-id
-                     (str "<messageML>Configuration reload completed at " (u/now-as-string) "</messageML>")))
+                     (str "<messageML>Configuration reload completed at " (u/now-as-string) ".</messageML>")))
 
 (defn- garbage-collect!
   "Force JVM garbage collection."
   [stream-id _ _]
   (sym/send-message! cnxn/symphony-connection
                      stream-id
-                     (str "<messageML>Garbage collection initiated at "
-                          (u/now-as-string)
-                          "</messageML>"))
+                     (str "<messageML>Garbage collection initiated at " (u/now-as-string) ".</messageML>"))
   (.gc (java.lang.Runtime/getRuntime))
   (sym/send-message! cnxn/symphony-connection
                      stream-id
-                     (str "<messageML>Garbage collection completed at " (u/now-as-string) "</messageML>")))
+                     (str "<messageML>Garbage collection completed at " (u/now-as-string) ".</messageML>")))
 
-(declare send-help-message!)
+(declare help!)
 
-; Table of commands - each of these must be a function of 2 args (strean-id and message text)
+; Table of commands - each of these must be a function of 3 args (strean-id, message, and message-as-plain-text)
 (def ^:private commands
   {
-    "status"      #'send-status-message!
+    "status"      #'status!
+    "config"      #'config!
     "blacklisted" #'blacklisted!
     "logs"        #'logs!
     "reload"      #'reload-config!
     "gc"          #'garbage-collect!
-    "help"        #'send-help-message!
-    "?"           #'send-help-message!
+    "help"        #'help!
+    "?"           #'help!
   })
 
-(defn- send-help-message!
+(defn- help!
   "Displays this help message."
   [stream-id _ _]
   (let [message (str "<messageML>"
