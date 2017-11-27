@@ -27,11 +27,14 @@
 (defstate symphony-connection
           :start (let [cnxn (syc/connect (:symphony-coords cfg/config))
                        bot  (syu/user cnxn)
-                       _    (log/info (str "Connected to Symphony v" (syc/version cnxn) " as " (:display-name bot) " (" (:email-address bot) ")"))]
+                       _    (log/info (str "Connected to Symphony pod " (:company bot) " v" (syc/version cnxn) " as " (:display-name bot) " (" (:email-address bot) ")"))]
                     cnxn))
 
 (defstate symphony-version
           :start (syc/version symphony-connection))
+
+(defstate bot-user
+          :start (syu/user symphony-connection))
 
 (defstate admins
           :start (let [result (map (partial syu/user symphony-connection) (:admin-emails cfg/config))]
