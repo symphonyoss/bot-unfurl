@@ -15,7 +15,7 @@
 ; limitations under the License.
 ;
 
-(def jackson-version "2.9.2")   ; Note: v2.9.1+ is non-functional with SJC
+(def jackson-version "2.9.2")
 
 (defproject org.symphonyoss.symphony/bot-unfurl "0.1.0-SNAPSHOT"
   :description      "A bot that looks for URIs in messages and 'unfurls' them into a new message."
