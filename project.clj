@@ -15,6 +15,8 @@
 ; limitations under the License.
 ;
 
+(def jackson-version "2.9.2")   ; Note: v2.9.1+ is non-functional with SJC
+
 (defproject org.symphonyoss.symphony/bot-unfurl "0.1.0-SNAPSHOT"
   :description      "A bot that looks for URIs in messages and 'unfurls' them into a new message."
   :url              "https://github.com/symphonyoss/bot-unfurl"
@@ -43,17 +45,22 @@
                       [clj-time                         "0.14.2"]
                       [com.linkedin.urls/url-detector   "0.1.17"         :exclusions [org.apache.commons/commons-lang3 org.beanshell/bsh junit org.yaml/snakeyaml]]
                       [org.clojars.pmonks/unfurl        "0.7.0-SNAPSHOT" :exclusions [org.clojure/clojure commons-logging]]
-                      [org.symphonyoss/clj-symphony     "0.3.0-SNAPSHOT" :exclusions [org.clojure/clojure org.slf4j/slf4j-log4j12]]
+                      [org.symphonyoss/clj-symphony     "0.3.0-SNAPSHOT" :exclusions [org.clojure/clojure
+                                                                                      org.slf4j/slf4j-log4j12]]
 
                       ; The following dependencies are inherited but have conflicting versions, so we "pin" the versions here
-;                      [com.fasterxml.jackson.core/jackson-core                  "2.9.2"]   ; Non-functional with SJC
-;                      [com.fasterxml.jackson.core/jackson-databind              "2.9.2"]   ; Non-functional with SJC
-;                      [com.fasterxml.jackson.core/jackson-annotations           "2.9.2"]   ; Non-functional with SJC
-;                      [com.fasterxml.jackson.dataformat/jackson-dataformat-yaml "2.9.2"]   ; Non-functional with SJC
-                      [joda-time/joda-time                                      "2.9.9"]
-                      [org.hamcrest/hamcrest-core                               "1.3"]
+                      [com.fasterxml.jackson.core/jackson-core                      ~jackson-version]
+                      [com.fasterxml.jackson.core/jackson-databind                  ~jackson-version]
+                      [com.fasterxml.jackson.core/jackson-annotations               ~jackson-version]
+                      [com.fasterxml.jackson.dataformat/jackson-dataformat-yaml     ~jackson-version]
+                      [com.fasterxml.jackson.dataformat/jackson-dataformat-cbor     ~jackson-version]
+                      [com.fasterxml.jackson.dataformat/jackson-dataformat-smile    ~jackson-version]
+                      [com.fasterxml.jackson.datatype/jackson-datatype-jsr310       ~jackson-version]
+                      [com.fasterxml.jackson.module/jackson-module-jaxb-annotations ~jackson-version]
+                      [joda-time/joda-time                                          "2.9.9"]
+                      [org.hamcrest/hamcrest-core                                   "1.3"]
                     ]
-  :profiles         {:dev {:dependencies [[midje         "1.8.3"]]
+  :profiles         {:dev {:dependencies [[midje         "1.9.0"]]
                            :plugins      [[lein-midje    "3.2.1"]
                                           [lein-licenses "0.2.1"]]}
                      :uberjar {:aot          :all
