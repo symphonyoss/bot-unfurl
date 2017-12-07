@@ -30,9 +30,6 @@
                        _    (log/info (str "Connected to Symphony pod " (:company bot) " v" (syc/version cnxn) " as " (:display-name bot) " (" (:email-address bot) ")"))]
                     cnxn))
 
-(defstate symphony-version
-          :start (syc/version symphony-connection))
-
 (defstate bot-user
           :start (syu/user symphony-connection))
 
@@ -44,16 +41,21 @@
                        result)
                      (log/info "No admins configured - ChatOps interface will not be available."))))
 
+(defstate accept-connections-interval-ms
+          :start (if-let [accept-connections-interval (:accept-connections-interval cfg/config)]
+                   (* 1000 60 accept-connections-interval)    ; Convert to ms
+                   (* 1000 60 30)))                           ; If not specified, default to 30 minutes
+
+(defn symphony-version
+  "Returns the Symphony pod version the bot is connected to."
+  []
+  (syc/version symphony-connection))
+
 (defn is-admin?
   "Is the given user an admin of the bot?"
   [u]
   (let [user-id (syu/user-id u)]
     (some identity (map #(= user-id (syu/user-id %)) admins))))
-
-(defstate accept-connections-interval-ms
-          :start (if-let [accept-connections-interval (:accept-connections-interval cfg/config)]
-                   (* 1000 60 accept-connections-interval)    ; Convert to ms
-                   (* 1000 60 30)))                           ; If not specified, default to 30 minutes
 
 (defn- accept-all-connection-requests-and-log
   "Unconditionally accepts all incoming connection requests, and logs the number accepted."

@@ -3,7 +3,7 @@
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/symphonyoss/bot-unfurl.svg)](http://isitmaintained.com/project/symphonyoss/bot-unfurl "Average time to resolve an issue")
 [![Dependencies Status](https://versions.deps.co/symphonyoss/bot-unfurl/status.svg)](https://versions.deps.co/symphonyoss/bot-unfurl)
 [![License](https://img.shields.io/github/license/symphonyoss/bot-unfurl.svg)](https://github.com/symphonyoss/bot-unfurl/blob/master/LICENSE)
-[![Symphony Software Foundation - Incubating](https://cdn.rawgit.com/symphonyoss/contrib-toolbox/master/images/ssf-badge-incubating.svg)](https://symphonyoss.atlassian.net/wiki/display/FM/Incubating)
+[![Symphony Software Foundation - Released](https://cdn.rawgit.com/symphonyoss/contrib-toolbox/master/images/ssf-badge-released.svg)](https://symphonyoss.atlassian.net/wiki/display/FM/Released)
 
 ![Unfurl Bot (ODP) Log Status](https://hv0dbm9dsd.execute-api.us-east-1.amazonaws.com/Prod/badge?oc_bot_name=botunfurl-dev&oc_project_name=ssf-dev)
 ![Unfurl Bot (Production) Log Status](https://hv0dbm9dsd.execute-api.us-east-1.amazonaws.com/Prod/badge?oc_bot_name=botunfurl-prod&oc_project_name=ssf-prod)
@@ -24,11 +24,14 @@ Here it is in action:
 
 ## Installation
 
-For now unfurl bot is available in source form only, so fire up your favourite git client and get cloning!
+The bot is running in the production Symphony network, hosted in the [Symphony Software Foundation's production pod](https://foundation.symphony.com),
+and is enabled for cross-pod communication (so users in other pods can connect to the bot and use it).  As a result,
+there is no installation process, beyond requesting a connection to the bot in the Symphony directory - the bot is
+running as a user called `Unfurl Bot`, in the `Symphony Software Foundation` pod.  Note that the bot will take up to 30
+minutes to accept new connection requests.
 
-The bot is also running in the production Symphony network, hosted in the [Foundation's production pod](https://foundation.symphony.com).
-It is not yet enabled for cross-pod communication (so users in other pods cannot yet see it), but the intention is to enable
-this as soon as the project is [Released](https://symphonyoss.atlassian.net/wiki/spaces/FM/pages/62783529/Released).
+And of course you can always download the bot in source form and build and run it that way, if you'd prefer.  The
+remainder of this document provides instructions on how to do that.
 
 ## Configuration
 
