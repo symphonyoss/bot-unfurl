@@ -41,7 +41,7 @@
         message       (str "<messageML>"
                            "<b>Unfurl bot status as at " (u/date-as-string now) ":</b>"
                            "<p><table>"
-                           "<tr><td><b>Symphony pod</b></td><td>" (:company cnxn/bot-user) " v" cnxn/symphony-version "</td></tr>"
+                           "<tr><td><b>Symphony pod</b></td><td>" (:company cnxn/bot-user) " v" (cnxn/symphony-version) "</td></tr>"
                            "<tr><td><b>Runtime</b></td><td>Clojure v" (clojure-version) " on JVM v" (System/getProperty "java.version") " (" (System/getProperty "os.arch") ")</td></tr>"
                            "<tr><td><b>Bot build</b></td><td><a href=\"" cfg/git-url "\">git revision " cfg/git-revision "</a>, built " (u/date-as-string cfg/build-date) "</td></tr>"
                            "<tr><td><b>Bot uptime</b></td><td>" (u/interval-to-string uptime) "</td></tr>"
@@ -165,7 +165,7 @@
            (cnxn/is-admin? from-user-id)                                     ; Message came from an admin, AND
            (or (= :IM (sys/stream-type cnxn/symphony-connection stream-id))  ; Message is a 1:1 chat with the bot, OR
                (some #(= (syu/user-id cnxn/bot-user) %)                      ; Bot user is @mention'ed in the message
-                     (sym/mentions {:entity-data entity-data}))))
+                     (sym/mentions {:text text :entity-data entity-data}))))
     (let [tokens (sym/tokens text)]
       (boolean (some identity (doall (map (partial process-command! from-user-id stream-id text) tokens)))))
     false))
