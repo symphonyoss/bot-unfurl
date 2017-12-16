@@ -37,7 +37,9 @@
   (let [now           (tm/now)
         uptime        (tm/interval cfg/boot-time now)
         last-reload   (tm/interval cfg/last-reload-time now)
-        allocated-ram (.totalMemory (java.lang.Runtime/getRuntime))
+        free-ram      (.freeMemory  (Runtime/getRuntime))
+        allocated-ram (.totalMemory (Runtime/getRuntime))
+        used-ram      (- allocated-ram free-ram)
         message       (str "<messageML>"
                            "<b>Unfurl bot status as at " (u/date-as-string now) ":</b>"
                            "<p><table>"
@@ -46,7 +48,7 @@
                            "<tr><td><b>Bot build</b></td><td><a href=\"" cfg/git-url "\">git revision " cfg/git-revision "</a>, built " (u/date-as-string cfg/build-date) "</td></tr>"
                            "<tr><td><b>Bot uptime</b></td><td>" (u/interval-to-string uptime) "</td></tr>"
                            "<tr><td><b>Time since last configuration reload</b></td><td>" (u/interval-to-string last-reload) "</td></tr>"
-                           "<tr><td><b>Memory allocated</b></td><td>" (u/size-to-string allocated-ram) "</td></tr>"
+                           "<tr><td><b>Memory</b></td><td>" (u/size-to-string used-ram) " used of " (u/size-to-string allocated-ram) " allocated (" (Math/round (double (/ (* used-ram 100) allocated-ram))) "%)</td></tr>"
                            "<tr><td><b># blacklist entries</b></td><td>" (format "%,d" (count uf/blacklist)) "</td></tr>"
                            "</table></p>"
                            "</messageML>")]
@@ -114,11 +116,11 @@
   [stream-id _]
   (sym/send-message! cnxn/symphony-connection
                      stream-id
-                     (str "<messageML>Garbage collection initiated at " (u/now-as-string) ".</messageML>"))
+                     (str "<messageML>Garbage collection initiated at " (u/now-as-string) ". Free memory before: " (u/size-to-string (.freeMemory (Runtime/getRuntime))) ".</messageML>"))
   (.gc (java.lang.Runtime/getRuntime))
   (sym/send-message! cnxn/symphony-connection
                      stream-id
-                     (str "<messageML>Garbage collection completed at " (u/now-as-string) ".</messageML>")))
+                     (str "<messageML>Garbage collection completed at " (u/now-as-string) ". Free memory after: " (u/size-to-string (.freeMemory (Runtime/getRuntime))) ".</messageML>")))
 
 (declare help!)
 
