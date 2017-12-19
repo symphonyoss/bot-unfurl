@@ -23,7 +23,7 @@
   :license          {:spdx-license-identifier "Apache-2.0"
                      :name                    "Apache License, Version 2.0"
                      :url                     "http://www.apache.org/licenses/LICENSE-2.0"}
-  :min-lein-version "2.7.0"
+  :min-lein-version "2.8.1"
   :repositories     [["sonatype-snapshots" {:url "https://oss.sonatype.org/content/groups/public" :snapshots true}]
                      ["jitpack"            {:url "https://jitpack.io"}]]
   :plugins          [
@@ -65,5 +65,10 @@
                                           [lein-licenses "0.2.2"]]}
                      :uberjar {:aot          :all
                                :uberjar-name "bot-unfurl-standalone.jar"}}
+  :jvm-opts         ~(let [version     (System/getProperty "java.version")
+                           [major _ _] (clojure.string/split version #"\.")]
+                       (if (= major "9")
+                         ["--add-modules" "java.xml.bind"]
+                         []))
   :main             bot-unfurl.main
   )
