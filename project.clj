@@ -15,7 +15,7 @@
 ; limitations under the License.
 ;
 
-(def jackson-version "2.9.2")
+(def jackson-version "2.9.3")
 
 (defproject org.symphonyoss.symphony/bot-unfurl "0.1.0-SNAPSHOT"
   :description      "A bot that looks for URIs in messages and 'unfurls' them into a new message."
@@ -30,7 +30,7 @@
                       [org.noisesmith/git-info-edn "0.2.1"]
                     ]
   :dependencies     [
-                      [org.clojure/clojure              "1.8.0"]
+                      [org.clojure/clojure              "1.9.0"]
                       [org.apache.commons/commons-lang3 "3.7"]
                       [aero                             "1.1.2"]
                       [mount                            "0.1.11"]
@@ -43,10 +43,10 @@
                       [org.jolokia/jolokia-jvm          "1.3.7"]
                       [org.jolokia/jolokia-jvm          "1.3.7" :classifier "agent"]
                       [clj-time                         "0.14.2"]
-                      [com.linkedin.urls/url-detector   "0.1.17"         :exclusions [org.apache.commons/commons-lang3 org.beanshell/bsh junit org.yaml/snakeyaml]]
-                      [org.clojars.pmonks/unfurl        "0.7.0-SNAPSHOT" :exclusions [org.clojure/clojure commons-logging]]
-                      [org.symphonyoss/clj-symphony     "0.3.0-SNAPSHOT" :exclusions [org.clojure/clojure
-                                                                                      org.slf4j/slf4j-log4j12]]
+                      [com.linkedin.urls/url-detector   "0.1.17" :exclusions [org.apache.commons/commons-lang3 org.beanshell/bsh junit org.yaml/snakeyaml]]
+                      [org.clojars.pmonks/unfurl        "0.7.0"  :exclusions [org.clojure/clojure commons-logging]]
+                      [org.symphonyoss/clj-symphony     "0.3.0"  :exclusions [org.clojure/clojure
+                                                                              org.slf4j/slf4j-log4j12]]
 
                       ; The following dependencies are inherited but have conflicting versions, so we "pin" the versions here
                       [com.fasterxml.jackson.core/jackson-core                      ~jackson-version]
@@ -60,9 +60,9 @@
                       [joda-time/joda-time                                          "2.9.9"]
                       [org.hamcrest/hamcrest-core                                   "1.3"]
                     ]
-  :profiles         {:dev {:dependencies [[midje         "1.9.0"]]
+  :profiles         {:dev {:dependencies [[midje         "1.9.1"]]
                            :plugins      [[lein-midje    "3.2.1"]
-                                          [lein-licenses "0.2.1"]]}
+                                          [lein-licenses "0.2.2"]]}
                      :uberjar {:aot          :all
                                :uberjar-name "bot-unfurl-standalone.jar"}}
   :main             bot-unfurl.main
