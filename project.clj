@@ -40,11 +40,11 @@
                       [org.slf4j/jcl-over-slf4j         "1.7.25"]
                       [org.slf4j/log4j-over-slf4j       "1.7.25"]
                       [org.slf4j/jul-to-slf4j           "1.7.25"]
-                      [org.jolokia/jolokia-jvm          "1.3.7"]
-                      [org.jolokia/jolokia-jvm          "1.3.7" :classifier "agent"]
+                      [org.jolokia/jolokia-jvm          "1.4.0"]
+                      [org.jolokia/jolokia-jvm          "1.4.0" :classifier "agent"]
                       [clj-time                         "0.14.2"]
                       [com.linkedin.urls/url-detector   "0.1.17" :exclusions [org.apache.commons/commons-lang3 org.beanshell/bsh junit org.yaml/snakeyaml]]
-                      [org.clojars.pmonks/unfurl        "0.7.0"  :exclusions [org.clojure/clojure commons-logging]]
+                      [org.clojars.pmonks/unfurl        "0.8.0"  :exclusions [org.clojure/clojure commons-logging]]
                       [org.symphonyoss/clj-symphony     "0.3.0"  :exclusions [org.clojure/clojure
                                                                               org.slf4j/slf4j-log4j12]]
 
