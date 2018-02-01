@@ -15,7 +15,7 @@
 ; limitations under the License.
 ;
 
-(def jackson-version "2.9.3")
+(def jackson-version "2.9.4")
 
 (defproject org.symphonyoss.symphony/bot-unfurl "1.0.1-SNAPSHOT"
   :description      "A bot that looks for URIs in messages and 'unfurls' them into a new message."
