@@ -44,7 +44,7 @@
                       [org.jolokia/jolokia-jvm          "1.4.0" :classifier "agent"]
                       [clj-time                         "0.14.2"]
                       [com.linkedin.urls/url-detector   "0.1.17" :exclusions [org.apache.commons/commons-lang3 org.beanshell/bsh junit org.yaml/snakeyaml]]
-                      [org.clojars.pmonks/unfurl        "0.8.0"  :exclusions [org.clojure/clojure commons-logging]]
+                      [org.clojars.pmonks/unfurl        "0.9.0"  :exclusions [org.clojure/clojure commons-logging]]
                       [org.symphonyoss/clj-symphony     "0.3.0"  :exclusions [org.clojure/clojure
                                                                               org.slf4j/slf4j-log4j12]]
 
