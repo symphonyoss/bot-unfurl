@@ -17,7 +17,7 @@
 
 (def jackson-version "2.9.4")
 
-(defproject org.symphonyoss.symphony/bot-unfurl "1.0.1-SNAPSHOT"
+(defproject org.symphonyoss.symphony/bot-unfurl "1.0.1"
   :description      "A bot that looks for URIs in messages and 'unfurls' them into a new message."
   :url              "https://github.com/symphonyoss/bot-unfurl"
   :license          {:spdx-license-identifier "Apache-2.0"
@@ -32,20 +32,20 @@
   :dependencies     [
                       [org.clojure/clojure              "1.9.0"]
                       [org.apache.commons/commons-lang3 "3.7"]
-                      [aero                             "1.1.2"]
-                      [mount                            "0.1.11"]
+                      [aero                             "1.1.3"]
+                      [mount                            "0.1.12"]
                       [org.clojure/tools.cli            "0.3.5"]
                       [org.clojure/tools.logging        "0.4.0"]
                       [ch.qos.logback/logback-classic   "1.2.3"]
                       [org.slf4j/jcl-over-slf4j         "1.7.25"]
                       [org.slf4j/log4j-over-slf4j       "1.7.25"]
                       [org.slf4j/jul-to-slf4j           "1.7.25"]
-                      [org.jolokia/jolokia-jvm          "1.4.0"]
-                      [org.jolokia/jolokia-jvm          "1.4.0" :classifier "agent"]
+                      [org.jolokia/jolokia-jvm          "1.5.0"]
+                      [org.jolokia/jolokia-jvm          "1.5.0" :classifier "agent"]
                       [clj-time                         "0.14.2"]
                       [com.linkedin.urls/url-detector   "0.1.17" :exclusions [org.apache.commons/commons-lang3 org.beanshell/bsh junit org.yaml/snakeyaml]]
                       [org.clojars.pmonks/unfurl        "0.9.0"  :exclusions [org.clojure/clojure commons-logging]]
-                      [org.symphonyoss/clj-symphony     "0.3.0"  :exclusions [org.clojure/clojure
+                      [org.symphonyoss/clj-symphony     "0.5.0"  :exclusions [org.clojure/clojure
                                                                               org.slf4j/slf4j-log4j12]]
 
                       ; The following dependencies are inherited but have conflicting versions, so we "pin" the versions here
