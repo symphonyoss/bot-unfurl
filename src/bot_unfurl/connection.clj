@@ -46,11 +46,6 @@
                    (* 1000 60 accept-connections-interval)    ; Convert to ms
                    (* 1000 60 30)))                           ; If not specified, default to 30 minutes
 
-(defn symphony-version
-  "Returns the Symphony pod version the bot is connected to."
-  []
-  (syc/version symphony-connection))
-
 (defn is-admin?
   "Is the given user an admin of the bot?"
   [u]
