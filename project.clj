@@ -17,7 +17,7 @@
 
 (def jackson-version "2.9.4")
 
-(defproject org.symphonyoss.symphony/bot-unfurl "1.0.1"
+(defproject org.symphonyoss.symphony/bot-unfurl "1.0.3-SNAPSHOT"
   :description      "A bot that looks for URIs in messages and 'unfurls' them into a new message."
   :url              "https://github.com/symphonyoss/bot-unfurl"
   :license          {:spdx-license-identifier "Apache-2.0"
@@ -45,7 +45,7 @@
                       [clj-time                         "0.14.2"]
                       [com.linkedin.urls/url-detector   "0.1.17" :exclusions [org.apache.commons/commons-lang3 org.beanshell/bsh junit org.yaml/snakeyaml]]
                       [org.clojars.pmonks/unfurl        "0.9.0"  :exclusions [org.clojure/clojure commons-logging]]
-                      [org.symphonyoss/clj-symphony     "0.5.0"  :exclusions [org.clojure/clojure
+                      [org.symphonyoss/clj-symphony     "0.6.0"  :exclusions [org.clojure/clojure
                                                                               org.slf4j/slf4j-log4j12]]
 
                       ; The following dependencies are inherited but have conflicting versions, so we "pin" the versions here

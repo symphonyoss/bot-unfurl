@@ -124,3 +124,11 @@
                             (.getFile ^ch.qos.logback.core.FileAppender appender)))
                         appenders)))
                (.getLoggerList ^ch.qos.logback.classic.LoggerContext (org.slf4j.LoggerFactory/getILoggerFactory))))))))
+
+(defn set-log-level!
+  "Sets the log level of the bot-unfurl namespace to the given level (which can be a string or a keyword)."
+  [level]
+  (if level
+    (let [bot-unfurl-logger ^ch.qos.logback.classic.Logger (org.slf4j.LoggerFactory/getLogger "bot-unfurl")
+          level-obj         (ch.qos.logback.classic.Level/toLevel (s/upper-case (name level)))]
+      (.setLevel bot-unfurl-logger level-obj))))
