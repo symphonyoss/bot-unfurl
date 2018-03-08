@@ -115,7 +115,7 @@
 (defn- reset-log-level!
   "Resets the bot's logging level to the default (INFO)."
   [stream-id _]
-  (set-log-level! stream-id "resetlogging info"))
+  (set-log-level! stream-id "setlogging info"))
 
 (defn- reload-config!
   "Reloads the configuration of the unfurl bot. The bot will be temporarily unavailable during this operation."
