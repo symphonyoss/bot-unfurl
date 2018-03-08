@@ -94,7 +94,7 @@
       (s/replace
         (hyperlink-urls description)
         #"\#([^\s]+)"
-        " <hash tag=\"$1\"/>")
+        #(str " <hash tag=\"" (sym/sanitise-hashtag (first %)) "\"/>"))
       #"\$([^\s]+)"
       " <cash tag=\"$1\"/>")))
 
