@@ -94,9 +94,9 @@
       (s/replace
         (hyperlink-urls description)
         #"\#([^\s]+)"
-        #(str " <hash tag=\"" (sym/sanitise-hashtag (first %)) "\"/>"))
+        #(str " <hash tag=\"" (sym/sanitise-tag (first %)) "\"/>"))
       #"\$([^\s]+)"
-      " <cash tag=\"$1\"/>")))
+      #(str " <cash tag=\"" (sym/sanitise-tag (first %)) "\"/>"))))
 
 (defn- unfurl-url-and-build-msg
   "Unfurls a single URL and builds a MessageML message fragment for it."
