@@ -17,7 +17,7 @@
 
 (def jackson-version "2.9.4")
 
-(defproject org.symphonyoss.symphony/bot-unfurl "1.0.3"
+(defproject org.symphonyoss.symphony/bot-unfurl "1.0.4-SNAPSHOT"
   :description      "A bot that looks for URIs in messages and 'unfurls' them into a new message."
   :url              "https://github.com/symphonyoss/bot-unfurl"
   :license          {:spdx-license-identifier "Apache-2.0"

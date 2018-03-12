@@ -15,6 +15,11 @@ parameters:
   description: The hostname serving the Symphony API endpoints
   displayName: Symphony Pod hostname
   required: true
+# Must be within 30000-32767 range - read more on https://docs.openshift.com/container-platform/latest/dev_guide/expose_service/expose_internal_ip_nodeport.html
+- name: JOLOKIA_NODE_PORT
+  description: The port used to expose the Jolokia service
+  displayName: The Jolokia external port
+  required: true
 objects:
 - apiVersion: v1
   kind: ImageStream
@@ -87,13 +92,24 @@ objects:
           imagePullPolicy: Always
           name: ${BOT_NAME}
           ports:
-          - containerPort: 4567
+          - containerPort: 8778
+            name: jolokia
             protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /jolokia/exec/org.symphonyoss.client:type=ClientCheckMBean/isUp
+              port: 8778
+          livenessProbe:
+            httpGet:
+              path: /jolokia/exec/org.symphonyoss.client:type=ClientCheckMBean/isUp
+              port: 8778
           resources:
             limits:
               memory: 1536Mi
           terminationMessagePath: /dev/termination-log
           env:
+          - name: JOLOKIA_HOST
+            value: "*"
           - name: RUN_COMMAND
             value: "java -Xmx1G -jar /opt/openshift/bot-unfurl-standalone.jar"
           - name: SESSIONAUTH_URL
@@ -172,3 +188,29 @@ objects:
           name: ${BOT_NAME}:latest
       type: ImageChange
   status: {}
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: ${BOT_NAME}
+    name: botunfurl-jolokia
+  spec:
+    type: NodePort
+    selector:
+      app: ${BOT_NAME}
+    ports:
+    - name: ${BOT_NAME}-jolokia-port
+      nodePort: ${JOLOKIA_NODE_PORT}
+      port: 8778
+      protocol: TCP
+      targetPort: 8778
+- apiVersion: v1
+  kind: Route
+  metadata:
+    labels:
+      app: ${BOT_NAME}
+    name: ${BOT_NAME}-jolokia
+  spec:
+    to:
+      kind: Service
+      name: botunfurl-jolokia
