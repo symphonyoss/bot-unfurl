@@ -59,7 +59,7 @@
                       [com.fasterxml.jackson.dataformat/jackson-dataformat-smile    ~jackson-version]
                       [com.fasterxml.jackson.datatype/jackson-datatype-jsr310       ~jackson-version]
                       [com.fasterxml.jackson.module/jackson-module-jaxb-annotations ~jackson-version]
-                      [org.glassfish.jersey.media/jersey-media-json-jackson         "2.26"]
+                      [org.glassfish.jersey.media/jersey-media-json-jackson         "2.25.1"]   ; Note: upgrading past 2.25.x breaks the build
                       [joda-time/joda-time                                          "2.9.9"]
                       [org.hamcrest/hamcrest-core                                   "1.3"]
                     ]
