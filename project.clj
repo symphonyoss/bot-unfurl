@@ -16,6 +16,7 @@
 ;
 
 (def jackson-version "2.9.4")
+(def jersey-version  "2.25.1")     ; Note: upgrading past 2.25.x breaks Jackson
 
 (defproject org.symphonyoss.symphony/bot-unfurl "1.0.4-SNAPSHOT"
   :description      "A bot that looks for URIs in messages and 'unfurls' them into a new message."
@@ -59,7 +60,10 @@
                       [com.fasterxml.jackson.dataformat/jackson-dataformat-smile    ~jackson-version]
                       [com.fasterxml.jackson.datatype/jackson-datatype-jsr310       ~jackson-version]
                       [com.fasterxml.jackson.module/jackson-module-jaxb-annotations ~jackson-version]
-                      [org.glassfish.jersey.media/jersey-media-json-jackson         "2.25.1"]   ; Note: upgrading past 2.25.x breaks the build
+                      [org.glassfish.jersey.core/jersey-client                      ~jersey-version]
+                      [org.glassfish.jersey.core/jersey-common                      ~jersey-version]
+                      [org.glassfish.jersey.media/jersey-media-json-jackson         ~jersey-version]
+;                      [org.glassfish.jersey.inject/jersey-hk2                       ~jersey-version]
                       [joda-time/joda-time                                          "2.9.9"]
                       [org.hamcrest/hamcrest-core                                   "1.3"]
                     ]
