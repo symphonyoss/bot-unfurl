@@ -44,7 +44,7 @@
         message       (str "<messageML>"
                            "<b>Unfurl bot status as at " (u/date-as-string now) ":</b>"
                            "<p><table>"
-                           "<tr><td><b>Symphony</b></td><td>Pod: " (:company cnxn/bot-user) " v" (syc/pod-version cnxn/symphony-connection) ", Agent v" (syc/agent-version cnxn/symphony-connection) "</td></tr>"
+                           "<tr><td><b>Symphony</b></td><td>" (:company cnxn/bot-user) " (pod v" (syc/pod-version cnxn/symphony-connection) ", agent v" (syc/agent-version cnxn/symphony-connection) ")</td></tr>"
                            "<tr><td><b>Runtime</b></td><td>Clojure v" (clojure-version) " on JVM v" (System/getProperty "java.version") " (" (System/getProperty "os.arch") ")</td></tr>"
                            "<tr><td><b>Bot build</b></td><td><a href=\"" cfg/git-url "\">git revision " cfg/git-revision "</a>, built " (u/date-as-string cfg/build-date) "</td></tr>"
                            "<tr><td><b>Bot uptime</b></td><td>" (u/interval-to-string uptime) "</td></tr>"
