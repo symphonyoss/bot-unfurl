@@ -99,10 +99,12 @@ objects:
             httpGet:
               path: /jolokia/exec/org.symphonyoss.client:type=ClientCheckMBean/isUp
               port: 8778
+            initialDelaySeconds: 60
           livenessProbe:
             httpGet:
               path: /jolokia/exec/org.symphonyoss.client:type=ClientCheckMBean/isUp
               port: 8778
+            initialDelaySeconds: 60
           resources:
             limits:
               memory: 1536Mi
