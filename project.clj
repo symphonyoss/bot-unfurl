@@ -16,8 +16,9 @@
 ;
 
 (def jackson-version "2.9.4")
+(def jersey-version  "2.25.1")     ; Note: upgrading past 2.25.x breaks Jackson
 
-(defproject org.symphonyoss.symphony/bot-unfurl "1.0.4-SNAPSHOT"
+(defproject org.symphonyoss.symphony/bot-unfurl "1.0.4"
   :description      "A bot that looks for URIs in messages and 'unfurls' them into a new message."
   :url              "https://github.com/symphonyoss/bot-unfurl"
   :license          {:spdx-license-identifier "Apache-2.0"
@@ -52,11 +53,16 @@
                       [com.fasterxml.jackson.core/jackson-core                      ~jackson-version]
                       [com.fasterxml.jackson.core/jackson-databind                  ~jackson-version]
                       [com.fasterxml.jackson.core/jackson-annotations               ~jackson-version]
+                      [com.fasterxml.jackson.jaxrs/jackson-jaxrs-base               ~jackson-version]
+                      [com.fasterxml.jackson.jaxrs/jackson-jaxrs-json-provider      ~jackson-version]
                       [com.fasterxml.jackson.dataformat/jackson-dataformat-yaml     ~jackson-version]
                       [com.fasterxml.jackson.dataformat/jackson-dataformat-cbor     ~jackson-version]
                       [com.fasterxml.jackson.dataformat/jackson-dataformat-smile    ~jackson-version]
                       [com.fasterxml.jackson.datatype/jackson-datatype-jsr310       ~jackson-version]
                       [com.fasterxml.jackson.module/jackson-module-jaxb-annotations ~jackson-version]
+                      [org.glassfish.jersey.core/jersey-client                      ~jersey-version]
+                      [org.glassfish.jersey.core/jersey-common                      ~jersey-version]
+                      [org.glassfish.jersey.media/jersey-media-json-jackson         ~jersey-version]
                       [joda-time/joda-time                                          "2.9.9"]
                       [org.hamcrest/hamcrest-core                                   "1.3"]
                     ]

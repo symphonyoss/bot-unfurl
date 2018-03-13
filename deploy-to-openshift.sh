@@ -11,8 +11,6 @@ if [[ $BRANCH_NAME =~ master ]]; then
     export JOLOKIA_NODE_PORT=30030
 
 elif [[ $BRANCH_NAME =~ dev ]]; then
-	# Reset Openshift env on every build, for testing purposes
-	export OC_DELETE_LABEL="app=botunfurl-dev"
 	export SYMPHONY_POD_HOST="foundation-dev.symphony.com"
 	export SYMPHONY_API_HOST="foundation-dev-api.symphony.com"
     export BOT_NAME="botunfurl-dev"
