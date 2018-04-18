@@ -35,7 +35,7 @@
                       [org.apache.commons/commons-lang3 "3.7"]
                       [aero                             "1.1.3"]
                       [mount                            "0.1.12"]
-                      [org.clojure/tools.cli            "0.3.5"]
+                      [org.clojure/tools.cli            "0.3.6"]
                       [org.clojure/tools.logging        "0.4.0"]
                       [ch.qos.logback/logback-classic   "1.2.3"]
                       [org.slf4j/jcl-over-slf4j         "1.7.25"]
@@ -43,7 +43,7 @@
                       [org.slf4j/jul-to-slf4j           "1.7.25"]
                       [org.jolokia/jolokia-jvm          "1.5.0"]
                       [org.jolokia/jolokia-jvm          "1.5.0" :classifier "agent"]
-                      [clj-time                         "0.14.2"]
+                      [clj-time                         "0.14.3"]
                       [com.linkedin.urls/url-detector   "0.1.17" :exclusions [org.apache.commons/commons-lang3 org.beanshell/bsh junit org.yaml/snakeyaml]]
                       [org.clojars.pmonks/unfurl        "0.9.0"  :exclusions [org.clojure/clojure commons-logging]]
                       [org.symphonyoss/clj-symphony     "0.7.0"  :exclusions [org.clojure/clojure
