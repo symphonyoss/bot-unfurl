@@ -41,13 +41,14 @@
                       [org.slf4j/jcl-over-slf4j         "1.7.25"]
                       [org.slf4j/log4j-over-slf4j       "1.7.25"]
                       [org.slf4j/jul-to-slf4j           "1.7.25"]
-                      [org.jolokia/jolokia-jvm          "1.5.0"]
-                      [org.jolokia/jolokia-jvm          "1.5.0" :classifier "agent"]
-                      [clj-time                         "0.14.3"]
-                      [com.linkedin.urls/url-detector   "0.1.17" :exclusions [org.apache.commons/commons-lang3 org.beanshell/bsh junit org.yaml/snakeyaml]]
-                      [org.clojars.pmonks/unfurl        "0.9.0"  :exclusions [org.clojure/clojure commons-logging]]
-                      [org.symphonyoss/clj-symphony     "0.7.0"  :exclusions [org.clojure/clojure
-                                                                              org.slf4j/slf4j-log4j12]]
+                      [org.jolokia/jolokia-jvm          "1.6.0"]
+                      [org.jolokia/jolokia-jvm          "1.6.0" :classifier "agent"]
+                      [clj-time                         "0.14.4"]
+                      [com.linkedin.urls/url-detector   "0.1.17"         :exclusions [org.apache.commons/commons-lang3 org.beanshell/bsh junit org.yaml/snakeyaml]]
+                      [org.clojars.pmonks/unfurl        "0.9.0"          :exclusions [org.clojure/clojure commons-logging]]
+                      [org.clojars.pmonks/clj-2253      "0.1.0-SNAPSHOT" :exclusions [org.clojure/clojure]]
+                      [org.symphonyoss/clj-symphony     "0.8.0"          :exclusions [org.clojure/clojure
+                                                                                      org.slf4j/slf4j-log4j12]]
 
                       ; The following dependencies are inherited but have conflicting versions, so we "pin" the versions here
                       [com.fasterxml.jackson.core/jackson-core                      ~jackson-version]
@@ -63,7 +64,7 @@
                       [org.glassfish.jersey.core/jersey-client                      ~jersey-version]
                       [org.glassfish.jersey.core/jersey-common                      ~jersey-version]
                       [org.glassfish.jersey.media/jersey-media-json-jackson         ~jersey-version]
-                      [joda-time/joda-time                                          "2.9.9"]
+                      [joda-time/joda-time                                          "2.10"]
                       [org.hamcrest/hamcrest-core                                   "1.3"]
                     ]
   :profiles         {:dev {:dependencies [[midje         "1.9.1"]]

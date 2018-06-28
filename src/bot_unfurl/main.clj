@@ -16,7 +16,7 @@
 ;
 
 (ns bot-unfurl.main
-  (:require [CLJ-2253              :as clj-2253]
+  (:require [CLJ-2253]
             [clojure.string        :as s]
             [clojure.java.io       :as io]
             [clojure.tools.cli     :as cli]
