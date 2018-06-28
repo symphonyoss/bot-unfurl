@@ -1,5 +1,5 @@
 ;
-; Copyright © 2016, 2017 Symphony Software Foundation
+; Copyright 2016 Fintech Open Source Foundation
 ; SPDX-License-Identifier: Apache-2.0
 ;
 ; Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
 ;
 
 (ns bot-unfurl.main
-  (:require [CLJ-2253              :as clj-2253]
+  (:require [CLJ-2253]
             [clojure.string        :as s]
             [clojure.java.io       :as io]
             [clojure.tools.cli     :as cli]

@@ -1,5 +1,5 @@
 ;
-; Copyright © 2016, 2017 Symphony Software Foundation
+; Copyright 2016 Fintech Open Source Foundation
 ; SPDX-License-Identifier: Apache-2.0
 ;
 ; Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,7 +18,7 @@
 (def jackson-version "2.9.4")
 (def jersey-version  "2.25.1")     ; Note: upgrading past 2.25.x breaks Jackson
 
-(defproject org.symphonyoss.symphony/bot-unfurl "1.0.4"
+(defproject org.finos.symphony/bot-unfurl "1.0.5"
   :description      "A bot that looks for URIs in messages and 'unfurls' them into a new message."
   :url              "https://github.com/symphonyoss/bot-unfurl"
   :license          {:spdx-license-identifier "Apache-2.0"
@@ -35,18 +35,19 @@
                       [org.apache.commons/commons-lang3 "3.7"]
                       [aero                             "1.1.3"]
                       [mount                            "0.1.12"]
-                      [org.clojure/tools.cli            "0.3.5"]
-                      [org.clojure/tools.logging        "0.4.0"]
+                      [org.clojure/tools.cli            "0.3.7"]
+                      [org.clojure/tools.logging        "0.4.1"]
                       [ch.qos.logback/logback-classic   "1.2.3"]
                       [org.slf4j/jcl-over-slf4j         "1.7.25"]
                       [org.slf4j/log4j-over-slf4j       "1.7.25"]
                       [org.slf4j/jul-to-slf4j           "1.7.25"]
-                      [org.jolokia/jolokia-jvm          "1.5.0"]
-                      [org.jolokia/jolokia-jvm          "1.5.0" :classifier "agent"]
-                      [clj-time                         "0.14.2"]
+                      [org.jolokia/jolokia-jvm          "1.6.0"]
+                      [org.jolokia/jolokia-jvm          "1.6.0" :classifier "agent"]
+                      [clj-time                         "0.14.4"]
                       [com.linkedin.urls/url-detector   "0.1.17" :exclusions [org.apache.commons/commons-lang3 org.beanshell/bsh junit org.yaml/snakeyaml]]
                       [org.clojars.pmonks/unfurl        "0.9.0"  :exclusions [org.clojure/clojure commons-logging]]
-                      [org.symphonyoss/clj-symphony     "0.7.0"  :exclusions [org.clojure/clojure
+                      [org.clojars.pmonks/clj-2253      "0.1.0"  :exclusions [org.clojure/clojure]]
+                      [org.symphonyoss/clj-symphony     "0.8.0"  :exclusions [org.clojure/clojure
                                                                               org.slf4j/slf4j-log4j12]]
 
                       ; The following dependencies are inherited but have conflicting versions, so we "pin" the versions here
@@ -63,7 +64,7 @@
                       [org.glassfish.jersey.core/jersey-client                      ~jersey-version]
                       [org.glassfish.jersey.core/jersey-common                      ~jersey-version]
                       [org.glassfish.jersey.media/jersey-media-json-jackson         ~jersey-version]
-                      [joda-time/joda-time                                          "2.9.9"]
+                      [joda-time/joda-time                                          "2.10"]
                       [org.hamcrest/hamcrest-core                                   "1.3"]
                     ]
   :profiles         {:dev {:dependencies [[midje         "1.9.1"]]
@@ -73,7 +74,7 @@
                                :uberjar-name "bot-unfurl-standalone.jar"}}
   :jvm-opts         ~(let [version     (System/getProperty "java.version")
                            [major _ _] (clojure.string/split version #"\.")]
-                       (if (= major "9")
+                       (if (>= (java.lang.Integer/parseInt major) 9)
                          ["--add-modules" "java.xml.bind"]
                          []))
   :main             bot-unfurl.main

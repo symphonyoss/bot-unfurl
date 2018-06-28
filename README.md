@@ -3,10 +3,12 @@
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/symphonyoss/bot-unfurl.svg)](http://isitmaintained.com/project/symphonyoss/bot-unfurl "Average time to resolve an issue")
 [![Dependencies Status](https://versions.deps.co/symphonyoss/bot-unfurl/status.svg)](https://versions.deps.co/symphonyoss/bot-unfurl)
 [![License](https://img.shields.io/github/license/symphonyoss/bot-unfurl.svg)](https://github.com/symphonyoss/bot-unfurl/blob/master/LICENSE)
-[![Symphony Software Foundation - Released](https://cdn.rawgit.com/symphonyoss/contrib-toolbox/master/images/ssf-badge-released.svg)](https://symphonyoss.atlassian.net/wiki/display/FM/Released)
+[![FINOS - Released](https://cdn.rawgit.com/finos/contrib-toolbox/master/images/badge-released.svg)](https://finosfoundation.atlassian.net/wiki/spaces/FINOS/pages/75530371/Released)
 
 ![Unfurl Bot (ODP) Log Status](https://hv0dbm9dsd.execute-api.us-east-1.amazonaws.com/Prod/badge?oc_bot_name=botunfurl-dev&oc_project_name=ssf-dev)
 ![Unfurl Bot (Production) Log Status](https://hv0dbm9dsd.execute-api.us-east-1.amazonaws.com/Prod/badge?oc_bot_name=botunfurl-prod&oc_project_name=ssf-prod)
+
+<img align="right" width="40%" src="https://www.finos.org/hubfs/FINOS/finos-logo/FINOS_Icon_Wordmark_Name_RGB_horizontal.png">
 
 # unfurl bot
 
@@ -24,10 +26,10 @@ Here it is in action:
 
 ## Installation
 
-The bot is running in the production Symphony network, hosted in the [Symphony Software Foundation's production pod](https://foundation.symphony.com),
+The bot is running in the production Symphony network, hosted in the [Foundation's production pod](https://foundation.symphony.com),
 and is enabled for cross-pod communication (so users in other pods can connect to the bot and use it).  As a result,
 there is no installation process, beyond requesting a connection to the bot in the Symphony directory - the bot is
-running as a user called `Unfurl Bot`, in the `Symphony Software Foundation` pod.  Note that the bot will take up to 30
+running as a user called `Unfurl Bot`, in the `Foundation` pod.  Note that the bot will take up to 30
 minutes to accept new connection requests.
 
 And of course you can always download the bot in source form and build and run it that way, if you'd prefer.  The
@@ -229,13 +231,13 @@ all pushes (from project team members) and pull requests (from the wider communi
 branch.  The project team will periodically merge outstanding changes from `dev` to `master`.
 
 All commits to the `dev` branch automatically trigger redeployment of the instance of the bot that's configured to run against the
-[Foundation's Open Developer Platform (ODP)](https://symphonyoss.atlassian.net/wiki/spaces/FM/pages/37847084/Open+Developer+Platform).
+[Symphony pod in the Foundation's Open Developer Platform (ODP)](https://finosfoundation.atlassian.net/wiki/spaces/FINOS/pages/75530298/Symphony+Developer+Pod).
 All commits to the `master` branch automatically trigger redeployment of the instance of the bot that's configured to run
 against [the Foundation's production pod](https://foundation.symphony.com/).
 
 ## License
 
-Copyright © 2016 Symphony Software Foundation
+Copyright 2016 Fintech Open Source Foundation
 
 Distributed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
 
