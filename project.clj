@@ -32,10 +32,10 @@
                     ]
   :dependencies     [
                       [org.clojure/clojure              "1.9.0"]
-                      [org.apache.commons/commons-lang3 "3.8"]
+                      [org.apache.commons/commons-lang3 "3.8.1"]
                       [aero                             "1.1.3"]
                       [mount                            "0.1.13"]
-                      [org.clojure/tools.cli            "0.4.0"]
+                      [org.clojure/tools.cli            "0.4.1"]
                       [org.clojure/tools.logging        "0.4.1"]
                       [ch.qos.logback/logback-classic   "1.2.3"]
                       [org.slf4j/jcl-over-slf4j         "1.7.25"]
@@ -47,7 +47,7 @@
                       [com.linkedin.urls/url-detector   "0.1.17" :exclusions [org.apache.commons/commons-lang3 org.beanshell/bsh junit org.yaml/snakeyaml]]
                       [org.clojars.pmonks/unfurl        "0.9.0"  :exclusions [org.clojure/clojure commons-logging]]
                       [org.clojars.pmonks/clj-2253      "0.1.0"  :exclusions [org.clojure/clojure]]
-                      [org.symphonyoss/clj-symphony     "0.8.0"  :exclusions [org.clojure/clojure
+                      [org.symphonyoss/clj-symphony     "0.9.0"  :exclusions [org.clojure/clojure
                                                                               org.slf4j/slf4j-log4j12]]
 
                       ; The following dependencies are inherited but have conflicting versions, so we "pin" the versions here
@@ -72,10 +72,4 @@
                                           [lein-licenses "0.2.2"]]}
                      :uberjar {:aot          :all
                                :uberjar-name "bot-unfurl-standalone.jar"}}
-  :jvm-opts         ~(let [version     (System/getProperty "java.version")
-                           [major _ _] (clojure.string/split version #"\.")]
-                       (if (>= (java.lang.Integer/parseInt major) 9)
-                         ["--add-modules" "java.xml.bind"]
-                         []))
-  :main             bot-unfurl.main
-  )
+  :main             bot-unfurl.main)
