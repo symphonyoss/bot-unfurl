@@ -13,6 +13,7 @@ env:
 
 before_install:
   - openssl aes-256-cbc -K $encrypted_5f39c089f5a2_key -iv $encrypted_5f39c089f5a2_iv -in tokens.tar.enc -out tokens.tar -d
+  - tar xvf tokens.tar
   # Workaround for TravisCI's garbage openjdk10 base image
   - if [[ $JAVA_HOME == *openjdk10* ]]; then rm "${JAVA_HOME}/lib/security/cacerts"; ln -s /etc/ssl/certs/java/cacerts "${JAVA_HOME}/lib/security/cacerts"; fi
 
