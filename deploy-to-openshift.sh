@@ -9,6 +9,7 @@ if [[ $BRANCH_NAME =~ master ]]; then
     export BOT_NAME="botunfurl-prod"
     export OC_PROJECT_NAME="bot-unfurl-prod"
     export JOLOKIA_NODE_PORT=30030
+    export OC_TOKEN_FILE=token-unfurl-prod.txt
 
 elif [[ $BRANCH_NAME =~ dev ]]; then
 	export SYMPHONY_POD_HOST="foundation-dev.symphony.com"
@@ -16,6 +17,7 @@ elif [[ $BRANCH_NAME =~ dev ]]; then
     export BOT_NAME="botunfurl-dev"
     export OC_PROJECT_NAME="bot-unfurl-dev"
     export JOLOKIA_NODE_PORT=30031
+    export OC_TOKEN_FILE=token-unfurl-dev.txt
 else
 	echo "Skipping deployment for branch $BRANCH_NAME"
 	exit 0
