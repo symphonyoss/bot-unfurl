@@ -216,21 +216,11 @@ This assumes that the `etc` directory contains the certificate, truststore, and 
 
 ## Developer Information
 
-[GitHub project](https://github.com/symphonyoss/bot-unfurl)
+[Contributing Guidelines](https://github.com/symphonyoss/bot-unfurl/blob/master/.github/CONTRIBUTING.md)
+
+[GitHub Project](https://github.com/symphonyoss/bot-unfurl)
 
 [Bug Tracker](https://github.com/symphonyoss/bot-unfurl/issues)
-
-### Branching Structure
-
-This project has two permanent branches called `master` and `dev`.  `master` is a
-[GitHub protected branch](https://help.github.com/articles/about-protected-branches/) and cannot be pushed to directly -
-all pushes (from project team members) and pull requests (from the wider community) must be made against the `dev`
-branch.  The project team will periodically merge outstanding changes from `dev` to `master`.
-
-All commits to the `dev` branch automatically trigger redeployment of the instance of the bot that's configured to run against the
-[Symphony pod in the Foundation's Open Developer Platform (ODP)](https://finosfoundation.atlassian.net/wiki/spaces/FINOS/pages/75530298/Symphony+Developer+Pod).
-All commits to the `master` branch automatically trigger redeployment of the instance of the bot that's configured to run
-against [the Foundation's production pod](https://foundation.symphony.com/).
 
 ## License
 
