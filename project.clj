@@ -18,7 +18,7 @@
 (def jackson-version "2.9.4")
 (def jersey-version  "2.25.1")     ; Note: upgrading past 2.25.x breaks Jackson
 
-(defproject org.finos.symphony/bot-unfurl "1.0.7-SNAPSHOT"
+(defproject org.finos.symphony/bot-unfurl "1.0.7"
   :description      "A bot that looks for URIs in messages and 'unfurls' them into a new message."
   :url              "https://github.com/symphonyoss/bot-unfurl"
   :license          {:spdx-license-identifier "Apache-2.0"
