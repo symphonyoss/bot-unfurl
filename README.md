@@ -25,20 +25,34 @@ Here it is in action:
 
 The bot is running in the production Symphony network, hosted in the [Foundation's production pod](https://foundation.symphony.com),
 and is enabled for cross-pod communication (so users in other pods can connect to the bot and use it).  As a result,
-there is no installation process, beyond requesting a connection to the bot in the Symphony directory - the bot is
-running as a user called `Unfurl Bot`, in the `Foundation` pod.  Note that the bot will take up to 30
-minutes to accept new connection requests.
+**there is no installation process required, beyond requesting a connection to the bot in the Symphony directory** - the bot
+is running as a user called `Unfurl Bot`, in the `Foundation` pod.  Note that the bot will take up to 30 minutes to
+accept new connection requests.
 
-And of course you can always download the bot in source form and build and run it that way, if you'd prefer.  The
-remainder of this document provides instructions on how to do that.
+## Installing Your Own Instance of Unfurl Bot
 
-## Configuration
+If you'd prefer to download the source code for the bot, and build and run it yourself (for example if your Symphony pod
+doesn't allow cross-pod connections), please continue reading.
+
+### Prerequisites
+
+To run unfurl bot you will need a recent JVM installed, as well as the [Leiningen build tool](https://leiningen.org/).
+
+unfurl bot is [tested on](https://travis-ci.org/symphonyoss/bot-unfurl) Oracle JVM v1.8, Oracle JVM v9, Open JDK v10,
+and Open JDK v11.  YMMV on earlier versions.
+
+### Configuration
 
 unfurl bot is configured via a single, optional [EDN](https://github.com/edn-format/edn) file that may be specified on the
 command line via the "-c" command line option.  You can also provide a "-h" command line option to get help on all of the
 command line options the bot supports.
 
-### Configuration File Location and Loading Mechanism
+#### A Note on Security
+
+**The bot's configuration includes sensitive information (certificate locations and passwords), so please be extra careful
+to secure this configuration, however you choose to manage it (in a file, environment variables, etc.).**
+
+#### Configuration File Location and Loading Mechanism
 
 The configuration file is traditionally called `config.edn` (but may be called anything you like) and may be stored anywhere
 that can be read by the bot's JVM process via standard POSIX file I/O.  It's loaded using the [aero](https://github.com/juxt/aero)
@@ -50,15 +64,7 @@ that will be read if a config file is not specified on the command line.  This f
 environment variables, allowing the administrator to deploy and run the bot as a standalone uberjar, and configure it exclusively
 from the runtime environment.
 
-Please refer to the [default `config.edn` file](https://github.com/symphonyoss/bot-unfurl/blob/master/resources/config.edn)
-for details on using these environment variables.  Their use is not described here.
-
-### A Note on Security
-
-**The bot's configuration includes sensitive information (certificate locations and passwords), so please be extra careful
-to secure this configuration, however you choose to manage it (in a file, environment variables, etc.).**
-
-### Configuration File Format
+#### Configuration File Format
 
 The configuration file is structured as follows:
 
@@ -87,14 +93,33 @@ The configuration file is structured as follows:
 }
 ```
 
-#### :symphony-coords
+##### Environment Variable Equivalents
+
+| Environment Variable                              | Maps To                                  | Notes           |
+| ------------------------------------------------- | ---------------------------------------- | --------------- |
+| `SESSIONAUTH_URL`                                 | `:symphony-coords` / `:session-auth-url` |                 |
+| `KEYAUTH_URL`                                     | `:symphony-coords` / `:key-auth-url`     |                 |
+| `AGENT_URL`                                       | `:symphony-coords` / `:agent-api-url`    |                 |
+| `POD_URL`                                         | `:symphony-coords` / `:pod-api-url`      |                 |
+| `TRUSTSTORE_FILE` and `TRUSTSTORE_PASSWORD`       | `:symphony-coords` / `:trust-store`      |                 |
+| `BOT_USER_CERT_FILE` and `BOT_USER_CERT_PASSWORD` | `:symphony-coords` / `:user-cert`        |                 |
+| `BOT_USER_EMAIL`                                  | `:symphony-coords` / `:user-email`       |                 |
+| `JOLOKIA_HOST`                                    | `:jolokia-config` / `"host"`             |                 |
+| `JOLOKIA_PORT`                                    | `:jolokia-config` / `"port"`             |                |
+| `BLACKLIST_ENTRIES`                               | `:blacklist`                             | Comma delimited |
+| `BLACKLIST_FILES`                                 | `:blacklist-files`                       | Comma delimited |
+| `UNFURL_TIMEOUT_MS`                               | `:unfurl-timeout-ms`                     |                |
+| `ACCEPT_CONNECTIONS_INTERVAL`                     | `:accept-connections-interval`           |                |
+| `ADMIN_EMAILS`                                    | `:admin-emails`                          | Comma delimited |
+
+##### :symphony-coords
 
 The coordinates of the various endpoints, certificates, knickknacks and geegaws that the bot needs in order to connect to a
 Symphony pod.  This map is passed directly to the
 [clj-symphony library's `connect` function](https://symphonyoss.github.io/clj-symphony/clj-symphony.connect.html#var-connect),
 and has the same semantics as what's described there.
 
-#### :jolokia-config
+##### :jolokia-config
 
 The configuration of the [Jolokia](https://jolokia.org/) library, used to support server-side ops monitoring of the bot.
 This map is passed directly to Jolokia's [`JolokiaServerConfig` constructor](https://github.com/rhuss/jolokia/blob/master/agent/jvm/src/main/java/org/jolokia/jvmagent/JolokiaServerConfig.java#L92).
@@ -102,7 +127,7 @@ See the [default Jolokia property file](https://github.com/rhuss/jolokia/blob/ma
 for a full list of the supported configuration options and their default values, and note that all
 keys and values in this map MUST be strings (this is a Jolokia requirement).
 
-#### :blacklist and :blacklist-files
+##### :blacklist and :blacklist-files
 
 These two settings define the blacklist (aka blocklist) the bot should refer to, in order to determine whether a given URL
 should be ignored.  It can be provided:
@@ -132,39 +157,39 @@ that's compatible with this feature (configure unfurl bot to use whichever of th
 via the `:blacklist-files` setting).  Note that configuring this entire blacklist results in the bot using approximately 1GB of
 memory - make sure your server and JVM are sized appropriately.
 
-#### :unfurl-timeout-ms
+##### :unfurl-timeout-ms
 
 The timeout, in milliseconds, for each unfurling operation.  If not specified, defaults to 2000 (2 seconds).
 
-#### :http-proxy
+##### :http-proxy
 
 The coordinates of an HTTP proxy to be used when accessing URLs that are to be unfurled.
 
 Note that use of an HTTP proxy to make calls to the Symphony APIs are
 [not yet supported by clj-symphony](https://github.com/symphonyoss/clj-symphony/issues/1).
 
-#### :accept-connections-interval
+##### :accept-connections-interval
 
 The interval (in minutes) that the bot will use to check for and accept incoming cross-pod connection requests.  If not
 specified, defaults to 30 minutes.
 
-#### :admin-emails
+##### :admin-emails
 
 A list of administrator email addresses.  These users will be able to interact with the bot via ChatOps (1:1 chats with the bot
 in Symphony).  Administrators should say `help` to the bot to get a list of the available admin commands.
 
-### Logging Configuration
+#### Logging Configuration
 
 unfurl bot uses the [logback](https://logback.qos.ch/) library for logging, and ships with a
 [reasonable default `logback.xml` file](https://github.com/symphonyoss/bot-unfurl/blob/master/resources/logback.xml).
 Please review the [logback documentation](https://logback.qos.ch/manual/configuration.html#configFileProperty) if you
 wish to override this default logging configuration.
 
-## Usage
+### Running the Bot
 
 For now, you can run unfurl bot either directly or as a Docker image.
 
-### Direct Execution
+#### Direct Execution
 
 ```
 $ lein git-info-edn
@@ -179,7 +204,7 @@ $ lein do git-info-edn, uberjar
 $ java -jar ./target/bot-unfurl-standalone.jar -c <path to EDN configuration file>
 ```
 
-### Dockerised Execution
+#### Dockerised Execution
 
 To build the container:
 
