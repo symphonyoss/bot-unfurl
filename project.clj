@@ -18,7 +18,7 @@
 (def jackson-version "2.9.4")
 (def jersey-version  "2.25.1")     ; Note: upgrading past 2.25.x breaks Jackson
 
-(defproject org.finos.symphony/bot-unfurl "1.0.6"
+(defproject org.finos.symphony/bot-unfurl "1.0.7"
   :description      "A bot that looks for URIs in messages and 'unfurls' them into a new message."
   :url              "https://github.com/symphonyoss/bot-unfurl"
   :license          {:spdx-license-identifier "Apache-2.0"
@@ -34,7 +34,7 @@
                       [org.clojure/clojure              "1.9.0"]
                       [org.apache.commons/commons-lang3 "3.8.1"]
                       [aero                             "1.1.3"]
-                      [mount                            "0.1.14"]
+                      [mount                            "0.1.15"]
                       [org.clojure/tools.cli            "0.4.1"]
                       [org.clojure/tools.logging        "0.4.1"]
                       [ch.qos.logback/logback-classic   "1.2.3"]
