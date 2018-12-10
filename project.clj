@@ -34,7 +34,7 @@
                       [org.clojure/clojure              "1.9.0"]
                       [org.apache.commons/commons-lang3 "3.8.1"]
                       [aero                             "1.1.3"]
-                      [mount                            "0.1.14"]
+                      [mount                            "0.1.15"]
                       [org.clojure/tools.cli            "0.4.1"]
                       [org.clojure/tools.logging        "0.4.1"]
                       [ch.qos.logback/logback-classic   "1.2.3"]
