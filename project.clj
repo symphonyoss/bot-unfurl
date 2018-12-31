@@ -31,7 +31,7 @@
                       [org.noisesmith/git-info-edn "0.2.1"]
                     ]
   :dependencies     [
-                      [org.clojure/clojure              "1.9.0"]
+                      [org.clojure/clojure              "1.10.0"]
                       [org.apache.commons/commons-lang3 "3.8.1"]
                       [aero                             "1.1.3"]
                       [mount                            "0.1.15"]
@@ -65,7 +65,7 @@
                       [org.glassfish.jersey.core/jersey-common                      ~jersey-version]
                       [org.glassfish.jersey.media/jersey-media-json-jackson         ~jersey-version]
                       [joda-time/joda-time                                          "2.10.1"]
-                      [org.hamcrest/hamcrest-core                                   "1.3"]
+                      [org.hamcrest/hamcrest-core                                   "2.1"]
                     ]
   :profiles         {:dev {:dependencies [[midje         "1.9.4"]]
                            :plugins      [[lein-midje    "3.2.1"]
