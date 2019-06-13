@@ -38,7 +38,7 @@ doesn't allow cross-pod connections), please continue reading.
 
 To run unfurl bot you will need a recent JVM installed, as well as the [Leiningen build tool](https://leiningen.org/).
 
-unfurl bot is [tested on](https://travis-ci.org/symphonyoss/bot-unfurl) Oracle JVM v1.8 and Open JDK v11.
+unfurl bot is [tested on](https://travis-ci.org/symphonyoss/bot-unfurl) Open JVM v1.8 and Open JDK v11.
 
 ### Configuration
 
