@@ -13,6 +13,8 @@ in place, and there are [additional legal requirements](https://finosfoundation.
 PRs submitted to the bot-unfurl project will be automatically scanned for a FINOS CLA.  If a CLA is not found, you will
 be prompted to complete one.  Further details on this process are described [here](https://www.finos.org/blog/meet-cla-bot-our-ip-compliance-minion).
 
+Need an ICLA? Unsure if you are covered under an existing CCLA? Email [help@finos.org](mailto:help@finos.org?subject=CLA)
+
 # Contributing Issues
 
 ## Prerequisites
