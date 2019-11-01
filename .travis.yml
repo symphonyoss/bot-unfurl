@@ -1,3 +1,4 @@
+dist: trusty   # Because Travis CI's support for older versions of Java on newer distros is *garbage*
 language: clojure
 lein: 2.8.1
 jdk:
