@@ -38,9 +38,9 @@
                       [org.clojure/tools.cli            "0.4.2"]
                       [org.clojure/tools.logging        "0.5.0"]
                       [ch.qos.logback/logback-classic   "1.2.3"]
-                      [org.slf4j/jcl-over-slf4j         "1.7.29"]
-                      [org.slf4j/log4j-over-slf4j       "1.7.29"]
-                      [org.slf4j/jul-to-slf4j           "1.7.29"]
+                      [org.slf4j/jcl-over-slf4j         "1.7.30"]
+                      [org.slf4j/log4j-over-slf4j       "1.7.30"]
+                      [org.slf4j/jul-to-slf4j           "1.7.30"]
                       [org.jolokia/jolokia-jvm          "1.6.2"]
                       [org.jolokia/jolokia-jvm          "1.6.2" :classifier "agent"]
                       [clj-time                         "0.15.2"]
@@ -68,7 +68,7 @@
                       [org.hamcrest/hamcrest-core                                   "2.2"]
                     ]
   :profiles         {:dev {:dependencies [[midje         "1.9.9"]]
-                           :plugins      [[lein-midje    "3.2.1"]
+                           :plugins      [[lein-midje    "3.2.2"]
                                           [lein-licenses "0.2.2"]]}
                      :uberjar {:aot          :all
                                :uberjar-name "bot-unfurl-standalone.jar"}}
