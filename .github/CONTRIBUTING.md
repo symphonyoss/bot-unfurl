@@ -105,6 +105,7 @@ To make review of PRs easier, please:
 | :globe_with_meridians: | `:globe_with_meridians:` | when dealing with **globalisation** / internationalisation |
 | :rocket: | `:rocket:` | anything related to deployments / **DevOps** |
 | :non-potable_water: | `:non-potable_water:` | when plugging memory leaks
+| :balance_scale: | `:balance_scale:` | when making legal changes (e.g. licensing) |
 | :penguin: | `:penguin:` | when fixing something on **Linux** |
 | :apple: | `:apple:` | when fixing something on **Mac OS** |
 | :checkered_flag: | `:checkered_flag:` | when fixing something on **Windows** |
