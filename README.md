@@ -3,7 +3,7 @@
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/symphonyoss/bot-unfurl.svg)](http://isitmaintained.com/project/symphonyoss/bot-unfurl "Average time to resolve an issue")
 [![Dependencies Status](https://versions.deps.co/symphonyoss/bot-unfurl/status.svg)](https://versions.deps.co/symphonyoss/bot-unfurl)
 [![License](https://img.shields.io/github/license/symphonyoss/bot-unfurl.svg)](https://github.com/symphonyoss/bot-unfurl/blob/master/LICENSE)
-[![FINOS - Released](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-incubating.svg)](https://finosfoundation.atlassian.net/wiki/spaces/FINOS/pages/75530371/Released)
+[![FINOS - Active](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-active.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Active)
 
 <img align="right" width="40%" src="https://www.finos.org/hubfs/FINOS/finos-logo/FINOS_Icon_Wordmark_Name_RGB_horizontal.png">
 
@@ -38,7 +38,7 @@ doesn't allow cross-pod connections), please continue reading.
 
 To run unfurl bot you will need a recent JVM installed, as well as the [Leiningen build tool](https://leiningen.org/).
 
-unfurl bot is [tested on](https://travis-ci.org/symphonyoss/bot-unfurl) Open JVM v1.8 and Open JDK v11.
+unfurl bot is [tested on](https://travis-ci.org/symphonyoss/bot-unfurl) OpenJDK v1.8 (LTS), OpenJDK v11 (LTS) and OpenJDK v14 (FR).
 
 ### Configuration
 
@@ -237,6 +237,15 @@ $ docker-compose up -d
 ```
 
 This assumes that the `etc` directory contains the certificate, truststore, and `config.edn` file, as described above.
+
+## Roadmap
+
+This project's roadmap is managed exclusively via [milestones in the project's GitHub issue tracker](https://github.com/symphonyoss/bot-unfurl/milestones?direction=asc&sort=due_date).  Typically there will be two milestones that are being tracked at most points in time:
+
+1. The next maintenance (patch) release.
+2. The next feature (minor or major) release.
+
+This project strictly follows [semantic versioning rules](https://semver.org/#summary) for determining how issues are assigned to each of these milestones, and what impact that will have on the release's version number (including whether a feature release is major or minor, depending on whether backwards compatibility is broken or not).
 
 ## Developer Information
 
