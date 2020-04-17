@@ -1,20 +1,13 @@
-dist: trusty   # Because Travis CI's support for older versions of Java on newer distros is *garbage*
 language: clojure
-lein: 2.8.1
-jdk:
-  - openjdk8    # oraclejdk8 no longer supported by TravisCI (or Oracle)
-  - openjdk11   # Don't fall for Oracle's trick: https://blog.joda.org/2018/09/do-not-fall-into-oracles-java-11-trap.html
-
-env:
-  global:
-    # Encrypted WHITESOURCE_TOKEN for updating Whitesource licensing information
-    - secure: "JHNP7dcBM2zHuhxI0EYcAggGbQn1Q4AwvcTcsfFl0WX94L9ki73YZNfnvTqCEzVzitWAIfK3hASYrwF4RHjNaEl/9T4rh4kY9S9B9yERjsvaoEowFdrhgprz13TBFnZZuxPcXJ05/8i25W+vfRKBM6coF8T+NfbyTqCW1ACE0rNhq8/FiFp5ldL0/IYpBuhSPBENgz2XaSJL+Rjmw2WA1Ucu2he6D3a7XUe/kCDZVAuq9D11USvglxUYQQTRkvaQddHqoqtnPDDnkwP/YrVMusTioSgYctZP2QWaEKhKzzSPyCdTw0VP6t1E0t8Gq46eqhU0L4eD5xpngLpIrG8238A3bqKGGIILc0UgKCE2/IWTGghEarRRSClr0vaAQKpXApYK8/yBzHjM62dPpBJ2LttvFdzRLQeBE7ZX6fabRqIQRBoAt7isZEDq84/+9wUjCKsjjDQqjFut3ESOHQ7D9RdKvY6RUZ4Hc1Y+o6GAchZGopWbGBWA67wr69zByiDc8WhH1e3sH1mn8z2WAQwEZcVF/F/+krb2NuniYAlP8IGNOGZi+sb7/NF+1jE6TnSV7aRTaMC0sltjLmFbdMyiqSpjJsPS3WR4Z8+aauq1N7i2DKPOt9PDANFku1CoFfGkpQZ+77KgSlClM7Zf+Tykd4unrLrFgE7I1cXeIxq4dgk="
+lein: 2.9.3
+jdk:  # We only use OpenJDKs because of these shenanigans: https://blog.joda.org/2018/09/do-not-fall-into-oracles-java-11-trap.html
+  - openjdk8
+  - openjdk11
+  - openjdk14
 
 before_install:
   - openssl aes-256-cbc -K $encrypted_5f39c089f5a2_key -iv $encrypted_5f39c089f5a2_iv -in tokens.tar.enc -out tokens.tar -d
   - tar xvf tokens.tar
-  # Workaround for TravisCI's garbage openjdk10 base image
-  - if [[ $JAVA_HOME == *openjdk10* ]]; then rm "${JAVA_HOME}/lib/security/cacerts"; ln -s /etc/ssl/certs/java/cacerts "${JAVA_HOME}/lib/security/cacerts"; fi
 
 script: lein do git-info-edn, version, check
 
@@ -25,11 +18,4 @@ deploy:
     script: lein do git-info-edn, uberjar && mkdir -p target/oc && cp target/*-standalone.jar target/oc/ && ./deploy-to-openshift.sh $TRAVIS_BRANCH $TRAVIS_PULL_REQUEST
     on:
       all_branches: true
-      jdk: openjdk11
-  # Update Whitesource
-  - provider: script
-    skip_cleanup: true
-    script: lein pom && mvn org.whitesource:whitesource\-maven\-plugin:19.5.1:update -Dorg.whitesource.orgToken=$WHITESOURCE_TOKEN -Dorg.whitesource.ignoredScopes=test,runtime,provided,system
-    on:
-      branch: master
       jdk: openjdk11
