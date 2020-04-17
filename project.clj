@@ -24,7 +24,7 @@
   :license          {:spdx-license-identifier "Apache-2.0"
                      :name                    "Apache License, Version 2.0"
                      :url                     "http://www.apache.org/licenses/LICENSE-2.0"}
-  :min-lein-version "2.8.1"
+  :min-lein-version "2.9.3"
   :repositories     [["sonatype-snapshots" {:url "https://oss.sonatype.org/content/groups/public" :snapshots true}]
                      ["jitpack"            {:url "https://jitpack.io"}]]
   :plugins          [
@@ -47,7 +47,7 @@
                       [com.linkedin.urls/url-detector   "0.1.17" :exclusions [org.apache.commons/commons-lang3 org.beanshell/bsh junit org.yaml/snakeyaml]]
                       [org.clojars.pmonks/unfurl        "0.10.0" :exclusions [org.clojure/clojure commons-logging]]
                       [org.clojars.pmonks/clj-2253      "0.1.0"  :exclusions [org.clojure/clojure]]
-                      [org.symphonyoss/clj-symphony     "1.0.0"  :exclusions [org.clojure/clojure
+                      [org.symphonyoss/clj-symphony     "1.0.1"  :exclusions [org.clojure/clojure
                                                                               org.slf4j/slf4j-log4j12]]
 
                       ; The following dependencies are inherited but have conflicting versions, so we "pin" the versions here
