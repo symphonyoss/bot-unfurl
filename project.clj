@@ -64,7 +64,7 @@
                       [org.glassfish.jersey.core/jersey-client                      ~jersey-version]
                       [org.glassfish.jersey.core/jersey-common                      ~jersey-version]
                       [org.glassfish.jersey.media/jersey-media-json-jackson         ~jersey-version]
-                      [joda-time/joda-time                                          "2.10.5"]
+                      [joda-time/joda-time                                          "2.10.6"]
                       [org.hamcrest/hamcrest-core                                   "2.2"]
                     ]
   :profiles         {:dev {:dependencies [[midje         "1.9.9"]]
